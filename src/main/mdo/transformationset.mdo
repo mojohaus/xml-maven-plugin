@@ -1,0 +1,75 @@
+<model>
+  <id>transformationset</id>
+  <name>TransformationSet</name>
+  <description>Model for configuring the TransformerMojo</description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.mojo.xml.transformer</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true">
+      <name>TransformationSet</name>
+      <description>Specifies a set of files, which are being transformed by a common stylesheet.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>stylesheet</name>
+          <description>
+              Specifies the stylesheet, which is being used for transforming
+              the fileset.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>dir</name>
+          <description>
+              Sets the name of a directory, which is scanned for files
+              being transformed.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>outputDir</name>
+          <description>
+              Specifies the name of the output directory, where the
+              generated files are being placed. Defaults to
+              {project.build.directory}/generated-resources/xml/xslt.
+          </description>
+          <type>String</type>
+        </field>
+		<field>
+		  <name>addedToClasspath</name>
+		  <description>
+		      Specifies, whether the output directory is being added
+		      to the classpath. Defaults to true.
+		  </description>
+		  <type>boolean</type>
+		</field>
+        <field>
+          <name>includes</name>
+          <description>
+              Specifies a pattern of files, which are being included. By default, all
+              files are included.
+          </description>
+          <association xml.listStyle="flat">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>excludes</name>
+          <description>
+              Specifies a pattern of files, which are being excluded. By default, no
+              files are excluded.
+          </description>
+          <association xml.listStyle="flat">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>

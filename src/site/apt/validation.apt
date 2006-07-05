@@ -1,0 +1,127 @@
+~~
+~~
+~~  Copyright 2005  The Apache Software Foundation
+~~
+~~  Licensed under the Apache License, Version 2.0 (the "License");
+~~  you may not use this file except in compliance with the License.
+~~  You may obtain a copy of the License at
+~~
+~~  http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~  Unless required by applicable law or agreed to in writing, software
+~~  distributed under the License is distributed on an "AS IS" BASIS,
+~~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~  See the License for the specific language governing permissions and
+~~  limitations under the License.
+~~
+~~
+
+           --------------------
+           Validating XML files
+           --------------------
+
+Validating XML files
+
+  To validate XML files, the "xml:validate" goal is used. It is configured through
+  a section like the following in your POM:
+
+-----------------------------------------------------------------------------------
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <configuration>
+          <validationSets>
+            <validationSet>
+              <dir>xml</dir>
+            </validationSet>
+            <validationSet>
+              <dir>xsd</dir>
+              <systemId>xmlschema.xml</systemId>
+            </validationSet>
+          </validationSets>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+-----------------------------------------------------------------------------------
+
+  The example would check all files in the directory "xml" for well formedness.
+  Additionally, it would validate all files in the directory "xsd" against the
+  schema "xmlschema.xml".
+
+Goal properties
+
+  The "xml:validate" goal offers the following configurable properties:
+
+*----------------+-----------------------------------------------------------------+
+| Property Name  | Description                                                     |
+*----------------+-----------------------------------------------------------------+
+| basedir        | The base directory, which is used for interpreting relative     |
+|                | paths. Defaults to the project directory, in which the POM      |
+|                | resides.                                                        |
+*----------------+-----------------------------------------------------------------+
+| catalogs       | A set of catalog files, which configure the entity resolver.    |
+|                | For example, it allows to map public ID's or external URL's to  |
+|                | local files. Multiple catalog files are supported. In other     |
+|                | words, to configure a single catalog file, you would need a     |
+|                | section like this:                                              |
+|                |                                                                 |
+|                | \<catalogs\>                                                    |
+|                |   \<catalog\>mycatalog.xml\</catalog\>                          |
+|                | \</catalogs\>                                                   |
+|                |                                                                 |
+|                | The interpretation of catalog files is done by the Apache XML   |
+|                | resolver. See                                                   |
+|                | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
+|                | article for details on catalog files and their formats.         |
+*----------------+-----------------------------------------------------------------+
+| validationSets | A validation set configures a set of XML files, which are       |
+|                | validated against a common XML schema. If you want to validate  |
+|                | against multiple schemata, use one validation set per schema.   |
+|                | See the above example, which specifies two validation sets.     |
+|                | The various child elements of a \<validationSet\> section are   |
+|                | listed in the following section.                                |
+*----------------+-----------------------------------------------------------------+
+
+Validation Set Configuration
+
+  A validation set is configured through several child elements:
+
+*----------------+-----------------------------------------------------------------+
+| Element Name   | Description                                                     |
+*----------------+-----------------------------------------------------------------+
+| publicId       | The schemas public ID. May be null, if the schema is loaded     |
+|                | through its system ID or if the documents are being validated   |
+|                | for wellformedness only.                                        |
+*----------------+-----------------------------------------------------------------+
+| systemId       | The schemas system ID. May be null, if the schema is loaded     |
+|                | through its public ID or if the documents are being validated   |
+|                | for wellformedness only.                                        |
+*----------------+-----------------------------------------------------------------+
+| schemaLanguage | The schema language. Defaults to XML Schema. See                |
+|                | {{{http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html}this}} |
+|                | description for other possible values.                          |
+*----------------+-----------------------------------------------------------------+
+| validating     | If the documents are being validated for wellformedness only:   |
+|                | Sets, whether the parser should be validating. (In other words: |
+|                | Whether documents must contain a document type or xml schema    |
+|                | declaration.) The property is ignored otherwise. The default    |
+|                | value is false.                                                 |
+*----------------+-----------------------------------------------------------------+
+| dir            | Sets the name of a directory, which is scanned for the files,   |
+|                | which are being validated.                                      |
+*----------------+-----------------------------------------------------------------+
+| includes       | Specifies a pattern of files, which are being included. By      |
+|                | default, all files are included. The pattern is relative to     |
+|                | the directory given by "dir". This element may be repeated      |
+|                | as much as needed.                                              |
+*----------------+-----------------------------------------------------------------+
+| excludes       | Specifies a pattern of files, which are being excluded. By      |
+|                | default, no files are excluded. The pattern is relative to      |
+|                | the directory given by "dir". This element may be repeated      |
+|                | as much as needed.                                              |
+*----------------+-----------------------------------------------------------------+

@@ -1,0 +1,22 @@
+<assembly>
+  <id>src</id>
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <includes>
+        <include>.classpath</include>
+        <include>.project</include>
+        <include>pom.xml</include>
+        <include>LICENSE.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>.settings</directory>
+    </fileSet>
+    <fileSet>
+      <directory>src</directory>
+    </fileSet>
+  </fileSets>
+</assembly>

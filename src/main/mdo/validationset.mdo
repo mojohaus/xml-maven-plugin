@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<model>
+  <id>validationset</id>
+  <name>ValidationSet</name>
+  <description>Model for configuring the ValidatorMojo</description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.mojo.xml.validation</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true">
+      <name>ValidationSet</name>
+      <description>A document type, against which files are being validated.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>publicId</name>
+          <description>
+          	  The schemas public ID. May be null, if the schema is loaded through
+          	  its system ID or if the documents are being validated for
+          	  wellformedness only.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>systemId</name>
+          <description>
+          	  The schemas system ID. May be null, if the schema is loaded through
+          	  its public ID or if the documents are being validated for
+          	  wellformedness only.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>schemaLanguage</name>
+          <description>
+            The schema type. May be null, if the documents are being validated
+            for wellformedness only, or if the default schema language
+            (W3C XML Schema) is being used. See
+            http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html
+            for possible values.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>validating</name>
+          <description>
+            If the documents are being validated for wellformedness only: Sets,
+            whether the parser should be validating. (In other words: Whether documents
+            must contain a document type or xml schema declaration.) The property
+            is ignored otherwise. The default value is false.
+          </description>
+          <type>boolean</type>
+        </field>
+        <field>
+          <name>dir</name>
+          <description>
+              Sets the name of a directory, which is scanned for files
+              being validated.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>includes</name>
+          <description>
+              Specifies a pattern of files, which are being included. By default, all
+              files are included.
+          </description>
+          <association xml.listStyle="flat">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>excludes</name>
+          <description>
+              Specifies a pattern of files, which are being excluded. By default, no
+              files are excluded.
+          </description>
+          <association xml.listStyle="flat">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>

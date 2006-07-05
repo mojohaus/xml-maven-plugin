@@ -1,0 +1,12 @@
+<document>
+  <properties>
+    <title>Changes in the Maven XML Plugin</title>
+  </properties>
+  <body>
+    <release version="0.0.1" date="25-Jun-2006">
+      <action dev="jochen" type="add">
+          Initial release
+      </action>
+    </release>
+  </body>
+</document>
