@@ -3,7 +3,18 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="0.0.1" date="25-Jun-2006">
+    <release version="0.2" date="Not yet released">
+      <action dev="jochen" type="fix" issue="MOJO-446"
+        due-to="Anagnostopoulos Kostis" due-to-email="ankostis@gmail.com">
+          Add use of the default excludes. Also add the configuration parameter
+          skipDefaultExcludes for turning them off.
+      </action>
+      <action dev="jochen" type="fix" issue="MOJO-448"
+        due-to="Anagnostopoulos Kostis" due-to-email="ankostis@gmail.com">
+          Absolute paths have been unsupported.
+      </action>
+    </release>
+    <release version="0.1" date="25-Jun-2006">
       <action dev="jochen" type="add">
           Initial release
       </action>
