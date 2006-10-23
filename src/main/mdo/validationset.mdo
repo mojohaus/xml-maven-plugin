@@ -85,6 +85,14 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
+        <field>
+          <name>skipDefaultExcludes</name>
+          <description>
+              Specifies whether the maven's default exludes should NOT be added to 
+              the excludes list.
+          </description>
+	        <type>boolean</type>
+        </field>
       </fields>
     </class>
   </classes>

@@ -16,6 +16,7 @@
 package org.codehaus.mojo.xml;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -23,6 +24,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.FileUtils;
 
 /** Abstract base class for the plugins Mojo's.
  */
@@ -112,11 +114,15 @@ public abstract class AbstractXmlMojo
             throw new MojoFailureException( "A ValidationSet requires a nonempty 'dir' child element." );
         }
         final File f = new File( dirName );
+        final File dir;
         if ( f.isAbsolute() )
         {
-            throw new MojoFailureException( "Invalid absolute path: " + f.getPath() );
+            dir = f;
         }
-        final File dir = new File( getBasedir(), dirName );
+        else
+        {
+        	dir = new File( getBasedir(), dirName );
+        }
         final DirectoryScanner ds = new DirectoryScanner();
         ds.setBasedir( dir );
         if ( pIncludes != null && pIncludes.size() > 0 )
@@ -156,4 +162,15 @@ public abstract class AbstractXmlMojo
     {
         return asFiles( pDir, getFileNames( pDir, pIncludes, pExcludes ) );
     }
+
+    protected List getExcludes( List origExcludes, boolean skipDefaultExcludes )
+    {
+        if ( skipDefaultExcludes )
+            return origExcludes;
+
+        origExcludes.addAll( Arrays.asList( FileUtils.getDefaultExcludes() ) );
+
+        return origExcludes;
+    }
+
 }

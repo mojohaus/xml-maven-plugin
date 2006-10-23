@@ -228,8 +228,9 @@ public class ValidateMojo
         throws MojoExecutionException, MojoFailureException
     {
         final Schema schema = getSchema( pResolver, pValidationSet );
-        final File[] files = getFiles( pValidationSet.getDir(), pValidationSet.getIncludes(), pValidationSet
-            .getExcludes() );
+        final File[] files = getFiles( pValidationSet.getDir(), 
+                                       pValidationSet.getIncludes(), 
+                                       getExcludes( pValidationSet.getExcludes(), pValidationSet.isSkipDefaultExcludes() ) );
         if ( files.length == 0 )
         {
             getLog().info(

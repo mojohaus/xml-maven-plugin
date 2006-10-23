@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.mojo.xml</groupId>
   <artifactId>it3</artifactId>
-  <version>0.0.1</version>
+  <version>0.1</version>
   <name>Maven XML Plugin IT 3</name>
   <description>Integration Test 3 for the Maven XML Plugin</description>
   <build>
@@ -11,7 +11,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>xml-maven-plugin</artifactId>
-        <version>0.0.1</version>
+        <version>0.2</version>
         <configuration>
           <validationSets>
             <validationSet>

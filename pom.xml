@@ -9,7 +9,7 @@
   <artifactId>xml-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Maven XML Plugin</name>
-  <version>0.0.1</version>
+  <version>0.2</version>
   <prerequisites>
     <maven>2.0.4</maven>
   </prerequisites>

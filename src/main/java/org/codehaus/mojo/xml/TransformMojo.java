@@ -181,8 +181,10 @@ public class TransformMojo
     private void transform( Resolver pResolver, TransformationSet pTransformationSet )
         throws MojoExecutionException, MojoFailureException
     {
-        String[] fileNames = getFileNames( pTransformationSet.getDir(), pTransformationSet.getIncludes(),
-                                           pTransformationSet.getExcludes() );
+        String[] fileNames = getFileNames( pTransformationSet.getDir(),
+                                           pTransformationSet.getIncludes(),
+                                           getExcludes( pTransformationSet.getExcludes(),
+                                                        pTransformationSet.isSkipDefaultExcludes() ) );
         if ( fileNames == null || fileNames.length == 0 )
         {
             getLog().warn( "No files found for transformation by stylesheet " + pTransformationSet.getStylesheet() );

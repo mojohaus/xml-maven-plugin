@@ -91,37 +91,40 @@ Validation Set Configuration
 
   A validation set is configured through several child elements:
 
-*----------------+-----------------------------------------------------------------+
-| Element Name   | Description                                                     |
-*----------------+-----------------------------------------------------------------+
-| publicId       | The schemas public ID. May be null, if the schema is loaded     |
-|                | through its system ID or if the documents are being validated   |
-|                | for wellformedness only.                                        |
-*----------------+-----------------------------------------------------------------+
-| systemId       | The schemas system ID. May be null, if the schema is loaded     |
-|                | through its public ID or if the documents are being validated   |
-|                | for wellformedness only.                                        |
-*----------------+-----------------------------------------------------------------+
-| schemaLanguage | The schema language. Defaults to XML Schema. See                |
-|                | {{{http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html}this}} |
-|                | description for other possible values.                          |
-*----------------+-----------------------------------------------------------------+
-| validating     | If the documents are being validated for wellformedness only:   |
-|                | Sets, whether the parser should be validating. (In other words: |
-|                | Whether documents must contain a document type or xml schema    |
-|                | declaration.) The property is ignored otherwise. The default    |
-|                | value is false.                                                 |
-*----------------+-----------------------------------------------------------------+
-| dir            | Sets the name of a directory, which is scanned for the files,   |
-|                | which are being validated.                                      |
-*----------------+-----------------------------------------------------------------+
-| includes       | Specifies a pattern of files, which are being included. By      |
-|                | default, all files are included. The pattern is relative to     |
-|                | the directory given by "dir". This element may be repeated      |
-|                | as much as needed.                                              |
-*----------------+-----------------------------------------------------------------+
-| excludes       | Specifies a pattern of files, which are being excluded. By      |
-|                | default, no files are excluded. The pattern is relative to      |
-|                | the directory given by "dir". This element may be repeated      |
-|                | as much as needed.                                              |
-*----------------+-----------------------------------------------------------------+
+*---------------------+-----------------------------------------------------------------+
+| Element Name        | Description                                                     |
+*---------------------+-----------------------------------------------------------------+
+| publicId            | The schemas public ID. May be null, if the schema is loaded     |
+|                     | through its system ID or if the documents are being validated   |
+|                     | for wellformedness only.                                        |
+*---------------------+-----------------------------------------------------------------+
+| systemId            | The schemas system ID. May be null, if the schema is loaded     |
+|                     | through its public ID or if the documents are being validated   |
+|                     | for wellformedness only.                                        |
+*---------------------+-----------------------------------------------------------------+
+| schemaLanguage      | The schema language. Defaults to XML Schema. See                |
+|                     | {{{http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html}this}} |
+|                     | description for other possible values.                          |
+*---------------------+-----------------------------------------------------------------+
+| validating          | If the documents are being validated for wellformedness only:   |
+|                     | Sets, whether the parser should be validating. (In other words: |
+|                     | Whether documents must contain a document type or xml schema    |
+|                     | declaration.) The property is ignored otherwise. The default    |
+|                     | value is false.                                                 |
+*---------------------+-----------------------------------------------------------------+
+| dir                 | Sets the name of a directory, which is scanned for the files,   |
+|                     | which are being validated.                                      |
+*---------------------+-----------------------------------------------------------------+
+| includes            | Specifies a pattern of files, which are being included. By      |
+|                     | default, all files are included. The pattern is relative to     |
+|                     | the directory given by "dir". This element may be repeated      |
+|                     | as much as needed.                                              |
+*---------------------+-----------------------------------------------------------------+
+| excludes            | Specifies a pattern of files, which are being excluded. By      |
+|                     | default, no files are excluded. The pattern is relative to      |
+|                     | the directory given by "dir". This element may be repeated      |
+|                     | as much as needed.                                              |
+*---------------------+-----------------------------------------------------------------+
+| skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
+|                     | be added to the excludes list.                                  |
+*---------------------+-----------------------------------------------------------------+
