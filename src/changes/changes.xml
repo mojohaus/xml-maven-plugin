@@ -13,6 +13,10 @@
         due-to="Anagnostopoulos Kostis" due-to-email="ankostis@gmail.com">
           Absolute paths have been unsupported.
       </action>
+      <action dev="jochen" type="fix" issue="MOJO-453"
+        due-to="Anagnostopoulos Kostis" due-to-email="ankostis@gmail.com">
+          The plugin does now check, whether the generated files are uptodate.
+      </action>
     </release>
     <release version="0.1" date="25-Jun-2006">
       <action dev="jochen" type="add">
