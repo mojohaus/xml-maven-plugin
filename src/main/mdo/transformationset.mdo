@@ -77,6 +77,22 @@
           </description>
 	        <type>boolean</type>
         </field>
+        <field>
+          <name>otherDepends</name>
+          <description>
+             A list of of extra input files or URLs to consider during the up-to-date check,
+             useful when resolving remote files.  
+             By default it always considers: 
+               1. input files, 
+               2. XSLT file, 
+               3. catalog files, and 
+               4. the pom.xml file of the project executing this plugin. 
+          </description>
+          <association xml.listStyle="flat">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
       </fields>
     </class>
   </classes>

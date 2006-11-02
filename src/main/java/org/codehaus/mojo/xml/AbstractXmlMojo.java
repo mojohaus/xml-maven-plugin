@@ -16,8 +16,11 @@
 package org.codehaus.mojo.xml;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -64,6 +67,20 @@ public abstract class AbstractXmlMojo
         return basedir;
     }
 
+    protected File asAbsoluteFile( String path )
+    {
+        return asAbsoluteFile( new File(path) );
+    }
+
+    protected File asAbsoluteFile( File f )
+    {
+        if ( f.isAbsolute() )
+        {
+            return f;
+        }
+        return new File( getBasedir(), f.getPath() );
+    }
+
     protected File[] getCatalogs()
     {
         if ( catalogs == null )
@@ -74,12 +91,7 @@ public abstract class AbstractXmlMojo
         File[] catalogFiles = new File[catalogs.length];
         for ( int i = 0; i < catalogFiles.length; i++ )
         {
-            File f = catalogs[i];
-            if ( !f.isAbsolute() )
-            {
-                f = new File( getBasedir(), f.getPath() );
-            }
-            catalogFiles[i] = f;
+            catalogFiles[i] = asAbsoluteFile( catalogs[i] );
         }
         return catalogFiles;
     }
@@ -95,12 +107,7 @@ public abstract class AbstractXmlMojo
 
         for ( int i = 0; i < catalogFiles.length; i++ )
         {
-            File f = catalogs[i];
-            if ( !f.isAbsolute() )
-            {
-                f = new File( basedir, f.getPath() );
-            }
-            catalogFiles[i] = f;
+            catalogFiles[i] = asAbsoluteFile( catalogs[i] );
         }
         return new Resolver( catalogFiles );
     }
@@ -113,16 +120,7 @@ public abstract class AbstractXmlMojo
         {
             throw new MojoFailureException( "A ValidationSet requires a nonempty 'dir' child element." );
         }
-        final File f = new File( dirName );
-        final File dir;
-        if ( f.isAbsolute() )
-        {
-            dir = f;
-        }
-        else
-        {
-        	dir = new File( getBasedir(), dirName );
-        }
+        final File dir = asAbsoluteFile( dirName );
         final DirectoryScanner ds = new DirectoryScanner();
         ds.setBasedir( dir );
         if ( pIncludes != null && pIncludes.size() > 0 )
@@ -144,15 +142,30 @@ public abstract class AbstractXmlMojo
             return new File[0];
         }
 
-        File dir = new File( pDir );
-        if ( !dir.isAbsolute() )
-        {
-            dir = new File( getBasedir(), pDir );
-        }
+        File dir = asAbsoluteFile( pDir );
         File[] result = new File[pFileNames.length];
         for ( int i = 0; i < pFileNames.length; i++ )
         {
             result[i] = new File( dir, pFileNames[i] );
+        }
+        return result;
+    }
+
+    protected List asFileList( File dir, List pFileNames )
+    {
+        if ( pFileNames == null )
+        {
+            return Collections.EMPTY_LIST;
+        }
+
+        if ( !dir.isAbsolute() )
+        {
+            dir = new File( getBasedir(), dir.toString() );
+        }
+        List result = new ArrayList();
+        for ( ListIterator i = pFileNames.listIterator(); i.hasNext(); )
+        {
+            i.set( new File( dir, (String) i.next() ) );
         }
         return result;
     }

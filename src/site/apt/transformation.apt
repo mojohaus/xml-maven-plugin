@@ -126,6 +126,18 @@ Transformation Set Configuration
 |                     | the directory given by "dir". This element may be repeated      |
 |                     | as much as needed.                                              |
 *---------------------+-----------------------------------------------------------------+
+| forceCreation       | If 'true', no up-to-date check is performed and                 |
+|                     | the transformation is always performed.                         |
+|                     | Defaults to "${xml.forceCreation}" or 'false'.                  |
+*---------------------+-----------------------------------------------------------------+
 | skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
 |                     | be added to the excludes list.                                  |
+*---------------------+-----------------------------------------------------------------+
+| otherDepends        | A list of of extra input files or URLs to consider during       |    
+|                     | the up-to-date check, useful for when resolving remote files.   |
+|                     | By default it always considers:                                 |
+|                     |   1. input files,                                               |
+|                     |   2. XSLT file,                                                 |
+|                     |   3. catalog files, and                                         |
+|                     |   4. the pom.xml file of the project executing this plugin.     | 
 *---------------------+-----------------------------------------------------------------+

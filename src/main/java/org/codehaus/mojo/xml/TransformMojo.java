@@ -18,7 +18,14 @@ package org.codehaus.mojo.xml;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -52,15 +59,16 @@ public class TransformMojo
      */
     private TransformationSet[] transformationSets;
 
-    private Templates getTemplate( Resolver pResolver, TransformationSet pTransformationSet )
+    /**
+     * Whether creating the transformed files should be forced.
+     * @parameter expression="${xml.forceCreation}" default-value="false"
+     */
+    private boolean forceCreation;
+
+    private Templates getTemplate( Resolver pResolver, File stylesheet )
         throws MojoExecutionException
     {
-        final String stylesheet = pTransformationSet.getStylesheet();
-        File f = new File( stylesheet );
-        if ( !f.isAbsolute() )
-        {
-            f = new File( getBasedir(), stylesheet );
-        }
+
         TransformerFactory tf = TransformerFactory.newInstance();
         if ( pResolver != null )
         {
@@ -68,7 +76,7 @@ public class TransformMojo
         }
         try
         {
-            return tf.newTemplates( new StreamSource( f ) );
+            return tf.newTemplates( new StreamSource( stylesheet ) );
         }
         catch ( TransformerConfigurationException e )
         {
@@ -97,47 +105,6 @@ public class TransformMojo
             return f;
         }
         return new File( getBasedir(), pDir );
-    }
-
-    private void transform( Transformer pTransformer, File pInputDir, File pOutputDir, String pFile )
-        throws MojoExecutionException
-    {
-        File input = getFile( pInputDir, pFile );
-        File output = getFile( pOutputDir, pFile );
-        File dir = output.getParentFile();
-        dir.mkdirs();
-        FileOutputStream fos = null;
-        try
-        {
-            fos = new FileOutputStream( output );
-            pTransformer.transform( new StreamSource( input ), new StreamResult( fos ) );
-            fos.close();
-            fos = null;
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Failed to create output file " + output.getPath() + ": "
-                + e.getMessage(), e );
-        }
-        catch ( TransformerException e )
-        {
-            throw new MojoExecutionException( "Failed to transform input file " + input.getPath() + ": "
-                + e.getMessage(), e );
-        }
-        finally
-        {
-            if ( fos != null )
-            {
-                try
-                {
-                    fos.close();
-                }
-                catch ( Throwable t )
-                {
-                    /* Ignore me */
-                }
-            }
-        }
     }
 
     private void addToClasspath( String pOutputDir )
@@ -178,6 +145,139 @@ public class TransformMojo
         return getDir( dir );
     }
 
+    protected static String getAllExMsgs( Throwable ex, boolean includeExName )
+    {
+        StringBuffer sb = new StringBuffer( ( includeExName ? ex.toString() : ex.getLocalizedMessage() ) );
+        while ( ( ex = ex.getCause() ) != null )
+            sb.append( "\nCaused by: " + ex.toString() );
+
+        return sb.toString();
+    }
+
+    /**
+     * 
+     * @param files the fileNames or URLs to scan their lastModified timestamp.
+     * @param oldest if true, returns the latest modificationDate of all files,
+     *      otherwise returns the earliest.
+     * @return the older or younger last modification timestamp of all files.
+     */
+    protected long findLastModified( List/*<Object>*/files, boolean oldest )
+    {
+        long timeStamp = ( oldest ? Long.MIN_VALUE : Long.MAX_VALUE );
+        for ( Iterator it = files.iterator(); it.hasNext(); )
+        {
+            Object no = it.next();
+
+            if ( no != null )
+            {
+                long fileModifTime;
+                if ( no instanceof File )
+                {
+                    fileModifTime = ( (File) no ).lastModified();
+                }
+                else // either URL or filePath
+                {
+                    
+                    String sdep = no.toString();
+
+                    try
+                    {
+                        URL url = new URL( sdep );
+
+                        URLConnection uCon = url.openConnection();
+                        uCon.setUseCaches( false );
+
+                        fileModifTime = uCon.getLastModified();
+
+                    }
+                    catch ( MalformedURLException e )
+                    {
+                        fileModifTime = new File( sdep ).lastModified();
+
+                    }
+                    catch ( IOException ex )
+                    {
+                        fileModifTime = ( oldest ? Long.MIN_VALUE : Long.MAX_VALUE );
+                        getLog().warn(
+                                       "Skipping URL '" + no
+                                           + "' from up-to-date check due to error while opening connection: "
+                                           + getAllExMsgs( ex, true ) );
+                    }
+
+                }
+
+                getLog().debug( ( oldest ? "Depends " : "Produces " ) + no + ": " + new Date( fileModifTime ) );
+
+                if ( ( fileModifTime > timeStamp ) ^ !oldest )
+                    timeStamp = fileModifTime;
+            } // end if file null.
+        }// end filesloop
+
+        if ( timeStamp == Long.MIN_VALUE ) // no older file found
+            return Long.MAX_VALUE; // assume re-execution required. 
+        else if ( timeStamp == Long.MAX_VALUE ) // no younger file found
+            return Long.MIN_VALUE; // assume re-execution required.
+
+        return timeStamp;
+    }
+
+    /**
+     * @return true to indicate results are up-to-date, that is, when the latest 
+     *          from input files is earlier than the younger from the output 
+     *          files (meaning no re-execution required).
+     */
+    protected boolean isUpdToDate(List dependsFiles, List producesFiles) {
+        
+        // The older timeStamp of all input files;
+        long inputTimeStamp = findLastModified(dependsFiles, true);
+
+        // The younger of all destination files.
+        long destTimeStamp = (producesFiles == null? Long.MIN_VALUE: findLastModified(producesFiles, false)); 
+    
+            getLog().debug("Depends timeStamp: " + inputTimeStamp + ", produces timestamp: " + destTimeStamp);
+
+        return inputTimeStamp < destTimeStamp; 
+    }
+
+    private void transform( Transformer pTransformer, File input, File output )
+        throws MojoExecutionException
+    {
+        File dir = output.getParentFile();
+        dir.mkdirs();
+        FileOutputStream fos = null;
+        try
+        {
+            fos = new FileOutputStream( output );
+            pTransformer.transform( new StreamSource( input ), new StreamResult( fos ) );
+            fos.close();
+            fos = null;
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Failed to create output file " + output.getPath() + ": "
+                + e.getMessage(), e );
+        }
+        catch ( TransformerException e )
+        {
+            throw new MojoExecutionException( "Failed to transform input file " + input.getPath() + ": "
+                + e.getMessage(), e );
+        }
+        finally
+        {
+            if ( fos != null )
+            {
+                try
+                {
+                    fos.close();
+                }
+                catch ( Throwable t )
+                {
+                    /* Ignore me */
+                }
+            }
+        }
+    }
+
     private void transform( Resolver pResolver, TransformationSet pTransformationSet )
         throws MojoExecutionException, MojoFailureException
     {
@@ -191,24 +291,71 @@ public class TransformMojo
             return;
         }
 
-        Templates template = getTemplate( pResolver, pTransformationSet );
+        final String stylesheetPath = pTransformationSet.getStylesheet();
+        File stylesheet = new File( stylesheetPath );
+        if ( !stylesheet.isAbsolute() )
+        {
+            stylesheet = new File( getBasedir(), stylesheetPath );
+        }
+        Templates template = getTemplate( pResolver, stylesheet );
+        
+        int filesTransformed = 0;
         File inputDir = getDir( pTransformationSet.getDir() );
         File outputDir = getOutputDir( pTransformationSet.getOutputDir() );
         for ( int i = 0; i < fileNames.length; i++ )
         {
             final Transformer t;
-            try
-            {
-                t = template.newTransformer();
-                t.setURIResolver( pResolver );
-            }
-            catch ( TransformerConfigurationException e )
-            {
-                throw new MojoExecutionException( "Failed to create Transformer: " + e.getMessage(), e );
-            }
-            transform( t, inputDir, outputDir, fileNames[i] );
-        }
+            
+            File input = getFile( inputDir, fileNames[i] );
+            File output = getFile( outputDir, fileNames[i] );
 
+            // Perform up-to-date-check.
+            boolean needsTransform = forceCreation;
+            if ( !needsTransform )
+            {
+                List dependsFiles = new ArrayList();
+                List producesFiles = new ArrayList();
+                
+                dependsFiles.add( getProject().getFile() );// Depends from pom.xml file for when project configuration changes.
+                dependsFiles.add( stylesheet );
+                dependsFiles.add( Arrays.asList( getCatalogs() ) );
+                dependsFiles.add( input );
+                dependsFiles.addAll( asFileList( getBasedir(), pTransformationSet.getOtherDepends() ) );
+
+                producesFiles.add( output );
+                
+                needsTransform = !isUpdToDate( dependsFiles, producesFiles );
+            }
+            
+            if (!needsTransform)
+            {
+                getLog().info("Skipping XSL transformation.  File " + fileNames[i] + " is up-to-date.");
+            }
+            else
+            {
+                filesTransformed++;
+                
+                // Perform transformation.
+                try
+                {
+                    t = template.newTransformer();
+                    t.setURIResolver( pResolver );
+
+                    transform( t, input, output );
+                    
+                }
+                catch ( TransformerConfigurationException e )
+                {
+                    throw new MojoExecutionException( "Failed to create Transformer: " + e.getMessage(), e );
+                }
+            }
+
+        }// end file loop
+
+        if (filesTransformed > 0)
+            getLog().info("Transformed " + filesTransformed + " file(s).");
+
+        
         if ( pTransformationSet.isAddedToClasspath() )
         {
             addToClasspath( pTransformationSet.getOutputDir() );
