@@ -38,8 +38,7 @@ import org.xml.sax.XMLReader;
 
 
 /**
- * The {@link ValidateMojo ValidatorMojo's} task is the validation
- * of XML files against a given schema.
+ * The ValidatorMojo's task is the validation of XML files against a given schema.
  *
  * @goal validate
  * @phase test

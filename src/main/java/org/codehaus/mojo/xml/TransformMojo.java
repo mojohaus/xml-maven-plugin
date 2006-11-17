@@ -43,8 +43,7 @@ import org.codehaus.mojo.xml.transformer.TransformationSet;
 
 
 /**
- * The {@link TransformMojo} is used for transforming a
- * set of files using a common stylesheet.
+ * The TransformMojo is used for transforming a set of files using a common stylesheet.
  *
  * @goal transform
  * @phase generate-resources
