@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -40,7 +41,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
-
+import org.codehaus.mojo.xml.transformer.Parameter;
 
 /**
  * The TransformMojo is used for transforming a set of files using a common stylesheet.
@@ -340,6 +341,13 @@ public class TransformMojo
                     t = template.newTransformer();
                     t.setURIResolver( pResolver );
 
+                    if (pTransformationSet.getParameters() != null) {
+                        for (Iterator keys = pTransformationSet.getParameters().iterator(); keys.hasNext(); ) {
+                            Parameter key = (Parameter) keys.next();
+                            t.setParameter( key.getName(), key.getValue() );
+                        }
+                    }
+                    
                     transform( t, input, output );
                     
                 }

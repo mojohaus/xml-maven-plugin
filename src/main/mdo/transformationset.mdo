@@ -93,6 +93,35 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
+	<field>
+	  <name>parameters</name>
+	  <description>
+	    A map of stylesheet parameters to pass to the transformation.
+	  </description>
+	  <version>1.0.0</version>
+	  <association xml.listStyle="flat">
+	    <type>Parameter</type>
+	    <multiplicity>*</multiplicity>
+	  </association>
+	</field>
+      </fields>
+    </class>
+    <class>
+      <name>Parameter</name>
+      <version>1.0.0</version>
+      <fields>
+	<field>
+	  <name>name</name>
+	  <description>
+	    parameter name
+	  </description>
+	  <type>String</type>
+	</field>
+	<field>
+	  <name>value</name>
+	  <description>Value of the stylesheet parameter</description>
+	  <type>String</type>
+	</field>
       </fields>
     </class>
   </classes>

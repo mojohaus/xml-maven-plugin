@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.mojo.xml</groupId>
+  <artifactId>it5</artifactId>
+  <version>0.1</version>
+  <name>Maven XML Plugin IT 5</name>
+  <description>Integration Test 5 for the Maven XML Plugin</description>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <version>0.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>transform</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <transformationSets>
+            <transformationSet>
+              <dir>xml</dir>
+              <stylesheet>it5.xsl</stylesheet>
+	      <parameters>
+	      <parameter>
+		<name>aParameter</name>
+		<value>parameter passed in</value>
+	      </parameter>
+		
+	      </parameters>
+            </transformationSet>
+          </transformationSets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

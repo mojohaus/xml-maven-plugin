@@ -30,7 +30,7 @@
   <artifactId>xml-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Maven XML Plugin</name>
-  <version>1.0-beta-1</version>
+  <version>1.0-beta-2-SNAPSHOT</version>
   <prerequisites>
     <maven>2.0.4</maven>
   </prerequisites>
@@ -43,6 +43,16 @@
       <email>jochen.wiedmann@gmail.com</email>
     </developer>
   </developers>
+  <contributors>
+    <contributor>
+      <name>Anagnostopoulos Kostis</name>
+      <email>ankostis@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Andrew Thornton</name>
+      <email>art27@cantab.net</email>
+    </contributor>
+  </contributors>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>

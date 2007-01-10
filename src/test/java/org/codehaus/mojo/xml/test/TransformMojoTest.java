@@ -60,4 +60,33 @@ public class TransformMojoTest
         assertEquals( Node.TEXT_NODE, text2.getNodeType() );
         assertEquals( text1.getNodeValue(), text2.getNodeValue() );
     }
+
+    /**
+     * Builds the it5 test project.
+     */
+    public void testIt5()
+        throws Exception
+    {
+        final String dir = "src/test/it5";
+        runTest( dir );
+        Document doc1 = parse( new File( dir, "xml/doc1.xml" ) );
+        doc1.normalize();
+        Document doc2 = parse( new File( dir, "target/generated-resources/xml/xslt/doc1.xml" ) );
+        doc2.normalize();
+        Element doc1Element = doc1.getDocumentElement();
+        assertEquals( "doc1", doc1Element.getLocalName() );
+        assertNull( doc1Element.getNamespaceURI() );
+        Element doc2Element = doc2.getDocumentElement();
+        assertEquals( "doc2", doc2Element.getLocalName() );
+        assertNull( doc2Element.getNamespaceURI() );
+        Node text1 = doc1Element.getFirstChild();
+        assertNotNull( text1 );
+        assertNull( text1.getNextSibling() );
+        assertEquals( Node.TEXT_NODE, text1.getNodeType() );
+        Node text2 = doc2Element.getFirstChild();
+        assertNotNull( text2 );
+        assertNull( text2.getNextSibling() );
+        assertEquals( Node.TEXT_NODE, text2.getNodeType() );
+        assertEquals(text2.getNodeValue(), "parameter passed in");
+    }
 }

@@ -3,7 +3,13 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="0.2" date="Not yet released">
+    <release version="1.0-beta-2-SNAPSHOT" date="Not yet released">
+      <action dev="jochen" type="add"
+        due-to="Andrew Thornton" due-to-email="art27@cantab.net">
+          Add support for XSLT parameters when transforming.
+      </action>
+    </release>
+    <release version="1.0-beta-1" date="29-Nov-2006">
       <action dev="jochen" type="fix" issue="MOJO-446"
         due-to="Anagnostopoulos Kostis" due-to-email="ankostis@gmail.com">
           Add use of the default excludes. Also add the configuration parameter
