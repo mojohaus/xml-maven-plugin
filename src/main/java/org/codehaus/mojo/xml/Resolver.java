@@ -18,9 +18,12 @@ package org.codehaus.mojo.xml;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.xml.resolver.CatalogManager;
@@ -30,8 +33,14 @@ import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
-class Resolver
+
+/**
+ * An implementation of {@link EntityResolver}, {@link URIResolver},
+ * and {@link LSResourceResolver}, based on the Apache catalog resolver.
+ */
+public class Resolver
     implements EntityResolver, URIResolver, LSResourceResolver
 {
     private final CatalogResolver resolver;
@@ -55,7 +64,7 @@ class Resolver
                 throw new MojoExecutionException( "Failed to parse catalog file: " + pFiles[i].getPath() + ": "
                     + e.getMessage(), e );
             }
-        }
+        }        
     }
 
     public InputSource resolveEntity( String pPublicId, String pSystemId )
@@ -67,7 +76,35 @@ class Resolver
     public Source resolve( String pHref, String pBase )
         throws TransformerException
     {
-        return resolver.resolve( pHref, pBase );
+        Source source = resolver.resolve( pHref, pBase );
+        if ( source == null )
+        {
+            return source;
+        }
+        InputSource isource = SAXSource.sourceToInputSource( source );
+        if ( isource == null )
+        {
+            return source;
+        }
+        XMLReader xmlReader;
+        try
+        {
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            spf.setValidating( false );
+            spf.setNamespaceAware( true );
+            xmlReader = spf.newSAXParser().getXMLReader();
+            xmlReader.setEntityResolver( this );
+            return new SAXSource( xmlReader, isource );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new TransformerException( e.getMessage(), e );
+        }
+        catch ( SAXException e )
+        {
+            throw new TransformerException( e.getMessage(), e );
+        }
+        
     }
 
     public LSInput resolveResource( String pType, String pNamespaceURI, String pPublicId, String pSystemId,

@@ -8,6 +8,11 @@
         due-to="Andrew Thornton" due-to-email="art27@cantab.net">
           Add support for XSLT parameters when transforming.
       </action>
+      <action dev="jochen" type="fix"
+        due-to="Andrew Thornton" due-to-email="art27@cantab.net">
+          SAXSource is now used instead of StreamSource, in order
+          to ensure that the resolver is used.
+      </action>
     </release>
     <release version="1.0-beta-1" date="29-Nov-2006">
       <action dev="jochen" type="fix" issue="MOJO-446"

@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -40,8 +39,8 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.mojo.xml.transformer.Parameter;
+import org.codehaus.mojo.xml.transformer.TransformationSet;
 
 /**
  * The TransformMojo is used for transforming a set of files using a common stylesheet.
@@ -239,7 +238,7 @@ public class TransformMojo
         return inputTimeStamp < destTimeStamp; 
     }
 
-    private void transform( Transformer pTransformer, File input, File output )
+    private void transform( Transformer pTransformer, File input, File output, Resolver pResolver)
         throws MojoExecutionException
     {
         File dir = output.getParentFile();
@@ -248,7 +247,8 @@ public class TransformMojo
         try
         {
             fos = new FileOutputStream( output );
-            pTransformer.transform( new StreamSource( input ), new StreamResult( fos ) );
+            
+            pTransformer.transform(pResolver.resolve( input.toURI().toURL().toExternalForm(), input.getParent() == null ? null : input.getParentFile().toURI().toURL().toExternalForm() ), new StreamResult( fos ) );
             fos.close();
             fos = null;
         }
@@ -340,7 +340,7 @@ public class TransformMojo
                 {
                     t = template.newTransformer();
                     t.setURIResolver( pResolver );
-
+                    
                     if (pTransformationSet.getParameters() != null) {
                         for (Iterator keys = pTransformationSet.getParameters().iterator(); keys.hasNext(); ) {
                             Parameter key = (Parameter) keys.next();
@@ -348,7 +348,7 @@ public class TransformMojo
                         }
                     }
                     
-                    transform( t, input, output );
+                    transform( t, input, output, pResolver );
                     
                 }
                 catch ( TransformerConfigurationException e )

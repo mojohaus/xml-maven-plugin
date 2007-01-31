@@ -102,7 +102,7 @@ public abstract class AbstractXmlMojo
         File[] catalogFiles = getCatalogs();
         if ( catalogFiles == null || catalogFiles.length == 0 )
         {
-            return null;
+            return new Resolver(new File[0]);
         }
 
         for ( int i = 0; i < catalogFiles.length; i++ )
