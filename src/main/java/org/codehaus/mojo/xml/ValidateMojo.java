@@ -187,6 +187,16 @@ public class ValidateMojo
     {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setValidating( pValidationSet.isValidating() );
+        if (pValidationSet.isValidating()) {
+            try {
+                spf.setFeature("http://apache.org/xml/features/validation/schema",
+                               true);
+            } catch (SAXException e) {
+                // Ignore this
+            } catch (ParserConfigurationException e) {
+                // Ignore this
+            }
+        }
         spf.setNamespaceAware( true );
         return spf;
     }
