@@ -374,7 +374,7 @@ public class TransformMojo
     {
         if ( transformationSets == null || transformationSets.length == 0 )
         {
-            throw new MojoFailureException( "No ValidationSets configured." );
+            throw new MojoFailureException( "No TransformationSets configured." );
         }
 
         Resolver resolver = getResolver();
