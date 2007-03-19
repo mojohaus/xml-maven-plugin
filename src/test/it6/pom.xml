@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.mojo.xml</groupId>
+  <artifactId>it6</artifactId>
+  <version>0.1</version>
+  <name>Maven XML Plugin IT 1</name>
+  <description>Integration Test 1 for the Maven XML Plugin</description>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <version>1.0-beta-2-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>transform</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <transformationSets>
+            <transformationSet>
+              <dir>xml</dir>
+              <stylesheet>it4.xsl</stylesheet>
+            </transformationSet>
+          </transformationSets>
+          <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+            <targetExtension>.fo</targetExtension>
+          </fileMapper>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

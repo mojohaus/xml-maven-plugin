@@ -41,6 +41,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.xml.transformer.Parameter;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
+import org.codehaus.plexus.components.io.filemappers.FileMapper;
+
 
 /**
  * The TransformMojo is used for transforming a set of files using a common stylesheet.
@@ -48,8 +50,7 @@ import org.codehaus.mojo.xml.transformer.TransformationSet;
  * @goal transform
  * @phase generate-resources
  */
-public class TransformMojo
-    extends AbstractXmlMojo
+public class TransformMojo extends AbstractXmlMojo
 {
     /**
      * Specifies one or more sets of files, which are being
@@ -63,6 +64,13 @@ public class TransformMojo
      * @parameter expression="${xml.forceCreation}" default-value="false"
      */
     private boolean forceCreation;
+
+    /**
+     * This instance of {@link FileMapper} is used to specify a mapping
+     * of the file names.
+     * @parameter
+     */
+    private FileMapper fileMapper;
 
     private Templates getTemplate( Resolver pResolver, File stylesheet )
         throws MojoExecutionException
@@ -278,6 +286,19 @@ public class TransformMojo
         }
     }
 
+    private File getOutputFile( File targetDir, String pName )
+    {
+        final String name;
+        if ( fileMapper != null )
+        {
+            name = fileMapper.getMappedFileName( pName );
+        }
+        else {
+            name = pName;
+        }
+        return getFile( targetDir, name );
+    }
+
     private void transform( Resolver pResolver, TransformationSet pTransformationSet )
         throws MojoExecutionException, MojoFailureException
     {
@@ -307,7 +328,7 @@ public class TransformMojo
             final Transformer t;
             
             File input = getFile( inputDir, fileNames[i] );
-            File output = getFile( outputDir, fileNames[i] );
+            File output = getOutputFile( outputDir, fileNames[i] );
 
             // Perform up-to-date-check.
             boolean needsTransform = forceCreation;
