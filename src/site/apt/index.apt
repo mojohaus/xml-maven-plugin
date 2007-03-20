@@ -17,16 +17,40 @@
 ~~
 
            ----------------
-           Maven XML Plugin
+           XML Maven Plugin
            ----------------
 
-The Maven XML Plugin
+The XML Maven Plugin
 
-  This Plugin is a collection of several XML related tasks. Currently
-  it offers:
+  This Plugin is a collection of several XML related tasks.
 
-    * {{{./validation.html}Validation}} of XML files against an XML schema
-      or simply checking for wellm formedness.
+* Goals Overview
 
-    * {{{./transformation.html}Transformation}} of XML files by applying
-      one or more XSLT stylesheets.
+  The plugin offers the following goals:
+
+  * {{{validate.html}xml:validate}} validates XML files against a
+    schema. If the files aren't matching a certain schema, one may
+    simply check, whether they are well formed.
+  
+  * {{{transform.html}xml:transform}} transforms XML files by
+    applying XSLT stylesheets.
+
+* Usage
+
+  Instructions on how to use the XML Maven Plugin can be found {{{usage.html}here}}.
+
+* Examples
+
+  To provide you with better understanding of some usages of the Plugin Name,
+  you can take a look into the following examples:
+
+  * Checking, whether XML files are {{{examples/validate-well-formedness.html}well formed}}
+
+  * Checking, whether XML files are {{{examples/validate-schema.html}matching an XML schema}}
+
+  * {{{examples/transform-basic.html}Transforming}} XML files by applying
+    an XSLT stylesheet
+
+  * {{{examples/transform-change-extension.html}Changing the extension}} of a
+    transformations result files.
+

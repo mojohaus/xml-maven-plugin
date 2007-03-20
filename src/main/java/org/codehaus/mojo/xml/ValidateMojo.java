@@ -1,3 +1,5 @@
+package org.codehaus.mojo.xml;
+
 /*
  * Copyright 2006 The Apache Software Foundation.
  * 
@@ -13,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.codehaus.mojo.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +54,13 @@ public class ValidateMojo
      */
     private ValidationSet[] validationSets;
 
+    /**
+     * Reads a validation sets schema.
+     * @param pResolver The resolver to use for loading external entities.
+     * @param pValidationSet The validation set to configure.
+     * @return The validation sets schema, if any, or null.
+     * @throws MojoExecutionException Loading the schema failed.
+     */
     private Schema getSchema( Resolver pResolver, ValidationSet pValidationSet )
         throws MojoExecutionException
     {
@@ -109,6 +117,14 @@ public class ValidateMojo
         }
     }
 
+    /**
+     * Called for parsing or validating a single file.
+     * @param pResolver The resolver to use for loading external entities.
+     * @param pValidationSet The parsers or validators configuration.
+     * @param pSchema The schema to use.
+     * @param pFile The file to parse or validate.
+     * @throws MojoExecutionException Parsing or validating the file failed.
+     */
     private void validate( final Resolver pResolver, ValidationSet pValidationSet, Schema pSchema, File pFile )
         throws MojoExecutionException
     {
@@ -183,17 +199,28 @@ public class ValidateMojo
         }
     }
 
+    /**
+     * Creates a new instance of {@link SAXParserFactory}.
+     * @param pValidationSet The parser factories configuration.
+     * @return A new SAX parser factory.
+     */
     private SAXParserFactory newSAXParserFactory( ValidationSet pValidationSet )
     {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setValidating( pValidationSet.isValidating() );
-        if (pValidationSet.isValidating()) {
-            try {
-                spf.setFeature("http://apache.org/xml/features/validation/schema",
-                               true);
-            } catch (SAXException e) {
+        if ( pValidationSet.isValidating() )
+        {
+            try
+            {
+                spf.setFeature( "http://apache.org/xml/features/validation/schema",
+                                true );
+            }
+            catch ( SAXException e )
+            {
                 // Ignore this
-            } catch (ParserConfigurationException e) {
+            }
+            catch ( ParserConfigurationException e )
+            {
                 // Ignore this
             }
         }
@@ -201,6 +228,15 @@ public class ValidateMojo
         return spf;
     }
 
+    /**
+     * Called for validating a single file.
+     * @param pResolver The resolver to use for loading external entities.
+     * @param pValidationSet The validators configuration.
+     * @param pFile The file to validate.
+     * @throws IOException An I/O error occurred.
+     * @throws SAXException Parsing the file failed.
+     * @throws ParserConfigurationException Creating an XML parser failed.
+     */
     private void parse( Resolver pResolver, ValidationSet pValidationSet, File pFile )
         throws IOException, SAXException, ParserConfigurationException
     {
@@ -233,13 +269,21 @@ public class ValidateMojo
         xr.parse( pFile.toURI().toURL().toExternalForm() );
     }
 
+    /**
+     * Called for validating a set of XML files against a common schema.
+     * @param pResolver The resolver to use for loading external entities.
+     * @param pValidationSet The set of XML files to validate.
+     * @throws MojoExecutionException Validating the set of files failed.
+     * @throws MojoFailureException A configuration error was detected.
+     */
     private void validate( Resolver pResolver, ValidationSet pValidationSet )
         throws MojoExecutionException, MojoFailureException
     {
         final Schema schema = getSchema( pResolver, pValidationSet );
         final File[] files = getFiles( pValidationSet.getDir(), 
                                        pValidationSet.getIncludes(), 
-                                       getExcludes( pValidationSet.getExcludes(), pValidationSet.isSkipDefaultExcludes() ) );
+                                       getExcludes( pValidationSet.getExcludes(),
+                                                    pValidationSet.isSkipDefaultExcludes() ) );
         if ( files.length == 0 )
         {
             getLog().info(
@@ -252,6 +296,11 @@ public class ValidateMojo
         }
     }
 
+    /**
+     * Called by Maven for executing the Mojo.
+     * @throws MojoExecutionException Running the Mojo failed.
+     * @throws MojoFailureException A configuration error was detected.
+     */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {

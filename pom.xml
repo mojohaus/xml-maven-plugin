@@ -36,6 +36,10 @@
   </prerequisites>
   <description>A plugin for various XML related tasks like validation, transformation, and the like.</description>
   <inceptionYear>2006</inceptionYear>
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
   <developers>
     <developer>
       <id>jochen</id>
@@ -92,7 +96,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
@@ -102,6 +105,16 @@
             <descriptor>src/main/assembly/src.xml</descriptor>
           </descriptors>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-docck-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -169,6 +182,15 @@
             </reports>
           </reportSet>
         </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rat-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>src/test/it*/target/**/*</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>

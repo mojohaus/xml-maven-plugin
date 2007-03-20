@@ -1,3 +1,5 @@
+package org.codehaus.mojo.xml.test;
+
 /*
  * Copyright 2006 The Apache Software Foundation.
  * 
@@ -13,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.codehaus.mojo.xml.test;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.xml.sax.SAXParseException;
@@ -54,7 +55,7 @@ public class ValidateMojoTest
             assertNotNull( t );
             assertTrue( t instanceof SAXParseException );
             SAXParseException ex = (SAXParseException) t;
-            assertEquals( 3, ex.getLineNumber() );
+            assertEquals( 20, ex.getLineNumber() );
         }
     }
 
