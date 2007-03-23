@@ -398,10 +398,18 @@ public class TransformMojo extends AbstractXmlMojo
             throw new MojoFailureException( "No TransformationSets configured." );
         }
 
-        Resolver resolver = getResolver();
-        for ( int i = 0; i < transformationSets.length; i++ )
+        Object oldProxySettings = activateProxy();
+        try
         {
-            transform( resolver, transformationSets[i] );
+            Resolver resolver = getResolver();
+            for ( int i = 0; i < transformationSets.length; i++ )
+            {
+                transform( resolver, transformationSets[i] );
+            }
+        }
+        finally
+        {
+            passivateProxy( oldProxySettings );
         }
     }
 }

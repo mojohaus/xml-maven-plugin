@@ -309,10 +309,18 @@ public class ValidateMojo
             throw new MojoFailureException( "No ValidationSets configured." );
         }
 
-        Resolver resolver = getResolver();
-        for ( int i = 0; i < validationSets.length; i++ )
+        Object oldProxySettings = activateProxy();
+        try
         {
-            validate( resolver, validationSets[i] );
+            Resolver resolver = getResolver();
+            for ( int i = 0; i < validationSets.length; i++ )
+            {
+                validate( resolver, validationSets[i] );
+            }
+        }
+        finally
+        {
+            passivateProxy( oldProxySettings );
         }
     }
 }

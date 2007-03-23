@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -26,6 +27,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Proxy;
+import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -40,6 +43,16 @@ public abstract class AbstractXmlMojo
      * @readonly
      */
     private MavenProject project;
+
+    /**
+     * The system settings for Maven. This is the instance resulting from 
+     * merging global- and user-level settings files.
+     * 
+     * @parameter expression="${settings}"
+     * @required
+     * @readonly
+     */
+    private Settings settings;
 
     /**
      * The base directory, relative to which directory names are
@@ -186,4 +199,84 @@ public abstract class AbstractXmlMojo
         return origExcludes;
     }
 
+    private boolean isEmpty( String value )
+    {
+        return value == null  ||  value.trim().length() == 0;
+    }
+
+    private void setProperty( List pProperties, String pKey, String pValue )
+    {
+        if ( pProperties != null )
+        {
+            pProperties.add( pKey );
+            pProperties.add( System.getProperty( pKey ) );
+        }
+        if ( pValue == null )
+        {
+            System.getProperties().remove( pKey );
+        }
+        else
+        {
+            System.setProperty( pKey, pValue );
+        }
+    }
+
+    protected Object activateProxy()
+    {
+        if ( settings == null )
+        {
+            return null;
+        }
+        final Proxy proxy = settings.getActiveProxy();
+        if ( proxy == null )
+        {
+            return null;
+        }
+
+        final List properties = new ArrayList();
+        final String protocol = proxy.getProtocol();
+        final String prefix = isEmpty( protocol ) ? "" : ( protocol + "." );
+
+        final String host = proxy.getHost();
+        final String hostProperty = prefix + "proxyHost";
+        final String hostValue = isEmpty( host ) ? null : host;
+        setProperty( properties, hostProperty, hostValue );
+        final int port = proxy.getPort();
+        final String portProperty = prefix + "proxyPort";
+        final String portValue = (port == 0 || port == -1) ? null : String.valueOf( port );
+        setProperty( properties, portProperty, portValue );
+        final String username = proxy.getUsername();
+        final String userProperty = prefix + "proxyUser";
+        final String userValue = isEmpty( username ) ? null : username;
+        setProperty( properties, userProperty, userValue );
+        final String password = proxy.getPassword();
+        final String passwordProperty = prefix + "proxyPassword";
+        final String passwordValue = isEmpty( password ) ? null : password;
+        setProperty( properties, passwordProperty, passwordValue );
+        final String nonProxyHosts = proxy.getNonProxyHosts();
+        final String nonProxyHostsProperty = prefix + "nonProxyHosts";
+        final String nonProxyHostsValue = isEmpty( nonProxyHosts ) ? null : nonProxyHosts.replace( ',' , '|' );
+        setProperty( properties, nonProxyHostsProperty, nonProxyHostsValue );
+        getLog().info( "Proxy settings: " + hostProperty + "=" + hostValue
+                       + ", " + portProperty + "=" + portValue
+                       + ", " + userProperty + "=" + userValue
+                       + ", " + passwordProperty + "=" + passwordValue
+                       + ", " + nonProxyHostsProperty + "=" + nonProxyHostsValue );
+        return properties;
+    }
+
+    protected void passivateProxy( Object pProperties )
+    {
+        if ( pProperties == null )
+        {
+            return;
+        }
+        final List properties = (List) pProperties;
+        for ( Iterator iter = properties.iterator();  iter.hasNext(); )
+        {
+            final String key = (String) iter.next();
+            final String value = (String) iter.next();
+            setProperty( null, key, value );
+        }
+    }
 }
