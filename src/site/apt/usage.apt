@@ -63,3 +63,12 @@ Using snapshot versions
   snapshot repository is described in the page on the
   {{{http://mojo.codehaus.org/using-sandbox-plugins.html}Mojo
   Sandbox}}.
+
+Using a proxy server
+
+  It is not unusual, that an XML parser attempts to load documents
+  from external servers. In a corporate environment, this will likely
+  work only, if a proxy server is used. The plugin accepts the standard
+  Maven proxy configuration. See the
+  {{{http://maven.apache.org/guides/mini/guide-proxies.html}Mini guide
+  on proxy configuration}} for details.

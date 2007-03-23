@@ -38,6 +38,15 @@
           <a href="usage.html">Usage</a> document.</p>
       </answer>
     </faq>
+
+    <faq id="Proxy Settings">
+      <question>How do I tell the plugin to use my proxy server?</question>
+      <answer>
+        <p>Use the standard Maven proxy settings. See the
+          <a href="http://maven.apache.org/guides/mini/guide-proxies.html">
+          Mini guide on proxy configuration</a> for details.</p>
+      </answer>
+    </faq>
   </part>
 
   <part id="transformation">
