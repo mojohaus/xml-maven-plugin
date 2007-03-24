@@ -82,7 +82,7 @@ public abstract class AbstractXmlMojo
 
     protected File asAbsoluteFile( String path )
     {
-        return asAbsoluteFile( new File(path) );
+        return asAbsoluteFile( new File( path ) );
     }
 
     protected File asAbsoluteFile( File f )
@@ -115,7 +115,7 @@ public abstract class AbstractXmlMojo
         File[] catalogFiles = getCatalogs();
         if ( catalogFiles == null || catalogFiles.length == 0 )
         {
-            return new Resolver(new File[0]);
+            return new Resolver( new File[0] );
         }
 
         for ( int i = 0; i < catalogFiles.length; i++ )
@@ -192,7 +192,9 @@ public abstract class AbstractXmlMojo
     protected List getExcludes( List origExcludes, boolean skipDefaultExcludes )
     {
         if ( skipDefaultExcludes )
+        {
             return origExcludes;
+        }
 
         origExcludes.addAll( Arrays.asList( FileUtils.getDefaultExcludes() ) );
 
@@ -243,7 +245,7 @@ public abstract class AbstractXmlMojo
         setProperty( properties, hostProperty, hostValue );
         final int port = proxy.getPort();
         final String portProperty = prefix + "proxyPort";
-        final String portValue = (port == 0 || port == -1) ? null : String.valueOf( port );
+        final String portValue = ( port == 0 || port == -1 ) ? null : String.valueOf( port );
         setProperty( properties, portProperty, portValue );
         final String username = proxy.getUsername();
         final String userProperty = prefix + "proxyUser";

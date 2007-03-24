@@ -156,7 +156,9 @@ public class TransformMojo extends AbstractXmlMojo
     {
         StringBuffer sb = new StringBuffer( ( includeExName ? ex.toString() : ex.getLocalizedMessage() ) );
         while ( ( ex = ex.getCause() ) != null )
+        {
             sb.append( "\nCaused by: " + ex.toString() );
+        }
 
         return sb.toString();
     }
@@ -216,14 +218,22 @@ public class TransformMojo extends AbstractXmlMojo
                 getLog().debug( ( oldest ? "Depends " : "Produces " ) + no + ": " + new Date( fileModifTime ) );
 
                 if ( ( fileModifTime > timeStamp ) ^ !oldest )
+                {
                     timeStamp = fileModifTime;
+                }
             } // end if file null.
-        }// end filesloop
+        } // end filesloop
 
-        if ( timeStamp == Long.MIN_VALUE ) // no older file found
+        if ( timeStamp == Long.MIN_VALUE )
+        {
+            // no older file found
             return Long.MAX_VALUE; // assume re-execution required. 
-        else if ( timeStamp == Long.MAX_VALUE ) // no younger file found
+        }
+        else if ( timeStamp == Long.MAX_VALUE )
+        {
+            // no younger file found
             return Long.MIN_VALUE; // assume re-execution required.
+        }
 
         return timeStamp;
     }
@@ -233,20 +243,21 @@ public class TransformMojo extends AbstractXmlMojo
      *          from input files is earlier than the younger from the output 
      *          files (meaning no re-execution required).
      */
-    protected boolean isUpdToDate(List dependsFiles, List producesFiles) {
-        
+    protected boolean isUpdToDate( List dependsFiles, List producesFiles )
+    {
         // The older timeStamp of all input files;
-        long inputTimeStamp = findLastModified(dependsFiles, true);
+        long inputTimeStamp = findLastModified( dependsFiles, true );
 
         // The younger of all destination files.
-        long destTimeStamp = (producesFiles == null? Long.MIN_VALUE: findLastModified(producesFiles, false)); 
+        long destTimeStamp = producesFiles == null
+            ? Long.MIN_VALUE : findLastModified( producesFiles, false ); 
     
-            getLog().debug("Depends timeStamp: " + inputTimeStamp + ", produces timestamp: " + destTimeStamp);
+            getLog().debug( "Depends timeStamp: " + inputTimeStamp + ", produces timestamp: " + destTimeStamp );
 
         return inputTimeStamp < destTimeStamp; 
     }
 
-    private void transform( Transformer pTransformer, File input, File output, Resolver pResolver)
+    private void transform( Transformer pTransformer, File input, File output, Resolver pResolver )
         throws MojoExecutionException
     {
         File dir = output.getParentFile();
@@ -256,7 +267,10 @@ public class TransformMojo extends AbstractXmlMojo
         {
             fos = new FileOutputStream( output );
             
-            pTransformer.transform(pResolver.resolve( input.toURI().toURL().toExternalForm(), input.getParent() == null ? null : input.getParentFile().toURI().toURL().toExternalForm() ), new StreamResult( fos ) );
+            final String parentFile = input.getParent() == null
+                ? null : input.getParentFile().toURI().toURL().toExternalForm();
+            pTransformer.transform( pResolver.resolve( input.toURI().toURL().toExternalForm(),
+                                                       parentFile ), new StreamResult( fos ) );
             fos.close();
             fos = null;
         }
@@ -293,7 +307,8 @@ public class TransformMojo extends AbstractXmlMojo
         {
             name = fileMapper.getMappedFileName( pName );
         }
-        else {
+        else
+        {
             name = pName;
         }
         return getFile( targetDir, name );
@@ -336,8 +351,9 @@ public class TransformMojo extends AbstractXmlMojo
             {
                 List dependsFiles = new ArrayList();
                 List producesFiles = new ArrayList();
-                
-                dependsFiles.add( getProject().getFile() );// Depends from pom.xml file for when project configuration changes.
+
+                // Depends from pom.xml file for when project configuration changes.
+                dependsFiles.add( getProject().getFile() );
                 dependsFiles.add( stylesheet );
                 dependsFiles.add( Arrays.asList( getCatalogs() ) );
                 dependsFiles.add( input );
@@ -348,9 +364,9 @@ public class TransformMojo extends AbstractXmlMojo
                 needsTransform = !isUpdToDate( dependsFiles, producesFiles );
             }
             
-            if (!needsTransform)
+            if ( !needsTransform )
             {
-                getLog().info("Skipping XSL transformation.  File " + fileNames[i] + " is up-to-date.");
+                getLog().debug( "Skipping XSL transformation.  File " + fileNames[i] + " is up-to-date." );
             }
             else
             {
@@ -362,8 +378,10 @@ public class TransformMojo extends AbstractXmlMojo
                     t = template.newTransformer();
                     t.setURIResolver( pResolver );
                     
-                    if (pTransformationSet.getParameters() != null) {
-                        for (Iterator keys = pTransformationSet.getParameters().iterator(); keys.hasNext(); ) {
+                    if ( pTransformationSet.getParameters() != null )
+                    {
+                        for ( Iterator keys = pTransformationSet.getParameters().iterator();  keys.hasNext();  )
+                        {
                             Parameter key = (Parameter) keys.next();
                             t.setParameter( key.getName(), key.getValue() );
                         }
@@ -377,12 +395,12 @@ public class TransformMojo extends AbstractXmlMojo
                     throw new MojoExecutionException( "Failed to create Transformer: " + e.getMessage(), e );
                 }
             }
+        } // end file loop
 
-        }// end file loop
-
-        if (filesTransformed > 0)
-            getLog().info("Transformed " + filesTransformed + " file(s).");
-
+        if ( filesTransformed > 0 )
+        {
+            getLog().info( "Transformed " + filesTransformed + " file(s)." );
+        }
         
         if ( pTransformationSet.isAddedToClasspath() )
         {

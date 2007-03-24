@@ -46,6 +46,8 @@ public class Resolver
     private final CatalogResolver resolver;
 
     /** Creates a new instance.
+     * @param pFiles A set of files with catalog definitions to load
+     * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
     Resolver( File[] pFiles )
         throws MojoExecutionException
@@ -67,12 +69,18 @@ public class Resolver
         }        
     }
 
+    /**
+     * Implementation of {@link EntityResolver#resolveEntity(String, String)}.
+     */
     public InputSource resolveEntity( String pPublicId, String pSystemId )
         throws SAXException, IOException
     {
         return resolver.resolveEntity( pPublicId, pSystemId );
     }
 
+    /**
+     * Implementation of {@link URIResolver#resolve(String, String)}.
+     */
     public Source resolve( String pHref, String pBase )
         throws TransformerException
     {
@@ -107,6 +115,9 @@ public class Resolver
         
     }
 
+    /**
+     * Implementation of {@link LSResourceResolver#resolveResource(String, String, String, String, String)}.
+     */
     public LSInput resolveResource( String pType, String pNamespaceURI, String pPublicId, String pSystemId,
                                     String pBaseURI )
     {
