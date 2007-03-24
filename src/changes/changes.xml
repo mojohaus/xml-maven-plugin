@@ -42,6 +42,9 @@
       <action dev="jochen" type="fix" issue="MOJO-378">
         The plugin does now honor the Maven proxy settings.
       </action>
+      <action dev="jochen" type="add" issue="MOJO-631">
+        Added support for file mappers when transforming files.
+      </action>
     </release>
     <release version="1.0-beta-1" date="29-Nov-2006">
       <action dev="jochen" type="fix" issue="MOJO-446"
