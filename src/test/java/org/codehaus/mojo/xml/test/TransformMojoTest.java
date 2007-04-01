@@ -44,7 +44,7 @@ public class TransformMojoTest
         TransformMojo mojo = (TransformMojo) newMojo( dir );
         if ( fileMapper != null )
         {
-            setVariableValueToObject( mojo, "fileMapper", fileMapper );
+            setVariableValueToObject( mojo, "fileMappers", new FileMapper[]{fileMapper} );
         }
         mojo.execute();
         Document doc1 = parse( new File( dir, "xml/doc1.xml" ) );

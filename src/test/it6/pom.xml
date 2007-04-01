@@ -43,9 +43,11 @@
               <stylesheet>it4.xsl</stylesheet>
             </transformationSet>
           </transformationSets>
-          <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-            <targetExtension>.fo</targetExtension>
-          </fileMapper>
+          <fileMappers>
+            <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+              <targetExtension>.fo</targetExtension>
+            </fileMapper>
+          </fileMappers>
         </configuration>
       </plugin>
     </plugins>

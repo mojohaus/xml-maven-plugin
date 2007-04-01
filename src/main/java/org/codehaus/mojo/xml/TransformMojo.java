@@ -70,7 +70,7 @@ public class TransformMojo extends AbstractXmlMojo
      * of the file names.
      * @parameter
      */
-    private FileMapper fileMapper;
+    private FileMapper[] fileMappers;
 
     private Templates getTemplate( Resolver pResolver, File stylesheet )
         throws MojoExecutionException
@@ -302,14 +302,13 @@ public class TransformMojo extends AbstractXmlMojo
 
     private File getOutputFile( File targetDir, String pName )
     {
-        final String name;
-        if ( fileMapper != null )
+        String name = pName;
+        if ( fileMappers != null )
         {
-            name = fileMapper.getMappedFileName( pName );
-        }
-        else
-        {
-            name = pName;
+            for ( int i = 0;  i < fileMappers.length;  i++ )
+            {
+                name = fileMappers[i].getMappedFileName( name );
+            }
         }
         return getFile( targetDir, name );
     }
