@@ -65,13 +65,6 @@ public class TransformMojo extends AbstractXmlMojo
      */
     private boolean forceCreation;
 
-    /**
-     * This instance of {@link FileMapper} is used to specify a mapping
-     * of the file names.
-     * @parameter
-     */
-    private FileMapper[] fileMappers;
-
     private Templates getTemplate( Resolver pResolver, File stylesheet )
         throws MojoExecutionException
     {
@@ -100,21 +93,16 @@ public class TransformMojo extends AbstractXmlMojo
         return new File( pDir, pFile );
     }
 
-    private File getDir( String pDir )
+    private File getDir( File pDir )
     {
-        if ( pDir == null || "".equals( pDir ) )
+        if ( pDir == null )
         {
             return getBasedir();
         }
-        File f = new File( pDir );
-        if ( f.isAbsolute() )
-        {
-            return f;
-        }
-        return new File( getBasedir(), pDir );
+        return asAbsoluteFile( pDir );
     }
 
-    private void addToClasspath( String pOutputDir )
+    private void addToClasspath( File pOutputDir )
     {
         MavenProject project = getProject();
         for ( Iterator iter = project.getResources().iterator(); iter.hasNext(); )
@@ -127,29 +115,25 @@ public class TransformMojo extends AbstractXmlMojo
         }
 
         Resource resource = new Resource();
-        resource.setDirectory( pOutputDir );
+        resource.setDirectory( pOutputDir.getPath() );
         resource.setFiltering( false );
         project.addResource( resource );
     }
 
-    private File getOutputDir( String pOutputDir )
+    private File getOutputDir( File pOutputDir )
     {
-        String dir;
         if ( pOutputDir == null )
         {
             MavenProject project = getProject();
-            dir = project.getBuild().getDirectory();
+            String dir = project.getBuild().getDirectory();
             if ( dir == null )
             {
                 throw new IllegalStateException( "The projects build directory is null." );
             }
             dir += "/generated-resources/xml/xslt";
+            return asAbsoluteFile( new File( dir ) );
         }
-        else
-        {
-            dir = pOutputDir;
-        }
-        return getDir( dir );
+        return asAbsoluteFile( pOutputDir );
     }
 
     protected static String getAllExMsgs( Throwable ex, boolean includeExName )
@@ -300,14 +284,14 @@ public class TransformMojo extends AbstractXmlMojo
         }
     }
 
-    private File getOutputFile( File targetDir, String pName )
+    private File getOutputFile( File targetDir, String pName, FileMapper[] pFileMappers )
     {
         String name = pName;
-        if ( fileMappers != null )
+        if ( pFileMappers != null )
         {
-            for ( int i = 0;  i < fileMappers.length;  i++ )
+            for ( int i = 0;  i < pFileMappers.length;  i++ )
             {
-                name = fileMappers[i].getMappedFileName( name );
+                name = pFileMappers[i].getMappedFileName( name );
             }
         }
         return getFile( targetDir, name );
@@ -326,12 +310,13 @@ public class TransformMojo extends AbstractXmlMojo
             return;
         }
 
-        final String stylesheetPath = pTransformationSet.getStylesheet();
-        File stylesheet = new File( stylesheetPath );
-        if ( !stylesheet.isAbsolute() )
+        File stylesheet = pTransformationSet.getStylesheet();
+        if ( stylesheet == null )
         {
-            stylesheet = new File( getBasedir(), stylesheetPath );
+            getLog().warn( "No stylesheet configured." );
+            return;
         }
+        stylesheet = asAbsoluteFile( stylesheet );
         Templates template = getTemplate( pResolver, stylesheet );
         
         int filesTransformed = 0;
@@ -342,7 +327,7 @@ public class TransformMojo extends AbstractXmlMojo
             final Transformer t;
             
             File input = getFile( inputDir, fileNames[i] );
-            File output = getOutputFile( outputDir, fileNames[i] );
+            File output = getOutputFile( outputDir, fileNames[i], pTransformationSet.getFileMappers() );
 
             // Perform up-to-date-check.
             boolean needsTransform = forceCreation;
@@ -356,7 +341,11 @@ public class TransformMojo extends AbstractXmlMojo
                 dependsFiles.add( stylesheet );
                 dependsFiles.add( Arrays.asList( getCatalogs() ) );
                 dependsFiles.add( input );
-                dependsFiles.addAll( asFileList( getBasedir(), pTransformationSet.getOtherDepends() ) );
+                File[] files = asFileList( getBasedir(), pTransformationSet.getOtherDepends() );
+                for ( int j = 0;  j < files.length;  j++ )
+                {
+                    dependsFiles.add( files[j] );
+                }
 
                 producesFiles.add( output );
                 
@@ -376,12 +365,13 @@ public class TransformMojo extends AbstractXmlMojo
                 {
                     t = template.newTransformer();
                     t.setURIResolver( pResolver );
-                    
-                    if ( pTransformationSet.getParameters() != null )
+
+                    Parameter[] parameters = pTransformationSet.getParameters();
+                    if ( parameters != null )
                     {
-                        for ( Iterator keys = pTransformationSet.getParameters().iterator();  keys.hasNext();  )
+                        for ( int j = 0;  j < parameters.length;  j++  )
                         {
-                            Parameter key = (Parameter) keys.next();
+                            Parameter key = parameters[j];
                             t.setParameter( key.getName(), key.getValue() );
                         }
                     }

@@ -17,11 +17,8 @@ package org.codehaus.mojo.xml;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -80,11 +77,6 @@ public abstract class AbstractXmlMojo
         return basedir;
     }
 
-    protected File asAbsoluteFile( String path )
-    {
-        return asAbsoluteFile( new File( path ) );
-    }
-
     protected File asAbsoluteFile( File f )
     {
         if ( f.isAbsolute() )
@@ -125,30 +117,29 @@ public abstract class AbstractXmlMojo
         return new Resolver( catalogFiles );
     }
 
-    protected String[] getFileNames( String pDir, List pIncludes, List pExcludes )
+    protected String[] getFileNames( File pDir, String[] pIncludes, String[] pExcludes )
         throws MojoFailureException
     {
-        final String dirName = pDir;
-        if ( dirName == null || "".equals( dirName ) )
+        if ( pDir == null )
         {
             throw new MojoFailureException( "A ValidationSet requires a nonempty 'dir' child element." );
         }
-        final File dir = asAbsoluteFile( dirName );
+        final File dir = asAbsoluteFile( pDir );
         final DirectoryScanner ds = new DirectoryScanner();
         ds.setBasedir( dir );
-        if ( pIncludes != null && pIncludes.size() > 0 )
+        if ( pIncludes != null && pIncludes.length > 0 )
         {
-            ds.setIncludes( (String[]) pIncludes.toArray( new String[pIncludes.size()] ) );
+            ds.setIncludes( pIncludes );
         }
-        if ( pExcludes != null && pExcludes.size() > 0 )
+        if ( pExcludes != null && pExcludes.length > 0 )
         {
-            ds.setExcludes( (String[]) pExcludes.toArray( new String[pExcludes.size()] ) );
+            ds.setExcludes( pExcludes );
         }
         ds.scan();
         return ds.getIncludedFiles();
     }
 
-    protected File[] asFiles( String pDir, String[] pFileNames )
+    protected File[] asFiles( File pDir, String[] pFileNames )
     {
         if ( pFileNames == null )
         {
@@ -164,41 +155,48 @@ public abstract class AbstractXmlMojo
         return result;
     }
 
-    protected List asFileList( File dir, List pFileNames )
+    protected File[] asFileList( File dir, String[] pFileNames )
     {
         if ( pFileNames == null )
         {
-            return Collections.EMPTY_LIST;
+            return new File[0];
         }
 
         if ( !dir.isAbsolute() )
         {
             dir = new File( getBasedir(), dir.toString() );
         }
-        List result = new ArrayList();
-        for ( ListIterator i = pFileNames.listIterator(); i.hasNext(); )
+
+        File[] result = new File[pFileNames.length];
+        for ( int i = 0;  i < pFileNames.length;  i++ )
         {
-            i.set( new File( dir, (String) i.next() ) );
+            result[i] = new File( dir, pFileNames[i] );
         }
         return result;
     }
 
-    protected File[] getFiles( String pDir, List pIncludes, List pExcludes )
+    protected File[] getFiles( File pDir, String[] pIncludes, String[] pExcludes )
         throws MojoFailureException
     {
         return asFiles( pDir, getFileNames( pDir, pIncludes, pExcludes ) );
     }
 
-    protected List getExcludes( List origExcludes, boolean skipDefaultExcludes )
+    protected String[] getExcludes( String[] origExcludes, boolean skipDefaultExcludes )
     {
         if ( skipDefaultExcludes )
         {
             return origExcludes;
         }
 
-        origExcludes.addAll( Arrays.asList( FileUtils.getDefaultExcludes() ) );
-
-        return origExcludes;
+        String[] defaultExcludes = FileUtils.getDefaultExcludes();
+        if ( origExcludes == null  ||  origExcludes.length == 0 )
+        {
+            return defaultExcludes;
+        }
+        String[] result = new String[origExcludes.length + defaultExcludes.length];
+        System.arraycopy( origExcludes, 0, result, 0, origExcludes.length );
+        System.arraycopy( defaultExcludes, 0, result, origExcludes.length, defaultExcludes.length );
+        return result;
     }
 
     private boolean isEmpty( String value )

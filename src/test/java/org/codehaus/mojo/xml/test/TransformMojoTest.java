@@ -19,7 +19,6 @@ import java.io.File;
 
 import org.codehaus.mojo.xml.TransformMojo;
 import org.codehaus.plexus.components.io.filemappers.FileExtensionMapper;
-import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,14 +37,10 @@ public class TransformMojoTest
     /**
      * Common code for the it4 and it6 test projects.
      */
-    public void runTestIt4( String dir, String targetFile, FileMapper fileMapper )
+    public void runTestIt4( String dir, String targetFile )
         throws Exception
     {
         TransformMojo mojo = (TransformMojo) newMojo( dir );
-        if ( fileMapper != null )
-        {
-            setVariableValueToObject( mojo, "fileMappers", new FileMapper[]{fileMapper} );
-        }
         mojo.execute();
         Document doc1 = parse( new File( dir, "xml/doc1.xml" ) );
         doc1.normalize();
@@ -74,7 +69,7 @@ public class TransformMojoTest
     public void testIt4()
         throws Exception
     {
-        runTestIt4( "src/test/it4", "doc1.xml", null );
+        runTestIt4( "src/test/it4", "doc1.xml" );
     }
 
     /**
@@ -114,6 +109,6 @@ public class TransformMojoTest
     {
         FileExtensionMapper fileExtensionMapper = new FileExtensionMapper();
         fileExtensionMapper.setTargetExtension( ".fo" );
-        runTestIt4( "src/test/it6", "doc1.fo", fileExtensionMapper );
+        runTestIt4( "src/test/it6", "doc1.fo" );
     }
 }

@@ -41,13 +41,13 @@
             <transformationSet>
               <dir>xml</dir>
               <stylesheet>it4.xsl</stylesheet>
+              <fileMappers>
+                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                  <targetExtension>.fo</targetExtension>
+                </fileMapper>
+              </fileMappers>
             </transformationSet>
           </transformationSets>
-          <fileMappers>
-            <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-              <targetExtension>.fo</targetExtension>
-            </fileMapper>
-          </fileMappers>
         </configuration>
       </plugin>
     </plugins>

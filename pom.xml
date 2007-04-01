@@ -67,35 +67,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.modello</groupId>
-        <artifactId>modello-maven-plugin</artifactId>
-        <version>1.0-alpha-9</version>
-        <executions>
-          <execution>
-            <id>transformationset</id>
-            <goals>
-              <goal>java</goal>
-              <goal>xsd</goal>
-            </goals>
-            <configuration>
-              <version>1.0.0</version>
-              <model>src/main/mdo/transformationset.mdo</model>
-            </configuration>
-          </execution>
-          <execution>
-            <id>validationset</id>
-            <goals>
-              <goal>java</goal>
-              <goal>xsd</goal>
-            </goals>
-            <configuration>
-              <version>1.0.0</version>
-              <model>src/main/mdo/validationset.mdo</model>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
