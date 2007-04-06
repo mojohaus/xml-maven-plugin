@@ -54,3 +54,4 @@ The XML Maven Plugin
   * {{{examples/transform-change-extension.html}Changing the extension}} of a
     transformations result files.
 
+  * Using an {{{examples/transform-saxon.html}XSLT 2.0 compliant processor}}.

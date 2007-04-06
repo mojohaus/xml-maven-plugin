@@ -65,6 +65,22 @@
         <p>See <a href="examples/validate-schema.html">this example</a>.</p>
       </answer>
     </faq>
+
+    <faq id="xslt2">
+      <question>How can I use XSLT 2.0 in my stylesheets?</question>
+      <answer>
+        <p>You need to use an XSLT 2.0 complicant stylesheet processor like
+          Saxon. See <a href="examples/transform-saxon.html">this example</a>.</p>
+      </answer>
+    </faq>
+
+    <faq id="saxon">
+      <question>How do I use another XSLT processor, for example Saxon?</question>
+      <answer>
+        <p>You need to specify your favorite XSLT processor as a dependency.
+          See <a href="examples/transform-saxon.html">this example</a>.</p>
+      </answer>
+    </faq>
   </part>
 
   <part id="validation">

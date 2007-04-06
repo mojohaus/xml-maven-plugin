@@ -46,6 +46,7 @@
       <item name="Validating files against an XML schema" href="examples/validate-schema.html"/>
       <item name="Transforming files using an XSLT stylesheet" href="examples/transform-basic.html"/>
       <item name="Changing the transformed files extension" href="examples/transform-change-extension.html"/>
+      <item name="Using XSLT 2.0" href="examples/transform-saxon.html"/>
     </menu>
     
     <menu ref="reports"/>

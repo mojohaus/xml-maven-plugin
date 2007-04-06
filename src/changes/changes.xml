@@ -45,6 +45,9 @@
       <action dev="jochen" type="add" issue="MOJO-631">
         Added support for file mappers when transforming files.
       </action>
+      <action dev="jochen" type="add">
+        Added docs for using an XSLT 2.0 compliant processor.
+      </action>
     </release>
     <release version="1.0-beta-1" date="29-Nov-2006">
       <action dev="jochen" type="fix" issue="MOJO-446"
