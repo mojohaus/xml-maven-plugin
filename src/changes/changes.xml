@@ -20,7 +20,7 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="1.0-beta-2-SNAPSHOT" date="11-Apr-2007">
+    <release version="1.0-beta-2" date="11-Apr-2007">
       <action dev="jochen" type="fix"
           due-to="Jonathan Card" due-to-email="joncard93@hotmail.com"
           issue="MOJO-608">
