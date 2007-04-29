@@ -18,6 +18,8 @@ package org.codehaus.mojo.xml;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -39,8 +41,7 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.xml.transformer.Parameter;
-import org.codehaus.mojo.xml.transformer.OutputProperty;
+import org.codehaus.mojo.xml.transformer.NameValuePair;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 
@@ -66,14 +67,88 @@ public class TransformMojo extends AbstractXmlMojo
      */
     private boolean forceCreation;
 
-    private Templates getTemplate( Resolver pResolver, File stylesheet )
+    private void setFeature( TransformerFactory transformerFactory, String name, Boolean value )
         throws MojoExecutionException
+    {
+        // Try to use the method setFeature, which isn't available until JAXP 1.3
+        Method m;
+        try
+        {
+            m = transformerFactory.getClass().getMethod( "setFeature", new Class[]{ String.class, boolean.class } );
+        }
+        catch ( NoSuchMethodException e )
+        {
+            m = null;
+        }
+        if ( m == null )
+        {
+            // Not available, try to use setAttribute
+            transformerFactory.setAttribute( name, value );
+        }
+        else
+        {
+            try
+            {
+                m.invoke( transformerFactory, new Object[]{ name, value } );
+            }
+            catch ( IllegalAccessException e )
+            {
+                throw new MojoExecutionException( e.getMessage(), e );
+            }
+            catch ( InvocationTargetException e )
+            {
+                Throwable t = e.getTargetException();
+                throw new MojoExecutionException( t.getMessage(), t );
+            }
+        }
+    }
+
+    private Templates getTemplate( Resolver pResolver, File stylesheet, TransformationSet transformationSet )
+        throws MojoExecutionException, MojoFailureException
     {
 
         TransformerFactory tf = TransformerFactory.newInstance();
         if ( pResolver != null )
         {
             tf.setURIResolver( pResolver );
+        }
+        NameValuePair[] features = transformationSet.getFeatures();
+        if ( features != null )
+        {
+            for ( int i = 0;  i < features.length;  i++ )
+            {
+                final NameValuePair feature = features[i];
+                final String name = feature.getName();
+                if ( name == null  ||  name.length() == 0 )
+                {
+                    throw new MojoFailureException( "A features name is missing or empty." );
+                }
+                final String value = feature.getValue();
+                if ( value == null )
+                {
+                    throw new MojoFailureException( "No value specified for feature " + name );
+                }
+                setFeature( tf, name, Boolean.valueOf( value ) );
+            }
+        }
+        NameValuePair[] attributes = transformationSet.getAttributes();
+        if ( attributes != null )
+        {
+            for ( int i = 0;  i < attributes.length;  i++ )
+            {
+                final NameValuePair attribute = attributes[i];
+                final String name = attribute.getName();
+                if ( name == null  ||  name.length() == 0 )
+                {
+                    throw new MojoFailureException( "An attributes name is missing or empty." );
+                }
+                final String value = attribute.getValue();
+                if ( value == null )
+                {
+                    throw new MojoFailureException( "No value specified for attribute " + name );
+                }
+                tf.setAttribute( name, value );
+            }
         }
         try
         {
@@ -318,7 +393,7 @@ public class TransformMojo extends AbstractXmlMojo
             return;
         }
         stylesheet = asAbsoluteFile( stylesheet );
-        Templates template = getTemplate( pResolver, stylesheet );
+        Templates template = getTemplate( pResolver, stylesheet, pTransformationSet );
         
         int filesTransformed = 0;
         File inputDir = getDir( pTransformationSet.getDir() );
@@ -367,12 +442,12 @@ public class TransformMojo extends AbstractXmlMojo
                     t = newTransformer( template, pTransformationSet );
                     t.setURIResolver( pResolver );
 
-                    Parameter[] parameters = pTransformationSet.getParameters();
+                    NameValuePair[] parameters = pTransformationSet.getParameters();
                     if ( parameters != null )
                     {
                         for ( int j = 0;  j < parameters.length;  j++  )
                         {
-                            Parameter key = parameters[j];
+                            NameValuePair key = parameters[j];
                             t.setParameter( key.getName(), key.getValue() );
                         }
                     }
@@ -402,7 +477,7 @@ public class TransformMojo extends AbstractXmlMojo
         throws TransformerConfigurationException, MojoExecutionException, MojoFailureException
     {
         Transformer t = template.newTransformer();
-        OutputProperty[] properties = pTransformationSet.getOutputProperties();
+        NameValuePair[] properties = pTransformationSet.getOutputProperties();
         if ( properties != null )
         {
             for ( int i = 0;  i < properties.length;  i++ )

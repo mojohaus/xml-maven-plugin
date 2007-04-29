@@ -19,7 +19,7 @@ package org.codehaus.mojo.xml.transformer;
 /**
  * An instance of this class is used to specify an output property.
  */
-public class OutputProperty {
+public class NameValuePair {
     private String name, value;
 
     /**

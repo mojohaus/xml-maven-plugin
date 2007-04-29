@@ -41,9 +41,13 @@ public class TransformationSet {
 
     private String[] otherDepends;
 
-    private Parameter[] parameters;
+    private NameValuePair[] parameters;
 
-    private OutputProperty[] outputProperties;
+    private NameValuePair[] features;
+
+    private NameValuePair[] attributes;
+
+    private NameValuePair[] outputProperties;
 
     private FileMapper[] fileMappers;
 
@@ -78,7 +82,7 @@ public class TransformationSet {
     /**
      * Sets the stylesheet parameters.
      */
-    public void setParameters( Parameter[] parameters )
+    public void setParameters( NameValuePair[] parameters )
     {
         this.parameters = parameters;
     }
@@ -132,7 +136,7 @@ public class TransformationSet {
     /**
      * Returns the stylesheet parameters.
      */
-    public Parameter[] getParameters()
+    public NameValuePair[] getParameters()
     {
         return parameters;
     }
@@ -231,7 +235,7 @@ public class TransformationSet {
     /**
      * Returns the transformers output properties.
      */
-    public OutputProperty[] getOutputProperties()
+    public NameValuePair[] getOutputProperties()
     {
         return outputProperties;
     }
@@ -239,8 +243,40 @@ public class TransformationSet {
     /**
      * Sets the transformers output properties.
      */
-    public void setOutputProperties( OutputProperty[] outputProperties )
+    public void setOutputProperties( NameValuePair[] outputProperties )
     {
         this.outputProperties = outputProperties;
+    }
+
+    /**
+     * Returns the features, which should be set on the transformer factory.
+     */
+    public NameValuePair[] getFeatures()
+    {
+        return features;
+    }
+
+    /**
+     * Sets the features, which should be set on the transformer factory.
+     */
+    public void setFeatures( NameValuePair[] features )
+    {
+        this.features = features;
+    }
+
+    /**
+     * Returns the attributes, which should be set on the transformer factory.
+     */
+    public NameValuePair[] getAttributes()
+    {
+        return attributes;
+    }
+
+    /**
+     * Sets the attributes, which should be set on the transformer factory.
+     */
+    public void setAttributes( NameValuePair[] attributes )
+    {
+        this.attributes = attributes;
     }
 }
