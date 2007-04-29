@@ -122,9 +122,15 @@ public abstract class AbstractXmlMojo
     {
         if ( pDir == null )
         {
-            throw new MojoFailureException( "A ValidationSet requires a nonempty 'dir' child element." );
+            throw new MojoFailureException( "A ValidationSet or TransformationSet requires a nonempty 'dir' child element." );
         }
         final File dir = asAbsoluteFile( pDir );
+        if ( !dir.isDirectory() )
+        {
+            getLog().warn( "The directory " + dir.getPath()
+                           + ", which is a base directory of a ValidationSet or TransformationSet, does not exist." );
+            return new String[0];
+        }
         final DirectoryScanner ds = new DirectoryScanner();
         ds.setBasedir( dir );
         if ( pIncludes != null && pIncludes.length > 0 )

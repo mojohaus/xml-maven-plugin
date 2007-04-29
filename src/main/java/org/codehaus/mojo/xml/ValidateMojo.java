@@ -286,9 +286,8 @@ public class ValidateMojo
                                                     pValidationSet.isSkipDefaultExcludes() ) );
         if ( files.length == 0 )
         {
-            getLog().info(
-                           "No matching files found for ValidationSet with public ID " + pValidationSet.getPublicId()
-                               + ", system ID " + pValidationSet.getSystemId() + "." );
+            getLog().info( "No matching files found for ValidationSet with public ID " + pValidationSet.getPublicId()
+                           + ", system ID " + pValidationSet.getSystemId() + "." );
         }
         for ( int i = 0; i < files.length; i++ )
         {
