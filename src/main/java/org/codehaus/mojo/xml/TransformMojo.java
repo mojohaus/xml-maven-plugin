@@ -40,6 +40,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.xml.transformer.Parameter;
+import org.codehaus.mojo.xml.transformer.OutputProperty;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 
@@ -363,7 +364,7 @@ public class TransformMojo extends AbstractXmlMojo
                 // Perform transformation.
                 try
                 {
-                    t = template.newTransformer();
+                    t = newTransformer( template, pTransformationSet );
                     t.setURIResolver( pResolver );
 
                     Parameter[] parameters = pTransformationSet.getParameters();
@@ -395,6 +396,41 @@ public class TransformMojo extends AbstractXmlMojo
         {
             addToClasspath( pTransformationSet.getOutputDir() );
         }
+    }
+
+    private Transformer newTransformer( Templates template, TransformationSet pTransformationSet )
+        throws TransformerConfigurationException, MojoExecutionException, MojoFailureException
+    {
+        Transformer t = template.newTransformer();
+        OutputProperty[] properties = pTransformationSet.getOutputProperties();
+        if ( properties != null )
+        {
+            for ( int i = 0;  i < properties.length;  i++ )
+            {
+                final String name = properties[i].getName();
+                if ( name == null  ||  "".equals( name ) )
+                {
+                    throw new MojoFailureException( "Missing or empty output property name" );
+                }
+                final String value = properties[i].getValue();
+                if ( value == null )
+                {
+                    throw new MojoFailureException( "Missing value for output property " + name );
+                }
+                try
+                {
+                    t.setOutputProperty( name, value );
+                }
+                catch ( IllegalArgumentException e )
+                {
+                    throw new MojoExecutionException( "Unsupported property name or value: "
+                                                      + name + " => "
+                                                      + value
+                                                      + e.getMessage(), e );
+                }
+            }
+        }
+        return t;
     }
 
     public void execute()

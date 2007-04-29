@@ -22,7 +22,7 @@
 
 Transforming XML files by applying an XSLT stylesheet
 
-  The following configuration snipped would transform all files
+  The following configuration snippet would transform all files
   in the directory <<<src/main/xml>>> by applying the stylesheet
   <<<src/main/stylesheet.xsl>>>.
 

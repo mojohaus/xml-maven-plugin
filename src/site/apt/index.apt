@@ -55,3 +55,8 @@ The XML Maven Plugin
     transformations result files.
 
   * Using an {{{examples/transform-saxon.html}XSLT 2.0 compliant processor}}.
+
+  * Setting {{{examples/transform-outputProperties.html}output properties}} on a
+    transformer.
+
+  * Setting {{{examples/transform-parameters.html}stylesheet parameters}}.

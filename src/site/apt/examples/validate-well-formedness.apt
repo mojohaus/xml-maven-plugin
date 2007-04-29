@@ -22,7 +22,7 @@
 
 Checking, whether XML files are well formed
 
-  The following configuration snipped would check, whether all files
+  The following configuration snippet would check, whether all files
   in the directory <<<src/main/xml>>> are well formed:
 
 -----------------------------------------------------------------------------------

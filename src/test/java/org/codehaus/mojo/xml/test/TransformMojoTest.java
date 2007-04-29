@@ -16,9 +16,15 @@
 package org.codehaus.mojo.xml.test;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import org.codehaus.mojo.xml.TransformMojo;
+import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileExtensionMapper;
+import org.codehaus.plexus.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -110,5 +116,47 @@ public class TransformMojoTest
         FileExtensionMapper fileExtensionMapper = new FileExtensionMapper();
         fileExtensionMapper.setTargetExtension( ".fo" );
         runTestIt4( "src/test/it6", "doc1.fo" );
+    }
+
+    private String read( File file ) throws IOException
+    {
+        final StringBuffer sb = new StringBuffer();
+        final Reader reader = new InputStreamReader( new FileInputStream( file ), "UTF-8" );
+        final char[] buffer = new char[ 4096 ];
+        for ( ;; )
+        {
+            final int res = reader.read( buffer );
+            if ( res == -1 )
+            {
+                break;
+            }
+            if ( res > 0 )
+            {
+                sb.append( buffer, 0, res );
+            }
+        }
+        reader.close();
+        return sb.toString();
+    }
+
+    /**
+     * Builds the it7 test project.
+     */
+    public void testIt7() throws Exception
+    {
+        final File dir = new File( "src/test/it7" );
+        final File target = new File( dir, "target/generated-resources/xml/xslt/doc1.xml" );
+        TransformMojo mojo = (TransformMojo) newMojo( dir.getPath() );
+        FileUtils.fileDelete( target.getPath() );
+        mojo.execute();
+        String result = read( target );
+        assertFalse( result.startsWith( "<?xml" ) );
+        mojo = (TransformMojo) newMojo( "src/test/it7" );
+        TransformationSet[] transformationSets = (TransformationSet[]) getVariableValueFromObject( mojo, "transformationSets" );
+        transformationSets[0].getOutputProperties()[0].setValue( "no" );
+        FileUtils.fileDelete( target.getPath() );
+        mojo.execute();
+        result = read( target );
+        assertTrue( result.startsWith( "<?xml" ) );
     }
 }

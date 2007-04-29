@@ -43,8 +43,11 @@ public class TransformationSet {
 
     private Parameter[] parameters;
 
+    private OutputProperty[] outputProperties;
+
     private FileMapper[] fileMappers;
 
+    
     /**
      * Sets patterns of files, which are being excluded from
      * the transformation set.
@@ -67,7 +70,7 @@ public class TransformationSet {
      * Sets patterns of additional files, which are being considered
      * for the uptodate check.
      */
-    public void setOtherDependd( String[] otherDepends )
+    public void setOtherDepends( String[] otherDepends )
     {
         this.otherDepends = otherDepends;
     }
@@ -223,5 +226,21 @@ public class TransformationSet {
     public void setFileMappers( FileMapper[] fileMappers )
     {
         this.fileMappers = fileMappers;
+    }
+
+    /**
+     * Returns the transformers output properties.
+     */
+    public OutputProperty[] getOutputProperties()
+    {
+        return outputProperties;
+    }
+
+    /**
+     * Sets the transformers output properties.
+     */
+    public void setOutputProperties( OutputProperty[] outputProperties )
+    {
+        this.outputProperties = outputProperties;
     }
 }

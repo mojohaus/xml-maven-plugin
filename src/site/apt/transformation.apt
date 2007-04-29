@@ -100,26 +100,11 @@ Transformation Set Configuration
 *---------------------+-----------------------------------------------------------------+
 | Element Name        | Description                                                     |
 *---------------------+-----------------------------------------------------------------+
-| stylesheet          | Specifies the stylesheet, which is being used for transforming  |
-|                     | the fileset. A stylesheet must be specified, there is no        |
-|                     | default.                                                        |
-*---------------------+-----------------------------------------------------------------+
-| outputDir           | Specifies the name of the output directory, where the generated |
-|                     | files are being placed. Defaults to                             |
-|                     | "${project.build.directory}/generated-resources/xml/xslt".      |
-|                     | Usually, this is equivalent to                                  |
-|                     | "target/generated-resources/xml/xslt".                          |
-*---------------------+-----------------------------------------------------------------+
 | addToClasspath      | Specifies, whether the output directory is being added to the   |
 |                     | to the classpath. Defaults to true.                             |
 *---------------------+-----------------------------------------------------------------+
 | dir                 | Sets the name of a directory, which is scanned for the files,   |
 |                     | which are being validated.                                      |
-*---------------------+-----------------------------------------------------------------+
-| includes            | Specifies a pattern of files, which are being included. By      |
-|                     | default, all files are included. The pattern is relative to     |
-|                     | the directory given by "dir". This element may be repeated      |
-|                     | as much as needed.                                              |
 *---------------------+-----------------------------------------------------------------+
 | excludes            | Specifies a pattern of files, which are being excluded. By      |
 |                     | default, no files are excluded. The pattern is relative to      |
@@ -130,8 +115,10 @@ Transformation Set Configuration
 |                     | the transformation is always performed.                         |
 |                     | Defaults to "${xml.forceCreation}" or 'false'.                  |
 *---------------------+-----------------------------------------------------------------+
-| skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
-|                     | be added to the excludes list.                                  |
+| includes            | Specifies a pattern of files, which are being included. By      |
+|                     | default, all files are included. The pattern is relative to     |
+|                     | the directory given by "dir". This element may be repeated      |
+|                     | as much as needed.                                              |
 *---------------------+-----------------------------------------------------------------+
 | otherDepends        | A list of of extra input files or URLs to consider during       |    
 |                     | the up-to-date check, useful for when resolving remote files.   |
@@ -140,4 +127,21 @@ Transformation Set Configuration
 |                     |   2. XSLT file,                                                 |
 |                     |   3. catalog files, and                                         |
 |                     |   4. the pom.xml file of the project executing this plugin.     | 
+*---------------------+-----------------------------------------------------------------+
+| outputDir           | Specifies the name of the output directory, where the generated |
+|                     | files are being placed. Defaults to                             |
+|                     | "${project.build.directory}/generated-resources/xml/xslt".      |
+|                     | Usually, this is equivalent to                                  |
+|                     | "target/generated-resources/xml/xslt".                          |
+*---------------------+-----------------------------------------------------------------+
+| outputProperties    | A list of name/value pairs, which are used to invoke the method |
+|                     | <<<setOutputProperty(...)>>> on the transformer. For details,   |
+|                     | see {{{examples/transform-outputProperties.html}this example}}. |
+*---------------------+-----------------------------------------------------------------+
+| skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
+|                     | be added to the excludes list.                                  |
+*---------------------+-----------------------------------------------------------------+
+| stylesheet          | Specifies the stylesheet, which is being used for transforming  |
+|                     | the fileset. A stylesheet must be specified, there is no        |
+|                     | default.                                                        |
 *---------------------+-----------------------------------------------------------------+
