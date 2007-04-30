@@ -314,7 +314,9 @@ public class ValidateMojo
             Resolver resolver = getResolver();
             for ( int i = 0; i < validationSets.length; i++ )
             {
-                validate( resolver, validationSets[i] );
+                ValidationSet validationSet = validationSets[i];
+                resolver.setValidating( validationSet.isValidating() );
+                validate( resolver, validationSet );
             }
         }
         finally

@@ -105,15 +105,18 @@ public abstract class AbstractXmlMojo
         throws MojoExecutionException
     {
         File[] catalogFiles = getCatalogs();
-        if ( catalogFiles == null || catalogFiles.length == 0 )
+        if ( catalogFiles == null )
         {
-            return new Resolver( new File[0] );
+            catalogFiles = new File[0];
+        }
+        else
+        {
+            for ( int i = 0; i < catalogFiles.length; i++ )
+            {
+                catalogFiles[i] = asAbsoluteFile( catalogs[i] );
+            }
         }
 
-        for ( int i = 0; i < catalogFiles.length; i++ )
-        {
-            catalogFiles[i] = asAbsoluteFile( catalogs[i] );
-        }
         return new Resolver( catalogFiles );
     }
 

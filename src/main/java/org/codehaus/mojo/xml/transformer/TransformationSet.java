@@ -51,7 +51,8 @@ public class TransformationSet {
 
     private FileMapper[] fileMappers;
 
-    
+    private boolean validating;
+
     /**
      * Sets patterns of files, which are being excluded from
      * the transformation set.
@@ -230,6 +231,24 @@ public class TransformationSet {
     public void setFileMappers( FileMapper[] fileMappers )
     {
         this.fileMappers = fileMappers;
+    }
+
+    /**
+     * Returns, whether the transformer should create validating XML parsers
+     * for reading XML documents. The default value is false.
+     */
+    public boolean isValidating()
+    {
+        return validating;
+    }
+
+    /**
+     * Sets, whether the transformer should create validating XML parsers
+     * for reading XML documents. The default value is false.
+     */
+    public void setValidating( boolean validating )
+    {
+        this.validating = validating;
     }
 
     /**

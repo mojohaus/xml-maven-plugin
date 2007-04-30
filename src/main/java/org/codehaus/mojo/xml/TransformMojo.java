@@ -519,10 +519,12 @@ public class TransformMojo extends AbstractXmlMojo
         Object oldProxySettings = activateProxy();
         try
         {
-            Resolver resolver = getResolver();
+            Resolver resolver = getResolver( );
             for ( int i = 0; i < transformationSets.length; i++ )
             {
-                transform( resolver, transformationSets[i] );
+                TransformationSet transformationSet = transformationSets[i];
+                resolver.setValidating( transformationSet.isValidating() );
+                transform( resolver, transformationSet );
             }
         }
         finally

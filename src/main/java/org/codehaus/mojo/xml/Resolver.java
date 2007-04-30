@@ -44,6 +44,7 @@ public class Resolver
     implements EntityResolver, URIResolver, LSResourceResolver
 {
     private final CatalogResolver resolver;
+    private boolean validating;
 
     /** Creates a new instance.
      * @param pFiles A set of files with catalog definitions to load
@@ -98,7 +99,7 @@ public class Resolver
         try
         {
             SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setValidating( false );
+            spf.setValidating( validating );
             spf.setNamespaceAware( true );
             xmlReader = spf.newSAXParser().getXMLReader();
             xmlReader.setEntityResolver( this );
@@ -133,5 +134,21 @@ public class Resolver
         result.setSystemId( isource.getSystemId() );
         result.setEncoding( isource.getEncoding() );
         return result;
+    }
+
+    /**
+     * Sets, whether the Resolver should create validating parsers.
+     */
+    public void setValidating ( boolean validating )
+    {
+        this.validating = validating;
+    }
+
+    /**
+     * Returns, whether the Resolver should create validating parsers.
+     */
+    public boolean isValidating ( )
+    {
+        return validating;
     }
 }

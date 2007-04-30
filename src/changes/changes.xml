@@ -29,6 +29,9 @@
         a warning is logged now, and the build no longer fails. This allows to configure
         the plugin in a parent POM.
       </action>
+      <action dev="jochen" type="add" issue="MOJO-740">
+        It is now configurable, whether the Resolver creates validating parsers.
+      </action>
     </release>
     <release version="1.0-beta-2" date="11-Apr-2007">
       <action dev="jochen" type="fix"
