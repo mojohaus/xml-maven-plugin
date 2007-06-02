@@ -41,7 +41,7 @@ The XML Maven Plugin
 
 * Examples
 
-  To provide you with better understanding of some usages of the Plugin Name,
+  To provide you with better understanding of some usages of the XML Maven Plugin,
   you can take a look into the following examples:
 
   * Checking, whether XML files are {{{examples/validate-well-formedness.html}well formed}}
