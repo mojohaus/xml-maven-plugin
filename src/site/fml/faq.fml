@@ -47,6 +47,15 @@
           Mini guide on proxy configuration</a> for details.</p>
       </answer>
     </faq>
+
+    <faq id="ClassLoader Resources">
+      <question>I have a stylesheet (a schema, another resource), which should
+        be loaded through the class loader.</question>
+      <answer>
+        <p>For example, to load a stylesheet from org/foo/stylesheet.xsl,
+          use the URI "resource:org/foo/stylesheet.xsl".</p>
+      </answer>
+    </faq>
   </part>
 
   <part id="transformation">

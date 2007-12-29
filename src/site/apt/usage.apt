@@ -72,3 +72,4 @@ Using a proxy server
   Maven proxy configuration. See the
   {{{http://maven.apache.org/guides/mini/guide-proxies.html}Mini guide
   on proxy configuration}} for details.
+  

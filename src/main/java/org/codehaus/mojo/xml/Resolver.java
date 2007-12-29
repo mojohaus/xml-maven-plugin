@@ -17,6 +17,10 @@ package org.codehaus.mojo.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.UndeclaredThrowableException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -43,6 +47,7 @@ import org.xml.sax.XMLReader;
 public class Resolver
     implements EntityResolver, URIResolver, LSResourceResolver
 {
+    private final File baseDir;
     private final CatalogResolver resolver;
     private boolean validating;
 
@@ -50,9 +55,10 @@ public class Resolver
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
-    Resolver( File[] pFiles )
+    Resolver( File pBaseDir, File[] pFiles )
         throws MojoExecutionException
     {
+        baseDir = pBaseDir;
         CatalogManager manager = new CatalogManager();
         manager.setIgnoreMissingProperties( true );
         resolver = new CatalogResolver( manager );
@@ -76,7 +82,19 @@ public class Resolver
     public InputSource resolveEntity( String pPublicId, String pSystemId )
         throws SAXException, IOException
     {
+        URL url = resolve( pSystemId );
+        if ( url != null )
+        {
+            return asInputSource( url );
+        }
         return resolver.resolveEntity( pPublicId, pSystemId );
+    }
+
+    private InputSource asInputSource( URL url ) throws IOException
+    {
+        InputSource isource = new InputSource( url.openStream() );
+        isource.setSystemId( url.toExternalForm() );
+        return isource;
     }
 
     /**
@@ -85,6 +103,18 @@ public class Resolver
     public Source resolve( String pHref, String pBase )
         throws TransformerException
     {
+        URL url = resolve( pHref );
+        if ( url != null )
+        {
+            try
+            {
+                return new SAXSource( asInputSource( url ) );
+            }
+            catch ( IOException e )
+            {
+                throw new TransformerException( e );
+            }
+        }
         Source source = resolver.resolve( pHref, pBase );
         if ( source == null )
         {
@@ -122,10 +152,26 @@ public class Resolver
     public LSInput resolveResource( String pType, String pNamespaceURI, String pPublicId, String pSystemId,
                                     String pBaseURI )
     {
-        InputSource isource = resolver.resolveEntity( pPublicId, pSystemId );
-        if ( isource == null )
+        final InputSource isource;
+        URL url = resolve( pSystemId );
+        if ( url != null )
         {
-            return null;
+            try
+            {
+                isource = asInputSource( url );
+            }
+            catch ( IOException e )
+            {
+                throw new UndeclaredThrowableException( e );
+            }
+        }
+        else
+        {
+            isource = resolver.resolveEntity( pPublicId, pSystemId );
+            if ( isource == null )
+            {
+                return null;
+            }
         }
         LSInputImpl result = new LSInputImpl();
         result.setByteStream( isource.getByteStream() );
@@ -150,5 +196,90 @@ public class Resolver
     public boolean isValidating ( )
     {
         return validating;
+    }
+
+    private URL resolveAsResource( String pResource )
+    {
+        return Thread.currentThread().getContextClassLoader().getResource( pResource );
+    }
+
+    private URL resolveAsFile( String pResource )
+    {
+        File f = new File( baseDir, pResource );
+        if ( !f.isFile() )
+        {
+            f = new File( pResource );
+            if ( !f.isFile() )
+            {
+                return null;
+            }
+        }
+        try
+        {
+            return f.toURI().toURL();
+        }
+        catch ( MalformedURLException e )
+        {
+            return null;
+        }
+    }
+
+    private URL resolveAsURL( String pResource )
+    {
+        InputStream stream = null;
+        try
+        {
+            final URL url = new URL( pResource );
+            stream = url.openStream();
+            stream.close();
+            stream = null;
+            return url;
+        }
+        catch ( IOException e )
+        {
+            return null;
+        }
+        finally
+        {
+            if ( stream != null )
+            {
+                try
+                {
+                    stream.close();
+                }
+                catch ( Throwable t )
+                {
+                    // Ignore me
+                }
+            }
+        }
+    }
+
+    /**
+     * Attempts to resolve the given URI.
+     */
+    public URL resolve( String pResource )
+    {
+        if ( pResource == null )
+        {
+            return null;
+        }
+
+        if ( pResource.startsWith( "resource:" ) )
+        {
+            String res = pResource.substring( "resource:".length() );
+            return resolveAsResource( res );
+        }
+
+        URL url = resolveAsResource( pResource );
+        if ( url == null )
+        {
+            url = resolveAsURL( pResource );
+            if ( url == null )
+            {
+                url = resolveAsFile( pResource );
+            }
+        }
+        return url;
     }
 }

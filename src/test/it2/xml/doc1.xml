@@ -16,5 +16,5 @@
 
 -->
 <doc1>
-  A sample document, which should be validatable without any problems.
+  A sample document, on which validation should report a problem.
 </doc2>

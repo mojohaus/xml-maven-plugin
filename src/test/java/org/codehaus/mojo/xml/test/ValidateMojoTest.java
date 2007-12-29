@@ -67,4 +67,13 @@ public class ValidateMojoTest
     {
         runTest( "src/test/it3" );
     }
+
+    /**
+     * Builds the it9 test project.
+     */
+    public void testIt9()
+        throws Exception
+    {
+        runTest( "src/test/it9" );
+    }
 }

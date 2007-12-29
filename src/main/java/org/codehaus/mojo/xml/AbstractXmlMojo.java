@@ -117,7 +117,7 @@ public abstract class AbstractXmlMojo
             }
         }
 
-        return new Resolver( catalogFiles );
+        return new Resolver( getBasedir(), catalogFiles );
     }
 
     protected String[] getFileNames( File pDir, String[] pIncludes, String[] pExcludes )

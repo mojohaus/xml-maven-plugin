@@ -36,6 +36,9 @@
           due-to="Aleksei Valikov" due-to-email="valikov@gmx.net">
         A parameter for specifying the transformer implementation has been added.
       </action>
+      <action dev="jochen" type="add" issue="MOJO-735">
+        Added support for the resource: protocol.
+      </action>
     </release>
     <release version="1.0-beta-2" date="11-Apr-2007">
       <action dev="jochen" type="fix"
@@ -44,17 +47,17 @@
         Fixed a misleading error message.
       </action>
       <action dev="jochen" type="add"
-        due-to="Andrew Thornton" due-to-email="art27@cantab.net">
-          Add support for XSLT parameters when transforming.
+          due-to="Andrew Thornton" due-to-email="art27@cantab.net">
+        Add support for XSLT parameters when transforming.
       </action>
       <action dev="jochen" type="fix"
-        due-to="Andrew Thornton" due-to-email="art27@cantab.net">
-          SAXSource is now used instead of StreamSource, in order
-          to ensure that the resolver is used.
+          due-to="Andrew Thornton" due-to-email="art27@cantab.net">
+        SAXSource is now used instead of StreamSource, in order
+        to ensure that the resolver is used.
       </action>
       <action dev="jochen" type="fix"
-        due-to="Panda C" due-to-email="thinkpanda@gmail.com">
-          XML schema validation wasn't turned on by the ValidateMojo.
+          due-to="Panda C" due-to-email="thinkpanda@gmail.com">
+        XML schema validation wasn't turned on by the ValidateMojo.
       </action>
       <action dev="jochen" type="fix" issue="MOJO-378">
         The plugin does now honor the Maven proxy settings.
@@ -64,6 +67,9 @@
       </action>
       <action dev="jochen" type="add">
         Added docs for using an XSLT 2.0 compliant processor.
+      </action>
+      <action dev="jochen" type="add" issue="MOJO-735">
+        Added support for resolving resources through the classloader.
       </action>
     </release>
     <release version="1.0-beta-1" date="29-Nov-2006">
