@@ -67,6 +67,13 @@ public class TransformMojo extends AbstractXmlMojo
      */
     private boolean forceCreation;
 
+    /**
+     * Transformer factory use. By default, the systems default transformer
+     * factory is used.
+     * @parameter expression="${xml.transformerFactory}"
+     */
+    private String transformerFactory;
+
     private void setFeature( TransformerFactory transformerFactory, String name, Boolean value )
         throws MojoExecutionException
     {
@@ -107,7 +114,7 @@ public class TransformMojo extends AbstractXmlMojo
         throws MojoExecutionException, MojoFailureException
     {
 
-        TransformerFactory tf = TransformerFactory.newInstance();
+        TransformerFactory tf = getTransformerFactory();
         if ( pResolver != null )
         {
             tf.setURIResolver( pResolver );
@@ -159,6 +166,19 @@ public class TransformMojo extends AbstractXmlMojo
             throw new MojoExecutionException( "Failed to parse stylesheet " + stylesheet + ": " + e.getMessage(), e );
         }
     }
+    
+    /**
+     * Creates a new instance of {@link TransformerFactory}.
+     */
+    private TransformerFactory getTransformerFactory( ) throws MojoExecutionException
+    {
+        if (transformerFactory == null)
+        {
+            return TransformerFactory.newInstance();
+        }
+        return TransformerFactory.newInstance( transformerFactory, Thread.currentThread().getContextClassLoader() );
+    }
+    
 
     private File getFile( File pDir, String pFile )
     {

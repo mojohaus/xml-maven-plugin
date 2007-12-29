@@ -20,6 +20,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.codehaus.mojo.xml.TransformMojo;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
@@ -28,6 +38,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
 
 /**
  * Test case for the {@link TransformMojo}.
@@ -158,5 +169,33 @@ public class TransformMojoTest
         mojo.execute();
         result = read( target );
         assertTrue( result.startsWith( "<?xml" ) );
+    }
+
+    private String eval( Node contextNode, String str ) throws TransformerException
+    {
+        final String xsl = "<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>\n"
+            + "<xsl:template match='*'>\n"
+            + "<xsl:value-of select='" + str + "'/>\n"
+            + "</xsl:template>\n"
+            + "</xsl:stylesheet>\n";
+        final StringWriter sw = new StringWriter();
+        final Transformer t = TransformerFactory.newInstance( org.apache.xalan.processor.TransformerFactoryImpl.class.getName(), getClass().getClassLoader()).newTransformer( new StreamSource( new StringReader( xsl ) ) );
+        t.setOutputProperty( OutputKeys.OMIT_XML_DECLARATION, "yes" );
+        t.transform( new DOMSource( contextNode ), new StreamResult( sw ) );
+        return sw.toString();
+    }
+
+    /**
+     * Builds the it7 test project.
+     */
+    public void testIt8() throws Exception
+    {
+        final String dir = "src/test/it8";
+        runTest( dir );
+        Document doc1 = parse( new File( dir, "target/generated-resources/xml/xslt/doc1.xml" ) );
+        
+        assertEquals("SAXON 8.7 from Saxonica", eval( doc1, "/root/vendor" ) );
+        assertEquals("http://www.saxonica.com/", eval( doc1, "/root/vendor-url" ) );
+        assertEquals("2.0", eval( doc1, "/root/version" ) );
     }
 }

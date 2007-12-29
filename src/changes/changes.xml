@@ -32,6 +32,10 @@
       <action dev="jochen" type="add" issue="MOJO-740">
         It is now configurable, whether the Resolver creates validating parsers.
       </action>
+      <action dev="jochen" type="add" issue="MOJO-777"
+          due-to="Aleksei Valikov" due-to-email="valikov@gmx.net">
+        A parameter for specifying the transformer implementation has been added.
+      </action>
     </release>
     <release version="1.0-beta-2" date="11-Apr-2007">
       <action dev="jochen" type="fix"
