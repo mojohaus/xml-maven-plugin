@@ -38,6 +38,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.ext.EntityResolver2;
 
 
 /**
@@ -45,7 +46,7 @@ import org.xml.sax.XMLReader;
  * and {@link LSResourceResolver}, based on the Apache catalog resolver.
  */
 public class Resolver
-    implements EntityResolver, URIResolver, LSResourceResolver
+    implements EntityResolver2, URIResolver, LSResourceResolver
 {
     private final File baseDir;
     private final CatalogResolver resolver;
@@ -82,6 +83,7 @@ public class Resolver
     public InputSource resolveEntity( String pPublicId, String pSystemId )
         throws SAXException, IOException
     {
+        System.err.println("resolveEntity: " + pPublicId + ", " + pSystemId);
         URL url = resolve( pSystemId );
         if ( url != null )
         {
@@ -281,5 +283,24 @@ public class Resolver
             }
         }
         return url;
+    }
+
+    public InputSource getExternalSubset( String name, String baseURI ) throws SAXException, IOException
+    {
+        return null;
+    }
+
+    public InputSource resolveEntity( String pName, String pPublicId, String pBaseURI, String pSystemId )
+        throws SAXException, IOException
+    {
+        System.err.println("resolveEntity: -> " + pName + ", " + pPublicId + ", " + pBaseURI + ", " + pSystemId);
+        URL url = resolve( pSystemId );
+        if ( url != null )
+        {
+            System.err.println("resolveEntity: <- " + url);
+            return asInputSource( url );
+        }
+        System.err.println("resolveEntity: <- " + resolver.resolveEntity( pPublicId, pSystemId ));
+        return resolver.resolveEntity( pPublicId, pSystemId );
     }
 }

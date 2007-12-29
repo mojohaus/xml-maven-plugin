@@ -16,9 +16,11 @@
 
 -->
 <!DOCTYPE doc1 [
-  <!ENTITY it9a1 SYSTEM "resource:org/codehaus/mojo/xml/test/it9a.xml">
+  <!ENTITY it9a1 SYSTEM "org/codehaus/mojo/xml/test/it9a.xml">
+  <!ENTITY it9a2 SYSTEM "resource:org/codehaus/mojo/xml/test/it9a.xml">
 ]>
 <doc1>
   A sample document, which should be validatable without any problems.
   &it9a1;
+  &it9a2;
 </doc1>
