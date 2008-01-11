@@ -1,19 +1,23 @@
-/*
- * Copyright 2006 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.codehaus.mojo.xml;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,16 +71,26 @@ public abstract class AbstractXmlMojo
      */
     private File[] catalogs;
 
+    /**
+     * Returns the maven project.
+     */
     protected MavenProject getProject()
     {
         return project;
     }
 
+    /**
+     * Returns the projects base directory.
+     */
     protected File getBasedir()
     {
         return basedir;
     }
 
+    /**
+     * Converts the given file into an file with an absolute
+     * path.
+     */
     protected File asAbsoluteFile( File f )
     {
         if ( f.isAbsolute() )
@@ -86,6 +100,9 @@ public abstract class AbstractXmlMojo
         return new File( getBasedir(), f.getPath() );
     }
 
+    /**
+     * Returns the plugins catalog files.
+     */
     protected File[] getCatalogs()
     {
         if ( catalogs == null )
@@ -101,6 +118,9 @@ public abstract class AbstractXmlMojo
         return catalogFiles;
     }
 
+    /**
+     * Creates a new resolver.
+     */
     protected Resolver getResolver()
         throws MojoExecutionException
     {
@@ -120,12 +140,16 @@ public abstract class AbstractXmlMojo
         return new Resolver( getBasedir(), catalogFiles );
     }
 
+    /**
+     * Scans a directory for files and returns a set of path names.
+     */
     protected String[] getFileNames( File pDir, String[] pIncludes, String[] pExcludes )
         throws MojoFailureException
     {
         if ( pDir == null )
         {
-            throw new MojoFailureException( "A ValidationSet or TransformationSet requires a nonempty 'dir' child element." );
+            throw new MojoFailureException( "A ValidationSet or TransformationSet"
+                                            + " requires a nonempty 'dir' child element." );
         }
         final File dir = asAbsoluteFile( pDir );
         if ( !dir.isDirectory() )
@@ -148,6 +172,10 @@ public abstract class AbstractXmlMojo
         return ds.getIncludedFiles();
     }
 
+    /**
+     * Converts the given set of file names into a set of {@link File}
+     * instances. The file names may be relative to the given base directory.
+     */
     protected File[] asFiles( File pDir, String[] pFileNames )
     {
         if ( pFileNames == null )
@@ -164,32 +192,18 @@ public abstract class AbstractXmlMojo
         return result;
     }
 
-    protected File[] asFileList( File dir, String[] pFileNames )
-    {
-        if ( pFileNames == null )
-        {
-            return new File[0];
-        }
-
-        if ( !dir.isAbsolute() )
-        {
-            dir = new File( getBasedir(), dir.toString() );
-        }
-
-        File[] result = new File[pFileNames.length];
-        for ( int i = 0;  i < pFileNames.length;  i++ )
-        {
-            result[i] = new File( dir, pFileNames[i] );
-        }
-        return result;
-    }
-
+    /**
+     * Scans a directory for files and returns a set of {@link File} instances.
+     */
     protected File[] getFiles( File pDir, String[] pIncludes, String[] pExcludes )
         throws MojoFailureException
     {
         return asFiles( pDir, getFileNames( pDir, pIncludes, pExcludes ) );
     }
 
+    /**
+     * Calculates the exclusions to use when searching files.
+     */
     protected String[] getExcludes( String[] origExcludes, boolean skipDefaultExcludes )
     {
         if ( skipDefaultExcludes )
@@ -230,6 +244,9 @@ public abstract class AbstractXmlMojo
         }
     }
 
+    /**
+     * Called to install the plugins proxy settings.
+     */
     protected Object activateProxy()
     {
         if ( settings == null )
@@ -274,6 +291,10 @@ public abstract class AbstractXmlMojo
         return properties;
     }
 
+    /**
+     * Called to restore the proxy settings, which have been installed
+     * when the plugin was invoked.
+     */
     protected void passivateProxy( Object pProperties )
     {
         if ( pProperties == null )

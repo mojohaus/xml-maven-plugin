@@ -1,19 +1,23 @@
-/*
- * Copyright 2006 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.codehaus.mojo.xml;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +38,6 @@ import org.apache.xml.resolver.CatalogManager;
 import org.apache.xml.resolver.tools.CatalogResolver;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -42,8 +45,9 @@ import org.xml.sax.ext.EntityResolver2;
 
 
 /**
- * An implementation of {@link EntityResolver}, {@link URIResolver},
- * and {@link LSResourceResolver}, based on the Apache catalog resolver.
+ * An implementation of {@link org.xml.sax.EntityResolver},
+ * {@link URIResolver}, and {@link LSResourceResolver},
+ * based on the Apache catalog resolver.
  */
 public class Resolver
     implements EntityResolver2, URIResolver, LSResourceResolver
@@ -71,19 +75,19 @@ public class Resolver
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "Failed to parse catalog file: " + pFiles[i].getPath() + ": "
-                    + e.getMessage(), e );
+                throw new MojoExecutionException( "Failed to parse catalog file: "
+                                                  + pFiles[i].getPath() + ": "
+                                                  + e.getMessage(), e );
             }
         }        
     }
 
     /**
-     * Implementation of {@link EntityResolver#resolveEntity(String, String)}.
+     * Implementation of {@link org.xml.sax.EntityResolver#resolveEntity(String, String)}.
      */
     public InputSource resolveEntity( String pPublicId, String pSystemId )
         throws SAXException, IOException
     {
-        System.err.println("resolveEntity: " + pPublicId + ", " + pSystemId);
         URL url = resolve( pSystemId );
         if ( url != null )
         {
@@ -187,9 +191,9 @@ public class Resolver
     /**
      * Sets, whether the Resolver should create validating parsers.
      */
-    public void setValidating ( boolean validating )
+    public void setValidating ( boolean pValidating )
     {
-        this.validating = validating;
+        validating = pValidating;
     }
 
     /**
@@ -285,22 +289,25 @@ public class Resolver
         return url;
     }
 
+    /**
+     * Implementation of {@link EntityResolver2#getExternalSubset(String, String)}
+     */
     public InputSource getExternalSubset( String name, String baseURI ) throws SAXException, IOException
     {
         return null;
     }
 
+    /**
+     * Implementation of {@link EntityResolver2#resolveEntity(String, String, String, String)}
+     */
     public InputSource resolveEntity( String pName, String pPublicId, String pBaseURI, String pSystemId )
         throws SAXException, IOException
     {
-        System.err.println("resolveEntity: -> " + pName + ", " + pPublicId + ", " + pBaseURI + ", " + pSystemId);
         URL url = resolve( pSystemId );
         if ( url != null )
         {
-            System.err.println("resolveEntity: <- " + url);
             return asInputSource( url );
         }
-        System.err.println("resolveEntity: <- " + resolver.resolveEntity( pPublicId, pSystemId ));
         return resolver.resolveEntity( pPublicId, pSystemId );
     }
 }

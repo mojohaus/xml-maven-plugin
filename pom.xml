@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>mojo</artifactId>
-    <version>14</version>
+    <version>16</version>
   </parent>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>xml-maven-plugin</artifactId>
@@ -148,6 +148,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+              <!-- <report>test-javadoc</report> -->
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -161,10 +169,31 @@
         </reportSets>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>src/main/checkstyle/maven_checks.xml</configLocation>
+          <headerLocation>src/main/checkstyle/maven-header.txt</headerLocation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>com</report>
+              <!-- <report>test</report> -->
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>rat-maven-plugin</artifactId>
         <configuration>
           <excludes>
+            <exclude>src/main/checkstyle/maven-header.txt</exclude>
             <exclude>src/test/it*/target/**/*</exclude>
           </excludes>
         </configuration>

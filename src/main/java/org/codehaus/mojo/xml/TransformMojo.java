@@ -1,19 +1,23 @@
-/*
- * Copyright 2006 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.codehaus.mojo.xml;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -74,14 +78,14 @@ public class TransformMojo extends AbstractXmlMojo
      */
     private String transformerFactory;
 
-    private void setFeature( TransformerFactory transformerFactory, String name, Boolean value )
+    private void setFeature( TransformerFactory pTransformerFactory, String name, Boolean value )
         throws MojoExecutionException
     {
         // Try to use the method setFeature, which isn't available until JAXP 1.3
         Method m;
         try
         {
-            m = transformerFactory.getClass().getMethod( "setFeature", new Class[]{ String.class, boolean.class } );
+            m = pTransformerFactory.getClass().getMethod( "setFeature", new Class[]{ String.class, boolean.class } );
         }
         catch ( NoSuchMethodException e )
         {
@@ -90,13 +94,13 @@ public class TransformMojo extends AbstractXmlMojo
         if ( m == null )
         {
             // Not available, try to use setAttribute
-            transformerFactory.setAttribute( name, value );
+            pTransformerFactory.setAttribute( name, value );
         }
         else
         {
             try
             {
-                m.invoke( transformerFactory, new Object[]{ name, value } );
+                m.invoke( pTransformerFactory, new Object[]{ name, value } );
             }
             catch ( IllegalAccessException e )
             {
@@ -172,7 +176,7 @@ public class TransformMojo extends AbstractXmlMojo
      */
     private TransformerFactory getTransformerFactory( ) throws MojoExecutionException
     {
-        if (transformerFactory == null)
+        if ( transformerFactory == null )
         {
             return TransformerFactory.newInstance();
         }
@@ -232,7 +236,7 @@ public class TransformMojo extends AbstractXmlMojo
         return asAbsoluteFile( pOutputDir );
     }
 
-    protected static String getAllExMsgs( Throwable ex, boolean includeExName )
+    private static String getAllExMsgs( Throwable ex, boolean includeExName )
     {
         StringBuffer sb = new StringBuffer( ( includeExName ? ex.toString() : ex.getLocalizedMessage() ) );
         while ( ( ex = ex.getCause() ) != null )
@@ -287,8 +291,7 @@ public class TransformMojo extends AbstractXmlMojo
                     catch ( IOException ex )
                     {
                         fileModifTime = ( oldest ? Long.MIN_VALUE : Long.MAX_VALUE );
-                        getLog().warn(
-                                       "Skipping URL '" + no
+                        getLog().warn( "Skipping URL '" + no
                                            + "' from up-to-date check due to error while opening connection: "
                                            + getAllExMsgs( ex, true ) );
                     }
@@ -437,7 +440,7 @@ public class TransformMojo extends AbstractXmlMojo
                 dependsFiles.add( stylesheet );
                 dependsFiles.add( Arrays.asList( getCatalogs() ) );
                 dependsFiles.add( input );
-                File[] files = asFileList( getBasedir(), pTransformationSet.getOtherDepends() );
+                File[] files = asFiles( getBasedir(), pTransformationSet.getOtherDepends() );
                 for ( int j = 0;  j < files.length;  j++ )
                 {
                     dependsFiles.add( files[j] );
@@ -528,6 +531,9 @@ public class TransformMojo extends AbstractXmlMojo
         return t;
     }
 
+    /**
+     * Called by Maven to run the plugin.
+     */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {

@@ -1,19 +1,23 @@
-/*
- * Copyright 2006 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.codehaus.mojo.xml.validation;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.File;
 
@@ -22,7 +26,8 @@ import java.io.File;
  * An instance of this class is used to specify a set of files,
  * which are validated against a common schema.
  */
-public class ValidationSet {
+public class ValidationSet
+{
     private String publicId;
 
     private String systemId;
@@ -121,27 +126,27 @@ public class ValidationSet {
     /**
      * Sets a directory, which is scanned for files to validate.
      */
-    public void setDir( File dir )
+    public void setDir( File pDir )
     {
-        this.dir = dir;
+        dir = pDir;
     }
 
     /**
      * Sets patterns of files, which are being excluded from
      * the validation set.
      */
-    public void setExcludes( String[] excludes )
+    public void setExcludes( String[] pExcludes )
     {
-        this.excludes = excludes;
+        excludes = pExcludes;
     }
 
     /**
      * Sets patterns of files, which are being included into
      * the validation set.
      */
-    public void setIncludes( String[] includes )
+    public void setIncludes( String[] pIncludes )
     {
-        this.includes = includes;
+        includes = pIncludes;
     }
 
     /**
@@ -149,9 +154,9 @@ public class ValidationSet {
      * loaded through its system ID or if the documents are being
      * validated for wellformedness only.
      */
-    public void setPublicId( String publicId )
+    public void setPublicId( String pPublicId )
     {
-        this.publicId = publicId;
+        publicId = pPublicId;
     }
 
     /**
@@ -161,18 +166,18 @@ public class ValidationSet {
      * http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html
      * for possible values.
      */
-    public void setSchemaLanguage(String schemaLanguage)
+    public void setSchemaLanguage( String pSchemaLanguage )
     {
-        this.schemaLanguage = schemaLanguage;
+        schemaLanguage = pSchemaLanguage;
     }
 
     /**
      * Sets, whether Maven's default excludes are being ignored.
      * Defaults to false (Default excludes are being used).
      */
-    public void setSkipDefaultExcludes(boolean skipDefaultExcludes)
+    public void setSkipDefaultExcludes( boolean pSkipDefaultExcludes )
     {
-        this.skipDefaultExcludes = skipDefaultExcludes;
+        skipDefaultExcludes = pSkipDefaultExcludes;
     }
 
     /**
@@ -180,9 +185,9 @@ public class ValidationSet {
      * loaded through its public ID or if the documents are being
      * validated for wellformedness only.
      */
-    public void setSystemId(String systemId)
+    public void setSystemId( String pSystemId )
     {
-        this.systemId = systemId;
+        systemId = pSystemId;
     }
 
     /**
@@ -192,8 +197,8 @@ public class ValidationSet {
      * or xml schema declaration.) The property is ignored otherwise.
      * The default value is false.
      */
-    public void setValidating(boolean validating)
+    public void setValidating( boolean pValidating )
     {
-        this.validating = validating;
+        validating = pValidating;
     }
 }

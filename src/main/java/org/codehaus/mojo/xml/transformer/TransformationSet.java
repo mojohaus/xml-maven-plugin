@@ -1,19 +1,23 @@
-/*
- * Copyright 2006 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.codehaus.mojo.xml.transformer;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.File;
 
@@ -24,7 +28,8 @@ import org.codehaus.plexus.components.io.filemappers.FileMapper;
  * An instance of this class is used to specify a set of files,
  * which are transformed by a common XSLT stylesheet.
  */
-public class TransformationSet {
+public class TransformationSet
+{
     private File stylesheet;
 
     private File dir;
@@ -57,35 +62,35 @@ public class TransformationSet {
      * Sets patterns of files, which are being excluded from
      * the transformation set.
      */
-    public void setExcludes( String[] excludes )
+    public void setExcludes( String[] pExcludes )
     {
-        this.excludes = excludes;
+        excludes = pExcludes;
     }
 
     /**
      * Sets patterns of files, which are being included into
      * the transformation set.
      */
-    public void setIncludes( String[] includes )
+    public void setIncludes( String[] pIncludes )
     {
-        this.includes = includes;
+        includes = pIncludes;
     }
 
     /**
      * Sets patterns of additional files, which are being considered
      * for the uptodate check.
      */
-    public void setOtherDepends( String[] otherDepends )
+    public void setOtherDepends( String[] pOtherDepends )
     {
-        this.otherDepends = otherDepends;
+        otherDepends = pOtherDepends;
     }
 
     /**
      * Sets the stylesheet parameters.
      */
-    public void setParameters( NameValuePair[] parameters )
+    public void setParameters( NameValuePair[] pParameters )
     {
-        this.parameters = parameters;
+        parameters = pParameters;
     }
 
     /**
@@ -173,18 +178,18 @@ public class TransformationSet {
      * Sets, whether the output directory is added to the classpath.
      * Defaults to false.
      */
-    public void setAddedToClasspath(boolean addedToClasspath)
+    public void setAddedToClasspath( boolean pAddedToClasspath )
     {
-        this.addedToClasspath = addedToClasspath;
+        addedToClasspath = pAddedToClasspath;
     }
 
     /**
      * Sets the name of a directory, which is scanned
      * for files to transform.
      */
-    public void setDir( File dir )
+    public void setDir( File pDir )
     {
-        this.dir = dir;
+        dir = pDir;
     }
 
     /**
@@ -192,27 +197,27 @@ public class TransformationSet {
      * where the generated files are being placed. Defaults to
      * {project.build.directory}/generated-resources/xml/xslt.
      */
-    public void setOutputDir( File outputDir )
+    public void setOutputDir( File pOutputDir )
     {
-        this.outputDir = outputDir;
+        outputDir = pOutputDir;
     }
 
     /**
      * Sets, whether Maven's default excludes are being ignored.
      * Defaults to false (Default excludes are being used).
      */
-    public void setSkipDefaultExcludes(boolean skipDefaultExcludes)
+    public void setSkipDefaultExcludes( boolean pSkipDefaultExcludes )
     {
-        this.skipDefaultExcludes = skipDefaultExcludes;
+        skipDefaultExcludes = pSkipDefaultExcludes;
     }
 
     /**
      * Sets the XSLT stylesheet, which is being used to control
      * the transformation.
      */
-    public void setStylesheet( File stylesheet )
+    public void setStylesheet( File pStylesheet )
     {
-        this.stylesheet = stylesheet;
+        stylesheet = pStylesheet;
     }
 
     /**
@@ -228,9 +233,9 @@ public class TransformationSet {
      * Sets a set of file mappers, which are being used to
      * convert the generated files name.
      */
-    public void setFileMappers( FileMapper[] fileMappers )
+    public void setFileMappers( FileMapper[] pFileMappers )
     {
-        this.fileMappers = fileMappers;
+        fileMappers = pFileMappers;
     }
 
     /**
@@ -246,9 +251,9 @@ public class TransformationSet {
      * Sets, whether the transformer should create validating XML parsers
      * for reading XML documents. The default value is false.
      */
-    public void setValidating( boolean validating )
+    public void setValidating( boolean pValidating )
     {
-        this.validating = validating;
+        validating = pValidating;
     }
 
     /**
@@ -262,9 +267,9 @@ public class TransformationSet {
     /**
      * Sets the transformers output properties.
      */
-    public void setOutputProperties( NameValuePair[] outputProperties )
+    public void setOutputProperties( NameValuePair[] pOutputProperties )
     {
-        this.outputProperties = outputProperties;
+        outputProperties = pOutputProperties;
     }
 
     /**
@@ -278,9 +283,9 @@ public class TransformationSet {
     /**
      * Sets the features, which should be set on the transformer factory.
      */
-    public void setFeatures( NameValuePair[] features )
+    public void setFeatures( NameValuePair[] pFeatures )
     {
-        this.features = features;
+        features = pFeatures;
     }
 
     /**
@@ -294,8 +299,8 @@ public class TransformationSet {
     /**
      * Sets the attributes, which should be set on the transformer factory.
      */
-    public void setAttributes( NameValuePair[] attributes )
+    public void setAttributes( NameValuePair[] pAttributes )
     {
-        this.attributes = attributes;
+        attributes = pAttributes;
     }
 }
