@@ -174,15 +174,43 @@ public class TransformMojo extends AbstractXmlMojo
     /**
      * Creates a new instance of {@link TransformerFactory}.
      */
-    private TransformerFactory getTransformerFactory( ) throws MojoExecutionException
+    private TransformerFactory getTransformerFactory( ) throws MojoFailureException, MojoExecutionException
     {
         if ( transformerFactory == null )
         {
             return TransformerFactory.newInstance();
         }
-        return TransformerFactory.newInstance( transformerFactory, Thread.currentThread().getContextClassLoader() );
+        
+        try
+        {
+            return newTransformerFactory( transformerFactory, Thread.currentThread().getContextClassLoader() );
+        }
+        catch ( NoSuchMethodException exception )
+        {
+            throw new MojoFailureException( "JDK6 required when using transformerFactory parameter" );
+        }
+        catch ( IllegalAccessException exception )
+        {
+            throw new MojoExecutionException( "Cannot instantiate transformer factory", exception );
+        }
+        catch ( InvocationTargetException exception )
+        {
+            throw new MojoExecutionException( "Cannot instantiate transformer factory", exception );
+        }
     }
     
+    // public for use by unit test
+    public static TransformerFactory newTransformerFactory( String factoryClassName, ClassLoader classLoader )
+        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    {
+        Class[] methodTypes = new Class[] { String.class, ClassLoader.class };
+        
+        Method method = TransformerFactory.class.getDeclaredMethod( "newInstance", methodTypes );
+        
+        Object[] methodArgs = new Object[] { factoryClassName, classLoader };
+        
+        return (TransformerFactory) method.invoke( null, methodArgs );
+    }
 
     private File getFile( File pDir, String pFile )
     {

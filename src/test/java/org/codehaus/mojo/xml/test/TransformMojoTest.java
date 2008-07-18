@@ -22,11 +22,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -171,7 +171,7 @@ public class TransformMojoTest
         assertTrue( result.startsWith( "<?xml" ) );
     }
 
-    private String eval( Node contextNode, String str ) throws TransformerException
+    private String eval( Node contextNode, String str ) throws TransformerException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         final String xsl = "<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>\n"
             + "<xsl:template match='*'>\n"
@@ -179,7 +179,7 @@ public class TransformMojoTest
             + "</xsl:template>\n"
             + "</xsl:stylesheet>\n";
         final StringWriter sw = new StringWriter();
-        final Transformer t = TransformerFactory.newInstance( org.apache.xalan.processor.TransformerFactoryImpl.class.getName(), getClass().getClassLoader()).newTransformer( new StreamSource( new StringReader( xsl ) ) );
+        final Transformer t = TransformMojo.newTransformerFactory( org.apache.xalan.processor.TransformerFactoryImpl.class.getName(), getClass().getClassLoader()).newTransformer( new StreamSource( new StringReader( xsl ) ) );
         t.setOutputProperty( OutputKeys.OMIT_XML_DECLARATION, "yes" );
         t.transform( new DOMSource( contextNode ), new StreamResult( sw ) );
         return sw.toString();
