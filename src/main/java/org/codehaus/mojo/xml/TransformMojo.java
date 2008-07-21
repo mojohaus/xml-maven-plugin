@@ -203,6 +203,8 @@ public class TransformMojo extends AbstractXmlMojo
     public static TransformerFactory newTransformerFactory( String factoryClassName, ClassLoader classLoader )
         throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
+        // use reflection to avoid JAXP 1.4 (and hence JDK6) requirement
+
         Class[] methodTypes = new Class[] { String.class, ClassLoader.class };
         
         Method method = TransformerFactory.class.getDeclaredMethod( "newInstance", methodTypes );
