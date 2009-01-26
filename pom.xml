@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.mojo</groupId>
-    <artifactId>mojo</artifactId>
-    <version>16</version>
+    <artifactId>mojo-parent</artifactId>
+    <version>20</version>
   </parent>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>xml-maven-plugin</artifactId>
@@ -47,6 +47,18 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/xml-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/xml-maven-plugin</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/xml-maven-plugin</url>
+  </scm>  
+  
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/MOJO/component/12247</url>
+  </issueManagement>  
+  
   <build>
     <plugins>
       <plugin>
