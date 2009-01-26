@@ -21,6 +21,9 @@
   </properties>
   <body>
     <release version="1.0-beta-3" date="Not yet released">
+      <action dev="olamy" type="add" issue="MOJO-1167">
+        Provide log output with log-level INFO for the processing of any input file.
+      </action>      
       <action dev="jochen" type="add" issue="MOJO-741">
         Added the possibility to set a transformers output properties.
       </action>
