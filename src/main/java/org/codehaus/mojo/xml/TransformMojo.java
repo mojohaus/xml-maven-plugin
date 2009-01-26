@@ -74,6 +74,7 @@ public class TransformMojo extends AbstractXmlMojo
     /**
      * Transformer factory use. By default, the systems default transformer
      * factory is used.
+     * <b>If you use this feature you must use at least jdk 1.6</b>
      * @parameter expression="${xml.transformerFactory}"
      */
     private String transformerFactory;
