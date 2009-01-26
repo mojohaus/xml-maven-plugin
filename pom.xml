@@ -25,6 +25,11 @@
       <name>Jochen Wiedmann</name>
       <email>jochen.wiedmann@gmail.com</email>
     </developer>
+    <developer>
+      <id>olamy</id>
+      <name>Olivier Lamy</name>
+      <email>olamy@apache.org</email>
+    </developer>    
   </developers>
   <contributors>
     <contributor>

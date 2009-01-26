@@ -376,6 +376,7 @@ public class TransformMojo extends AbstractXmlMojo
     {
         File dir = output.getParentFile();
         dir.mkdirs();
+        getLog().info( "Transforming file: " + input.getPath() );
         FileOutputStream fos = null;
         try
         {
