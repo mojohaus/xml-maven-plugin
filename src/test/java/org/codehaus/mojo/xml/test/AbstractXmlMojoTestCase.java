@@ -17,6 +17,7 @@ package org.codehaus.mojo.xml.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,6 +26,7 @@ import org.apache.maven.model.Build;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.codehaus.mojo.xml.AbstractXmlMojo;
+import org.codehaus.mojo.xml.TransformMojo;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -66,5 +68,20 @@ public abstract class AbstractXmlMojoTestCase
         dbf.setValidating( false );
         dbf.setNamespaceAware( true );
         return dbf.newDocumentBuilder().parse( pFile );
+    }
+    
+    protected boolean java1_6_Aware()
+        throws IllegalAccessException, InvocationTargetException
+    {
+        try
+        {
+            TransformMojo.newTransformerFactory( "net.sf.saxon.TransformerFactoryImpl", Thread.currentThread()
+                .getContextClassLoader() );
+            return true;
+        }
+        catch ( NoSuchMethodException e )
+        {
+            return false;
+        }
     }
 }
