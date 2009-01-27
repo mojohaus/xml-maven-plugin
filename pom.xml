@@ -64,20 +64,6 @@
     <url>http://jira.codehaus.org/browse/MOJO/component/12247</url>
   </issueManagement>  
   
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-docck-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
