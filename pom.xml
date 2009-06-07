@@ -145,6 +145,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
+        <version>2.1</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -156,6 +157,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>rat-maven-plugin</artifactId>
+        <version>1.0-alpha-3</version>
         <configuration>
           <excludes>
             <exclude>src/main/checkstyle/maven-header.txt</exclude>
