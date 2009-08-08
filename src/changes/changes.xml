@@ -21,6 +21,10 @@
   </properties>
   <body>
     <release version="1.0-beta-3" date="Not yet released">
+      <action dev="jochen" type="add" issue="MOJO-1120"
+          due-to="Michael Brackx" due-to-email="michael.javaone+codehaus@gmail.com">
+        External DTD's are no longer downloaded when checking for well formedness.
+      </action>
       <action dev="olamy" type="add" issue="MOJO-1167">
         Provide log output with log-level INFO for the processing of any input file.
       </action>      

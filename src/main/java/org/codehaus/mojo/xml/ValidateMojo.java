@@ -227,6 +227,22 @@ public class ValidateMojo
                 // Ignore this
             }
         }
+        else
+        {
+        	try
+        	{
+        		spf.setFeature( "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+        				        false );
+        	}
+        	catch ( SAXException e )
+        	{
+        		// Ignore this
+        	}
+        	catch ( ParserConfigurationException e )
+        	{
+        		// Ignore this
+        	}
+        }
         spf.setNamespaceAware( true );
         return spf;
     }
