@@ -76,6 +76,20 @@
       </answer>
     </faq>
 
+    <faq id="other name transformation">
+      <question>How do I perform other kinds of name transformations?</question>
+      <answer>
+        <p>Check the list of available file mappers at 
+          <a href="http://plexus.codehaus.org/plexus-components/plexus-io/filemappers.html">File Mapper</a>.
+          Perhaps, there is one which suits your needs.</p>
+        <p>If not, you need to implement your own. If you feel that it is sufficiently
+          generic, then you might consider to submit it as a contribution to the
+          Plexus IO component.</p>
+        <p>See <a href="examples/transform-change-extension.html">this example</a>
+          for how to configure the transformer to map names.</p>
+      </answer>
+    </faq>
+
     <faq id="xslt2">
       <question>How can I use XSLT 2.0 in my stylesheets?</question>
       <answer>

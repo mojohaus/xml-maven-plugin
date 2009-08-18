@@ -59,3 +59,7 @@ Change the extension of the generated files
     </plugins>
   </build>
 -----------------------------------------------------------------------------------
+
+  Btw, the same could be achieved the much more powerful and generic RegExpFileMapper,
+  which you find explained in more detail in {{{transform-change-regexp.html}another
+  example}}.

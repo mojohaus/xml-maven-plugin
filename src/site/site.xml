@@ -42,13 +42,14 @@
     </menu>
 
     <menu name="Examples">
-      <item name="Checking, whether files are well formed" href="examples/validate-well-formedness.html"/>
-      <item name="Validating files against an XML schema" href="examples/validate-schema.html"/>
-      <item name="Transforming files using an XSLT stylesheet" href="examples/transform-basic.html"/>
-      <item name="Changing the transformed files extension" href="examples/transform-change-extension.html"/>
+      <item name="Checking well formedness" href="examples/validate-well-formedness.html"/>
+      <item name="Using an XML schema" href="examples/validate-schema.html"/>
+      <item name="XSLT transformation" href="examples/transform-basic.html"/>
+      <item name="Simple file name mapping" href="examples/transform-change-extension.html"/>
+      <item name="Complex file name mapping" href="examples/transform-change-regexp.html"/>
       <item name="Using XSLT 2.0" href="examples/transform-saxon.html"/>
-      <item name="Setting output properties" href="examples/transform-outputProperties.html"/>
-      <item name="Setting stylesheet parameters" href="examples/transform-parameters.html"/>
+      <item name="XSLT output properties" href="examples/transform-outputProperties.html"/>
+      <item name="XSLT stylesheet parameters" href="examples/transform-parameters.html"/>
     </menu>
     
     <menu ref="reports"/>

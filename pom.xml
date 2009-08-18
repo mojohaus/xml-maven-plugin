@@ -113,7 +113,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-io</artifactId>
-      <version>1.0-alpha-1</version>
+      <version>1.0-alpha-5-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
