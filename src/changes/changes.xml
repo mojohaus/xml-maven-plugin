@@ -22,7 +22,7 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="1.0-beta-3" date="Not yet released">
+    <release version="1.0-beta-3" date="15-Sep-2009">
       <action dev="jochen" type="add" issue="MOJO-1120"
           due-to="Michael Brackx" due-to-email="michael.javaone+codehaus@gmail.com">
         External DTD's are no longer downloaded when checking for well formedness.
