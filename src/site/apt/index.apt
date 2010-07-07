@@ -28,11 +28,11 @@ The XML Maven Plugin
 
   The plugin offers the following goals:
 
-  * {{{validate.html}xml:validate}} validates XML files against a
+  * {{{validate-mojo.html}xml:validate}} validates XML files against a
     schema. If the files aren't matching a certain schema, one may
     simply check, whether they are well formed.
   
-  * {{{transform.html}xml:transform}} transforms XML files by
+  * {{{transform-mojo.html}xml:transform}} transforms XML files by
     applying XSLT stylesheets.
 
 * Usage
