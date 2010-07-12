@@ -79,7 +79,7 @@ public class Resolver
                                                   + pFiles[i].getPath() + ": "
                                                   + e.getMessage(), e );
             }
-        }        
+        }
     }
 
     /**
@@ -114,9 +114,17 @@ public class Resolver
         {
             try
             {
-                return new SAXSource( asInputSource( url ) );
+                return asSaxSource( asInputSource( url ) );
             }
             catch ( IOException e )
+            {
+                throw new TransformerException( e );
+            }
+            catch ( SAXException e )
+            {
+                throw new TransformerException( e );
+            }
+            catch ( ParserConfigurationException e )
             {
                 throw new TransformerException( e );
             }
@@ -131,25 +139,29 @@ public class Resolver
         {
             return source;
         }
-        XMLReader xmlReader;
         try
         {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setValidating( validating );
-            spf.setNamespaceAware( true );
-            xmlReader = spf.newSAXParser().getXMLReader();
-            xmlReader.setEntityResolver( this );
-            return new SAXSource( xmlReader, isource );
-        }
-        catch ( ParserConfigurationException e )
-        {
-            throw new TransformerException( e.getMessage(), e );
+            return asSaxSource( isource );
         }
         catch ( SAXException e )
         {
-            throw new TransformerException( e.getMessage(), e );
+            throw new TransformerException( e );
         }
-        
+        catch ( ParserConfigurationException e )
+        {
+            throw new TransformerException( e );
+        }
+    }
+
+    private Source asSaxSource( InputSource isource )
+        throws SAXException, ParserConfigurationException
+    {
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setValidating( validating );
+        spf.setNamespaceAware( true );
+        XMLReader xmlReader = spf.newSAXParser().getXMLReader();
+        xmlReader.setEntityResolver( this );
+        return new SAXSource( xmlReader, isource );
     }
 
     /**

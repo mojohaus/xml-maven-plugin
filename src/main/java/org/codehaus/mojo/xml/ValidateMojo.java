@@ -146,7 +146,7 @@ public class ValidateMojo
                 {
                     validator.setResourceResolver( pResolver );
                 }
-                pSchema.newValidator().validate( new StreamSource( pFile ) );
+                validator.validate( new StreamSource( pFile ) );
             }
         }
         catch ( SAXParseException e )
@@ -229,19 +229,18 @@ public class ValidateMojo
         }
         else
         {
-        	try
-        	{
-        		spf.setFeature( "http://apache.org/xml/features/nonvalidating/load-external-dtd",
-        				        false );
-        	}
-        	catch ( SAXException e )
-        	{
-        		// Ignore this
-        	}
-        	catch ( ParserConfigurationException e )
-        	{
-        		// Ignore this
-        	}
+            try
+            {
+                spf.setFeature( "http://apache.org/xml/features/nonvalidating/load-external-dtd", false );
+            }
+            catch ( SAXException e )
+            {
+                // Ignore this
+            }
+            catch ( ParserConfigurationException e )
+            {
+                // Ignore this
+            }
         }
         spf.setNamespaceAware( true );
         return spf;
@@ -299,8 +298,8 @@ public class ValidateMojo
         throws MojoExecutionException, MojoFailureException
     {
         final Schema schema = getSchema( pResolver, pValidationSet );
-        final File[] files = getFiles( pValidationSet.getDir(), 
-                                       pValidationSet.getIncludes(), 
+        final File[] files = getFiles( pValidationSet.getDir(),
+                                       pValidationSet.getIncludes(),
                                        getExcludes( pValidationSet.getExcludes(),
                                                     pValidationSet.isSkipDefaultExcludes() ) );
         if ( files.length == 0 )
