@@ -283,10 +283,10 @@ public abstract class AbstractXmlMojo
         final String nonProxyHostsProperty = prefix + "nonProxyHosts";
         final String nonProxyHostsValue = isEmpty( nonProxyHosts ) ? null : nonProxyHosts.replace( ',' , '|' );
         setProperty( properties, nonProxyHostsProperty, nonProxyHostsValue );
-        getLog().info( "Proxy settings: " + hostProperty + "=" + hostValue
+        getLog().debug( "Proxy settings: " + hostProperty + "=" + hostValue
                        + ", " + portProperty + "=" + portValue
                        + ", " + userProperty + "=" + userValue
-                       + ", " + passwordProperty + "=" + passwordValue
+                       + ", " + passwordProperty + "=" + (passwordValue == null ? "null" : "<PasswordNotLogged>")
                        + ", " + nonProxyHostsProperty + "=" + nonProxyHostsValue );
         return properties;
     }

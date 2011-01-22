@@ -22,6 +22,14 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
+    <release version="1.0-beta-4" date="Not yet released">
+      <action dev="jochen" type="fix" issue="MOJO-1593"
+          due-to="Mykola Nikishov" due-to-email="mn@mn.com.ua">
+        Disabled proxy password logging. Also reduced logging level
+        of proxy info from "info" to "debug".
+      </action>
+    </release>
+
     <release version="1.0-beta-3" date="15-Sep-2009">
       <action dev="jochen" type="add" issue="MOJO-1120"
           due-to="Michael Brackx" due-to-email="michael.javaone+codehaus@gmail.com">
