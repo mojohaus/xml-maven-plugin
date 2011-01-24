@@ -34,6 +34,11 @@
         resolving included files, thus enabling use of classpath
         resources.
       </action>
+      <action dev="jochen" type="fix" issue="MOJO-1512"
+          due-to="Ram&#x00f3;n Torres B&#xe1;tiz" due-to-email="rbatiz@gmail.com">
+        Documentation fix: Replace ReplaceRegExpFileMapper with
+        RegExpFileMapper.
+      </action>
     </release>
 
     <release version="1.0-beta-3" date="15-Sep-2009">
