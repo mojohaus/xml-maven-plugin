@@ -22,6 +22,7 @@ package org.codehaus.mojo.xml;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -33,13 +34,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -48,6 +50,8 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.xml.transformer.NameValuePair;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
+import org.codehaus.plexus.util.IOUtil;
+import org.xml.sax.InputSource;
 
 
 /**
@@ -115,7 +119,7 @@ public class TransformMojo extends AbstractXmlMojo
         }
     }
 
-    private Templates getTemplate( Resolver pResolver, File stylesheet, TransformationSet transformationSet )
+    private Templates getTemplate( Resolver pResolver, Source stylesheet, TransformationSet transformationSet )
         throws MojoExecutionException, MojoFailureException
     {
 
@@ -164,7 +168,7 @@ public class TransformMojo extends AbstractXmlMojo
         }
         try
         {
-            return tf.newTemplates( new StreamSource( stylesheet ) );
+            return tf.newTemplates( stylesheet );
         }
         catch ( TransformerConfigurationException e )
         {
@@ -441,14 +445,33 @@ public class TransformMojo extends AbstractXmlMojo
             return;
         }
 
-        File stylesheet = pTransformationSet.getStylesheet();
-        if ( stylesheet == null )
+        String stylesheetName = pTransformationSet.getStylesheet();
+        if ( stylesheetName == null )
         {
             getLog().warn( "No stylesheet configured." );
             return;
         }
-        stylesheet = asAbsoluteFile( stylesheet );
-        Templates template = getTemplate( pResolver, stylesheet, pTransformationSet );
+
+        final URL stylesheetUrl = getResource( stylesheetName );
+        Templates template;
+        InputStream stream = null;
+        try
+        {
+        	stream = stylesheetUrl.openStream();
+        	InputSource isource = new InputSource( stream );
+        	isource.setSystemId( stylesheetUrl.toExternalForm() );
+        	template = getTemplate( pResolver, new SAXSource( isource ), pTransformationSet );
+        	stream.close();
+        	stream = null;
+        }
+        catch ( IOException e )
+        {
+        	throw new MojoExecutionException( e.getMessage(), e );
+        }
+        finally
+        {
+        	IOUtil.close( stream );
+        }
         
         int filesTransformed = 0;
         File inputDir = getDir( pTransformationSet.getDir() );
@@ -469,8 +492,11 @@ public class TransformMojo extends AbstractXmlMojo
 
                 // Depends from pom.xml file for when project configuration changes.
                 dependsFiles.add( getProject().getFile() );
-                dependsFiles.add( stylesheet );
-                dependsFiles.add( Arrays.asList( getCatalogs() ) );
+                if ( "file".equals( stylesheetUrl.getProtocol() ) )
+                {
+                	dependsFiles.add( new File( stylesheetUrl.getFile() ) );
+                }
+                dependsFiles.addAll( Arrays.asList( getCatalogs() ) );
                 dependsFiles.add( input );
                 File[] files = asFiles( getBasedir(), pTransformationSet.getOtherDepends() );
                 for ( int j = 0;  j < files.length;  j++ )

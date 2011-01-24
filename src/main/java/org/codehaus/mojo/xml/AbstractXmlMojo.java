@@ -20,6 +20,8 @@ package org.codehaus.mojo.xml;
  */
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +32,9 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.resource.ResourceManager;
+import org.codehaus.plexus.resource.loader.FileResourceLoader;
+import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -70,7 +75,18 @@ public abstract class AbstractXmlMojo
      * @parameter
      */
     private File[] catalogs;
+    
+    /**
+     * Plexus resource manager used to obtain XSL.
+     * 
+     * @component
+     * @required
+     * @readonly
+     */
+    private ResourceManager locator;
 
+    private boolean locatorInitialized;
+    
     /**
      * Returns the maven project.
      */
@@ -137,7 +153,7 @@ public abstract class AbstractXmlMojo
             }
         }
 
-        return new Resolver( getBasedir(), catalogFiles );
+        return new Resolver( getBasedir(), catalogFiles, getLocator() );
     }
 
     /**
@@ -309,4 +325,31 @@ public abstract class AbstractXmlMojo
             setProperty( null, key, value );
         }
     }
+
+    protected URL getResource( String pResource )
+    	throws MojoFailureException
+    {
+        try
+        {
+        	return getLocator().getResource( pResource ).getURL();
+        }
+        catch ( ResourceNotFoundException exception )
+        {
+            throw new MojoFailureException( "Could not find stylesheet: " + pResource );
+        }
+        catch ( IOException e )
+        {
+        	throw new MojoFailureException( "Error while locating resource: " + pResource );
+        }
+    }
+
+    protected ResourceManager getLocator()
+    {
+		if ( !locatorInitialized )
+    	{
+        	locator.addSearchPath( FileResourceLoader.ID, getBasedir().getAbsolutePath() );
+    		locatorInitialized = true;
+    	}
+		return locator;
+	}
 }

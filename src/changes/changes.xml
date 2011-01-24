@@ -28,6 +28,12 @@
         Disabled proxy password logging. Also reduced logging level
         of proxy info from "info" to "debug".
       </action>
+      <action dev="jochen" type="add" issue="MOJO-735"
+          due-to="Mark Hobson" due-to-email="markhobson@gmail.com">
+        The ResourceManager is now used when loading stylesheets or
+        resolving included files, thus enabling use of classpath
+        resources.
+      </action>
     </release>
 
     <release version="1.0-beta-3" date="15-Sep-2009">

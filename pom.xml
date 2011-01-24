@@ -46,10 +46,15 @@
     </contributor>
     <contributor>
       <name>Nick Stolwijk</name>
+      <email>nstolwijk@iprofs.nl</email>
     </contributor>
     <contributor>
     	<name>Mykola Nikishov</name>
     	<email>mn@mn.com.ua</email>
+    </contributor>
+    <contributor>
+    	<name>Mark Hobson</name>
+    	<email>markhobson@gmail.com</email>
     </contributor>
   </contributors>
   <licenses>
@@ -100,7 +105,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-resources</artifactId>
-      <version>1.0-alpha-4</version>
+      <version>1.0-alpha-7</version>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>

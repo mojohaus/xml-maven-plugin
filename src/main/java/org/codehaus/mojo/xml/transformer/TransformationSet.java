@@ -30,7 +30,7 @@ import org.codehaus.plexus.components.io.filemappers.FileMapper;
  */
 public class TransformationSet
 {
-    private File stylesheet;
+    private String stylesheet;
 
     private File dir;
 
@@ -151,7 +151,7 @@ public class TransformationSet
      * Returns the XSLT stylesheet, which is being used to control
      * the transformation.
      */
-    public File getStylesheet()
+    public String getStylesheet()
     {
         return stylesheet;
     }
@@ -215,7 +215,7 @@ public class TransformationSet
      * Sets the XSLT stylesheet, which is being used to control
      * the transformation.
      */
-    public void setStylesheet( File pStylesheet )
+    public void setStylesheet( String pStylesheet )
     {
         stylesheet = pStylesheet;
     }

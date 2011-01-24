@@ -36,6 +36,8 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.xml.resolver.CatalogManager;
 import org.apache.xml.resolver.tools.CatalogResolver;
+import org.codehaus.plexus.resource.ResourceManager;
+import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.InputSource;
@@ -52,7 +54,8 @@ import org.xml.sax.ext.EntityResolver2;
 public class Resolver
     implements EntityResolver2, URIResolver, LSResourceResolver
 {
-    private final File baseDir;
+	private final ResourceManager locator;
+	private final File baseDir;
     private final CatalogResolver resolver;
     private boolean validating;
 
@@ -60,10 +63,11 @@ public class Resolver
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
-    Resolver( File pBaseDir, File[] pFiles )
+    Resolver( File pBaseDir, File[] pFiles, ResourceManager pLocator )
         throws MojoExecutionException
     {
         baseDir = pBaseDir;
+        locator = pLocator;
         CatalogManager manager = new CatalogManager();
         manager.setIgnoreMissingProperties( true );
         resolver = new CatalogResolver( manager );
@@ -298,7 +302,19 @@ public class Resolver
                 url = resolveAsFile( pResource );
             }
         }
-        return url;
+
+        try
+        {
+        	return locator.getResource( pResource ).getURL();
+        }
+        catch ( ResourceNotFoundException e )
+        {
+        	return null;
+        }
+        catch ( IOException e )
+        {
+        	return null;
+        }
     }
 
     /**

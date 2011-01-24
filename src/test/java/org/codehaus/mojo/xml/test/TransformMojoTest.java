@@ -52,7 +52,7 @@ public class TransformMojoTest
     }
 
     /**
-     * Common code for the it4 and it6 test projects.
+     * Common code for the it4, it6 and it10 test projects.
      */
     public void runTestIt4( String dir, String targetFile )
         throws Exception
@@ -192,7 +192,7 @@ public class TransformMojoTest
     {
         if ( !java1_6_Aware() )
         {
-            System.out.println( " skip test due to non compliance jvm version need 1.6" );
+        	System.out.println( " skip test due to non compliance jvm version need 1.6" );
             return;
         }
         final String dir = "src/test/it8";
@@ -202,5 +202,14 @@ public class TransformMojoTest
         assertEquals("SAXON 8.7 from Saxonica", eval( doc1, "/root/vendor" ) );
         assertEquals("http://www.saxonica.com/", eval( doc1, "/root/vendor-url" ) );
         assertEquals("2.0", eval( doc1, "/root/version" ) );
+    }
+
+    /**
+     * Builds the it10 test project.
+     */
+    public void testIt10()
+        throws Exception
+    {
+    	runTestIt4( "src/test/it10", "doc1.xml" );
     }
 }
