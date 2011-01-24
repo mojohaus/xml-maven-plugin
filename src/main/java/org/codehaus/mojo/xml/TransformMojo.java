@@ -29,7 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -496,7 +495,10 @@ public class TransformMojo extends AbstractXmlMojo
                 {
                 	dependsFiles.add( new File( stylesheetUrl.getFile() ) );
                 }
-                dependsFiles.addAll( Arrays.asList( getCatalogs() ) );
+                List catalogFiles = new ArrayList();
+                List catalogUrls = new ArrayList();
+                setCatalogs( catalogFiles, catalogUrls );
+                dependsFiles.addAll( catalogFiles );
                 dependsFiles.add( input );
                 File[] files = asFiles( getBasedir(), pTransformationSet.getOtherDepends() );
                 for ( int j = 0;  j < files.length;  j++ )

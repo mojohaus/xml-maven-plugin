@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -63,7 +64,7 @@ public class Resolver
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
-    Resolver( File pBaseDir, File[] pFiles, ResourceManager pLocator )
+    Resolver( File pBaseDir, List pFiles, List pUrls, ResourceManager pLocator )
         throws MojoExecutionException
     {
         baseDir = pBaseDir;
@@ -71,18 +72,32 @@ public class Resolver
         CatalogManager manager = new CatalogManager();
         manager.setIgnoreMissingProperties( true );
         resolver = new CatalogResolver( manager );
-        for ( int i = 0; i < pFiles.length; i++ )
+        for ( int i = 0; i < pFiles.size(); i++ )
         {
+        	File file = (File) pFiles.get( i );
             try
             {
-                resolver.getCatalog().parseCatalog( pFiles[i].toURI().toURL().toExternalForm() );
+                resolver.getCatalog().parseCatalog( file.getPath() );
             }
             catch ( IOException e )
             {
                 throw new MojoExecutionException( "Failed to parse catalog file: "
-                                                  + pFiles[i].getPath() + ": "
+                                                  + file.getPath() + ": "
                                                   + e.getMessage(), e );
             }
+        }
+        for ( int i = 0;  i < pUrls.size();  i++ )
+        {
+        	URL url = (URL) pUrls.get( i );
+        	try
+        	{
+        		resolver.getCatalog().parseCatalog( url );
+        	}
+        	catch ( IOException e )
+        	{
+        		throw new MojoExecutionException( "Failed to parse catalog URL: "
+        				+ url + ": " + e.getMessage(), e );
+        	}
         }
     }
 

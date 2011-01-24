@@ -39,6 +39,10 @@
         Documentation fix: Replace ReplaceRegExpFileMapper with
         RegExpFileMapper.
       </action>
+      <action dev="jochen" type="add" issue="MOJO-1471"
+          due-to="Andreas Eternach" due-to-email="a.eternach@directbox.com">
+        Catalogs can now be specified as URL's, not only as files.
+      </action>
     </release>
 
     <release version="1.0-beta-3" date="15-Sep-2009">

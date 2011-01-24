@@ -21,6 +21,7 @@ package org.codehaus.mojo.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -70,11 +71,11 @@ public abstract class AbstractXmlMojo
      */
     private File basedir;
 
-    /** An XML catalog file, which is being used to resolve
+    /** An XML catalog file, or URL, which is being used to resolve
      * entities.
      * @parameter
      */
-    private File[] catalogs;
+    private String[] catalogs;
     
     /**
      * Plexus resource manager used to obtain XSL.
@@ -119,19 +120,25 @@ public abstract class AbstractXmlMojo
     /**
      * Returns the plugins catalog files.
      */
-    protected File[] getCatalogs()
+    protected void setCatalogs( List pCatalogFiles, List pCatalogUrls )
     {
-        if ( catalogs == null )
+        if ( catalogs == null  ||  catalogs.length == 0 )
         {
-            return new File[0];
+            return;
         }
 
-        File[] catalogFiles = new File[catalogs.length];
-        for ( int i = 0; i < catalogFiles.length; i++ )
+        for ( int i = 0; i < catalogs.length; i++ )
         {
-            catalogFiles[i] = asAbsoluteFile( catalogs[i] );
+        	try
+        	{
+        		URL url = new URL( catalogs[i] );
+        		pCatalogUrls.add( url );
+        	}
+        	catch ( MalformedURLException e )
+        	{
+                pCatalogFiles.add( asAbsoluteFile( new File( catalogs[i] ) ) );
+        	}
         }
-        return catalogFiles;
     }
 
     /**
@@ -140,20 +147,11 @@ public abstract class AbstractXmlMojo
     protected Resolver getResolver()
         throws MojoExecutionException
     {
-        File[] catalogFiles = getCatalogs();
-        if ( catalogFiles == null )
-        {
-            catalogFiles = new File[0];
-        }
-        else
-        {
-            for ( int i = 0; i < catalogFiles.length; i++ )
-            {
-                catalogFiles[i] = asAbsoluteFile( catalogs[i] );
-            }
-        }
+    	List catalogFiles = new ArrayList();
+    	List catalogUrls = new ArrayList();
+    	setCatalogs( catalogFiles, catalogUrls );
 
-        return new Resolver( getBasedir(), catalogFiles, getLocator() );
+        return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator() );
     }
 
     /**
