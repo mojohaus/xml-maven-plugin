@@ -43,6 +43,11 @@
           due-to="Andreas Eternach" due-to-email="a.eternach@directbox.com">
         Catalogs can now be specified as URL's, not only as files.
       </action>
+      <action dev="jochen" type="add" issue="MOJO-1470"
+          due-to="Andreas Eternach" due-to-email="a.eternach@directbox.com">
+        The resolver does now attempt to use the namespace URI and
+        not only the public ID.
+      </action>
     </release>
 
     <release version="1.0-beta-3" date="15-Sep-2009">

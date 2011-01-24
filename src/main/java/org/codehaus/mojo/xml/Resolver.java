@@ -189,7 +189,7 @@ public class Resolver
     public LSInput resolveResource( String pType, String pNamespaceURI, String pPublicId, String pSystemId,
                                     String pBaseURI )
     {
-        final InputSource isource;
+    	InputSource isource = null;
         URL url = resolve( pSystemId );
         if ( url != null )
         {
@@ -204,7 +204,14 @@ public class Resolver
         }
         else
         {
-            isource = resolver.resolveEntity( pPublicId, pSystemId );
+        	if ( pNamespaceURI != null )
+        	{
+        		isource = resolver.resolveEntity( pNamespaceURI, pSystemId );
+        	}
+        	if ( isource == null )
+        	{
+        		isource = resolver.resolveEntity( pPublicId, pSystemId );
+        	}
             if ( isource == null )
             {
                 return null;
