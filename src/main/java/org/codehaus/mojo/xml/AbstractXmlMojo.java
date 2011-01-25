@@ -151,7 +151,8 @@ public abstract class AbstractXmlMojo
     	List catalogUrls = new ArrayList();
     	setCatalogs( catalogFiles, catalogUrls );
 
-        return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator() );
+        return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator(),
+        		getLog().isDebugEnabled() );
     }
 
     /**

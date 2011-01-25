@@ -64,13 +64,17 @@ public class Resolver
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
-    Resolver( File pBaseDir, List pFiles, List pUrls, ResourceManager pLocator )
+    Resolver( File pBaseDir, List pFiles, List pUrls, ResourceManager pLocator, boolean pLogging )
         throws MojoExecutionException
     {
         baseDir = pBaseDir;
         locator = pLocator;
         CatalogManager manager = new CatalogManager();
         manager.setIgnoreMissingProperties( true );
+        if ( pLogging )
+        {
+        	manager.setVerbosity( Integer.MAX_VALUE );
+        }
         resolver = new CatalogResolver( manager );
         for ( int i = 0; i < pFiles.size(); i++ )
         {
