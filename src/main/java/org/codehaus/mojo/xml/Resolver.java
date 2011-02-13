@@ -73,6 +73,7 @@ public class Resolver
         manager.setIgnoreMissingProperties( true );
         if ( pLogging )
         {
+        	System.err.println("Setting resolver verbosity to maximum.");
         	manager.setVerbosity( Integer.MAX_VALUE );
         }
         resolver = new CatalogResolver( manager );
@@ -111,12 +112,18 @@ public class Resolver
     public InputSource resolveEntity( String pPublicId, String pSystemId )
         throws SAXException, IOException
     {
-        URL url = resolve( pSystemId );
+    	final InputSource source = resolver.resolveEntity( pPublicId, pSystemId );
+    	if ( source != null )
+    	{
+    		return source;
+    	}
+
+    	URL url = resolve( pSystemId );
         if ( url != null )
         {
             return asInputSource( url );
         }
-        return resolver.resolveEntity( pPublicId, pSystemId );
+        return null;
     }
 
     private InputSource asInputSource( URL url ) throws IOException
@@ -132,7 +139,13 @@ public class Resolver
     public Source resolve( String pHref, String pBase )
         throws TransformerException
     {
-        URL url = resolve( pHref );
+    	final Source source = resolver.resolve( pHref, pBase );
+    	if ( source != null )
+    	{
+    		return source;
+    	}
+
+    	URL url = resolve( pHref );
         if ( url != null )
         {
             try
@@ -152,28 +165,7 @@ public class Resolver
                 throw new TransformerException( e );
             }
         }
-        Source source = resolver.resolve( pHref, pBase );
-        if ( source == null )
-        {
-            return source;
-        }
-        InputSource isource = SAXSource.sourceToInputSource( source );
-        if ( isource == null )
-        {
-            return source;
-        }
-        try
-        {
-            return asSaxSource( isource );
-        }
-        catch ( SAXException e )
-        {
-            throw new TransformerException( e );
-        }
-        catch ( ParserConfigurationException e )
-        {
-            throw new TransformerException( e );
-        }
+        return null;
     }
 
     private Source asSaxSource( InputSource isource )
@@ -187,13 +179,37 @@ public class Resolver
         return new SAXSource( xmlReader, isource );
     }
 
+    private final LSInput newLSInput( InputSource pSource )
+    {
+    	final LSInputImpl lsInput = new LSInputImpl();
+    	lsInput.setByteStream( pSource.getByteStream() );
+    	lsInput.setCharacterStream( pSource.getCharacterStream() );
+    	lsInput.setPublicId( lsInput.getPublicId() );
+    	lsInput.setSystemId( pSource.getSystemId() );
+    	lsInput.setEncoding( pSource.getEncoding() );
+    	return lsInput;
+    }
+    
     /**
      * Implementation of {@link LSResourceResolver#resolveResource(String, String, String, String, String)}.
      */
     public LSInput resolveResource( String pType, String pNamespaceURI, String pPublicId, String pSystemId,
                                     String pBaseURI )
     {
-    	InputSource isource = null;
+    	if ( pPublicId != null )
+    	{
+    		final InputSource isource = resolver.resolveEntity( pPublicId, pSystemId );
+    		if ( isource != null )
+    		{
+    			return newLSInput( isource );
+    		}
+    	}
+    	InputSource isource = resolver.resolveEntity( pNamespaceURI, pSystemId );
+    	if ( isource != null )
+    	{
+    		return newLSInput( isource );
+    	}
+    	
         URL url = resolve( pSystemId );
         if ( url != null )
         {
@@ -206,28 +222,7 @@ public class Resolver
                 throw new UndeclaredThrowableException( e );
             }
         }
-        else
-        {
-        	if ( pNamespaceURI != null )
-        	{
-        		isource = resolver.resolveEntity( pNamespaceURI, pSystemId );
-        	}
-        	if ( isource == null )
-        	{
-        		isource = resolver.resolveEntity( pPublicId, pSystemId );
-        	}
-            if ( isource == null )
-            {
-                return null;
-            }
-        }
-        LSInputImpl result = new LSInputImpl();
-        result.setByteStream( isource.getByteStream() );
-        result.setCharacterStream( isource.getCharacterStream() );
-        result.setPublicId( isource.getPublicId() );
-        result.setSystemId( isource.getSystemId() );
-        result.setEncoding( isource.getEncoding() );
-        return result;
+        return newLSInput( isource );
     }
 
     /**
@@ -357,11 +352,17 @@ public class Resolver
     public InputSource resolveEntity( String pName, String pPublicId, String pBaseURI, String pSystemId )
         throws SAXException, IOException
     {
-        URL url = resolve( pSystemId );
+    	final InputSource source = resolver.resolveEntity( pPublicId, pSystemId );
+    	if ( source != null )
+    	{
+    		return source;
+    	}
+    	
+    	URL url = resolve( pSystemId );
         if ( url != null )
         {
             return asInputSource( url );
         }
-        return resolver.resolveEntity( pPublicId, pSystemId );
+        return null;
     }
 }

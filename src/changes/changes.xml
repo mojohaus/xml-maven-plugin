@@ -48,6 +48,10 @@
         The resolver does now attempt to use the namespace URI and
         not only the public ID.
       </action>
+      <action dev="jochen" type="add" issue="MOJO-1447"
+          due-to="Luke W. Patterson" due-to-email="lukewpatterson@gmail.com">
+        Add support for in-place transformation.
+      </action>
     </release>
 
     <release version="1.0-beta-3" date="15-Sep-2009">

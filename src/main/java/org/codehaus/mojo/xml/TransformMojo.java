@@ -49,6 +49,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.xml.transformer.NameValuePair;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.xml.sax.InputSource;
 
@@ -383,14 +384,29 @@ public class TransformMojo extends AbstractXmlMojo
         FileOutputStream fos = null;
         try
         {
-            fos = new FileOutputStream( output );
-            
-            final String parentFile = input.getParent() == null
+        	final boolean transformInPlace = output.equals( input );
+        	File tmpOutput = null;
+        	if ( transformInPlace ) {
+        		tmpOutput = File.createTempFile( "xml-maven-plugin", "xml" );
+        		tmpOutput.deleteOnExit();
+                fos = new FileOutputStream( tmpOutput );
+        	}
+        	else
+        	{
+        		fos = new FileOutputStream( output );
+        	}
+
+        	final String parentFile = input.getParent() == null
                 ? null : input.getParentFile().toURI().toURL().toExternalForm();
             pTransformer.transform( pResolver.resolve( input.toURI().toURL().toExternalForm(),
                                                        parentFile ), new StreamResult( fos ) );
             fos.close();
             fos = null;
+            if ( transformInPlace ) {
+            	FileUtils.copyFile( tmpOutput, output );
+            	/* tmpOutput is a temporary file */
+            	tmpOutput.delete();
+            }
         }
         catch ( IOException e )
         {
