@@ -22,7 +22,7 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="1.0-beta-4" date="Not yet released">
+    <release version="1.0" date="Not yet released">
       <action dev="jochen" type="fix" issue="MOJO-1593"
           due-to="Mykola Nikishov" due-to-email="mn@mn.com.ua">
         Disabled proxy password logging. Also reduced logging level
@@ -51,6 +51,9 @@
       <action dev="jochen" type="add" issue="MOJO-1447"
           due-to="Luke W. Patterson" due-to-email="lukewpatterson@gmail.com">
         Add support for in-place transformation.
+      </action>
+      <action dev="jochen" type="add" issue="MOJO-1413">
+        Added catalog file example to the docs.
       </action>
     </release>
 
