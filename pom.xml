@@ -8,7 +8,7 @@
   <artifactId>xml-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Maven XML Plugin</name>
-  <version>1.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <prerequisites>
     <maven>${mavenVersion}</maven>
   </prerequisites>
@@ -77,9 +77,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/tags/xml-maven-plugin-1.0</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/xml-maven-plugin-1.0</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/tags/xml-maven-plugin-1.0</url>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/xml-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/xml-maven-plugin</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/xml-maven-plugin</url>
   </scm>
 
   <issueManagement>
