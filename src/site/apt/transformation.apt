@@ -26,7 +26,7 @@ Transforming XML files
   goal is used. It is configured through a section like the following in your
   POM:
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -52,7 +52,7 @@ Transforming XML files
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
 
   The example would transform all files in the directory "xml" by applying
   the stylesheet "it4.xml". The output would be written to the directory
@@ -142,7 +142,7 @@ Transformation Set Configuration
 *---------------------+-----------------------------------------------------------------+
 | outputProperties    | A list of name/value pairs, which are used to invoke the method |
 |                     | <<<setOutputProperty(...)>>> on the transformer. For details,   |
-|                     | see {{{examples/transform-outputProperties.html}this example}}. |
+|                     | see {{{./examples/transform-outputProperties.html}this example}}. |
 *---------------------+-----------------------------------------------------------------+
 | skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
 |                     | be added to the excludes list.                                  |

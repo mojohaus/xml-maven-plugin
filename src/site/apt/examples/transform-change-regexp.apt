@@ -35,9 +35,9 @@ Use regular expressions to transform file names
   created files would have the extension <<<.fo>>>, rather than
   <<<.xml>>>. (We could very well achieve the same by using
   the <<<FileExtensionMapper>>>, as demonstrated in
-  {{{transform-change-extension.html}this example}}.)
+  {{{./transform-change-extension.html}this example}}.)
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -69,37 +69,37 @@ Use regular expressions to transform file names
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
 
   Let's have a look at some other examples. We omit most of the details,
   except for the pattern and the replacement, which are the important parts:
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
     <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
       <pattern>^(.*)\.gif$</pattern>
       <replacement>$1.jpg</replacement>
     </fileMapper>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
 
   This example is identical with the previous. However, it demonstrates
   the use of <capture groups>. The contents of <<<(.*)>>> are captured and
   inserted by using the group term <<<$1>>>. You might have multiple groups
   and use the terms <<<$2>>>, <<<$3>>>, and so on.
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
     <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
       <pattern>a</pattern>
       <replacement>b</replacement>
     </fileMapper>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
 
   This example replaces the <<first>> a with a b. Nothing special here, except
   that you might like to replace <<all>> a's instead. Here's how to do it:
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
     <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
       <pattern>a</pattern>
       <replacement>b</replacement>
       <replaceAll>true</replaceAll>
     </fileMapper>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------

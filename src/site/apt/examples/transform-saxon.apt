@@ -29,7 +29,7 @@ Using an alternative XSLT processor
 
   Changing the XSLT processor is as simple as specifying it as a dependency:
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -62,15 +62,15 @@ Using an alternative XSLT processor
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
 
   If you would like to know, which XSLT processor and/or version you are actually
   using, add code like the following to your stylesheet:
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <xsl:comment>
     XSLT Version = <xsl:copy-of select="system-property('xsl:version')"/>
     XSLT Vendor = <xsl:copy-of select="system-property('xsl:vendor')"/>
     XSLT Vendor URL = <xsl:copy-of select="system-property('xsl:vendor-url')"/>
   </xsl:comment>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------

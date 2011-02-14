@@ -28,35 +28,38 @@ The XML Maven Plugin
 
   The plugin offers the following goals:
 
-  * {{{validate-mojo.html}xml:validate}} validates XML files against a
+  * {{{./validate-mojo.html}xml:validate}} validates XML files against a
     schema. If the files aren't matching a certain schema, one may
     simply check, whether they are well formed.
   
-  * {{{transform-mojo.html}xml:transform}} transforms XML files by
+  * {{{./transform-mojo.html}xml:transform}} transforms XML files by
     applying XSLT stylesheets.
 
 * Usage
 
-  Instructions on how to use the XML Maven Plugin can be found on the {{{usage.html}usage page}}.
+  Instructions on how to use the XML Maven Plugin can be found on the {{{./usage.html}usage page}}.
 
 * Examples
 
   To provide you with better understanding of some usages of the XML Maven Plugin,
   you can take a look into the following examples:
 
-  * Checking, whether XML files are {{{examples/validate-well-formedness.html}well formed}}
+  * Checking, whether XML files are {{{./examples/validate-well-formedness.html}well formed}}
 
-  * Checking, whether XML files are {{{examples/validate-schema.html}matching an XML schema}}
+  * Checking, whether XML files are {{{./examples/validate-schema.html}matching an XML schema}}
 
-  * {{{examples/transform-basic.html}Transforming}} XML files by applying
+  * {{{./examples/transform-basic.html}Transforming}} XML files by applying
     an XSLT stylesheet
 
-  * {{{examples/transform-change-extension.html}Changing the extension}} of a
+  * {{{./examples/transform-change-extension.html}Changing the extension}} of a
     transformations result files.
 
-  * Using an {{{examples/transform-saxon.html}XSLT 2.0 compliant processor}}.
+  * Using an {{{./examples/transform-saxon.html}XSLT 2.0 compliant processor}}.
 
-  * Setting {{{examples/transform-outputProperties.html}output properties}} on a
+  * Setting {{{./examples/transform-outputProperties.html}output properties}} on a
     transformer.
 
-  * Setting {{{examples/transform-parameters.html}stylesheet parameters}}.
+  * Setting {{{./examples/transform-parameters.html}stylesheet parameters}}.
+
+  * Suppressing access to external resources by using a {{{./examples/catalog.html}
+    catalog file}}.

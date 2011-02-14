@@ -25,7 +25,7 @@ Setting a transformers output properties
   The following configuration snippet would set the output property
   <<<omit-xml-declaration>>> to <<<yes>>>:
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -57,4 +57,4 @@ Setting a transformers output properties
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------

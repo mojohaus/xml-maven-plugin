@@ -27,7 +27,7 @@ Change the extension of the generated files
   <<<src/main/stylesheet.xsl>>>. The created files would have
   the extension <<<.fo>>>, rather than <<<.xml>>>.
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -58,8 +58,8 @@ Change the extension of the generated files
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
 
   Btw, the same could be achieved the much more powerful and generic RegExpFileMapper,
-  which you find explained in more detail in {{{transform-change-regexp.html}another
+  which you find explained in more detail in {{{./transform-change-regexp.html}another
   example}}.

@@ -53,6 +53,7 @@
       <item name="Using XSLT 2.0" href="examples/transform-saxon.html"/>
       <item name="XSLT output properties" href="examples/transform-outputProperties.html"/>
       <item name="XSLT stylesheet parameters" href="examples/transform-parameters.html"/>
+      <item name="Catalog files" href="examples/catalog.html"/>
     </menu>
 
     <menu ref="reports"/>

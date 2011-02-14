@@ -26,7 +26,7 @@ Transforming XML files by applying an XSLT stylesheet
   in the directory <<<src/main/xml>>> by applying the stylesheet
   <<<src/main/stylesheet.xsl>>>.
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -52,4 +52,4 @@ Transforming XML files by applying an XSLT stylesheet
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------

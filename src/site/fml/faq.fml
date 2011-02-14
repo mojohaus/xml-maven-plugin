@@ -52,8 +52,21 @@
       <question>I have a stylesheet (a schema, another resource), which should
         be loaded through the class loader.</question>
       <answer>
-        <p>For example, to load a stylesheet from org/foo/stylesheet.xsl,
-          use the URI "resource:org/foo/stylesheet.xsl".</p>
+        <p>The plugin attempts to resolve resources through the class loader
+          automatically. Alternatively, you can enforce using the class
+          loader, if you specify your resource with an URI like
+          "resource:org/foo/stylesheet.xsl".</p>
+      </answer>
+    </faq>
+
+    <faq id="Catalogs">
+      <question>The plugin doesn't work in offline mode. It always tries to
+        resolve external resources and fails, if the network is not available.</question>
+      <answer>
+        <p>You've got to download the resources in question once and store them
+          as part of the project. A catalog file will replace the external
+          resource with your local copy. See <a href="examples/catalog.html">this
+          example</a> for details.</p>
       </answer>
     </faq>
   </part>

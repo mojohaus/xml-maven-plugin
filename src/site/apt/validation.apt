@@ -25,7 +25,7 @@ Validating XML files
   To validate XML files, the "xml:validate" goal is used. It is configured through
   a section like the following in your POM:
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -54,7 +54,7 @@ Validating XML files
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
 
   The example would check all files in the directory "xml" for well formedness.
   Additionally, it would validate all files in the directory "xsd" against the

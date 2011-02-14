@@ -26,7 +26,7 @@ Checking, whether XML files are matching an XML Schema
   in the directory <<<src/main/xsd>>> are matching the schema
   <<<src/main/xmlschema.xsd>>>.
 
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
   <build>
     <plugins>
       ...
@@ -52,4 +52,4 @@ Checking, whether XML files are matching an XML Schema
       ...
     </plugins>
   </build>
------------------------------------------------------------------------------------
++----------------------------------------------------------------------------------
