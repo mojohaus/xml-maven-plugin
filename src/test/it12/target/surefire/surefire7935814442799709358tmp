@@ -1,0 +1,5 @@
+#surefire
+#Tue Mar 01 00:30:35 CET 2011
+user.dir=C\:\\workspace\\xml-maven-plugin\\src\\test\\it12
+localRepository=C\:\\Users\\jwi\\.m2\\repository
+basedir=C\:\\workspace\\xml-maven-plugin\\src\\test\\it12

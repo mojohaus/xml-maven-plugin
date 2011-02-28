@@ -22,7 +22,14 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="1.0" date="Not yet released">
+    <release version="1.0.1" date="Not yet released">
+      <action dev="jochen" type="fix" issue="MOJO-1648"
+          due-to="Paul Lucassen" due-to-email="pglucassen@gmail.com">
+        Fixed an NPE when specifying the schema via public ID.
+      </action>
+    </release>
+
+    <release version="1.0" date="2011-Feb-14">
       <action dev="jochen" type="fix" issue="MOJO-1593"
           due-to="Mykola Nikishov" due-to-email="mn@mn.com.ua">
         Disabled proxy password logging. Also reduced logging level

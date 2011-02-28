@@ -222,7 +222,7 @@ public class Resolver
                 throw new UndeclaredThrowableException( e );
             }
         }
-        return newLSInput( isource );
+        return isource == null ? null : newLSInput( isource );
     }
 
     /**

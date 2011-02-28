@@ -76,4 +76,13 @@ public class ValidateMojoTest
     {
         runTest( "src/test/it9" );
     }
+
+    /**
+     * Builds and runs the it12 test project (MOJO-1648)
+     */
+    public void testIt12()
+        throws Exception
+    {
+        runTest( "src/test/it12" );
+    }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.bicat.com/wise4all/ws"
+           xmlns="http://www.bicat.com/wise4all/ws"
+           elementFormDefault="qualified">
+
+ <xs:simpleType name="t_systeem">
+  <xs:restriction base="xs:string">
+   <xs:pattern value="[A-Z0-9]|[A-Z][0-9]{2}"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+
+</xs:schema>

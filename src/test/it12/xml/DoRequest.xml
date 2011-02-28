@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ns2:DoRequest xmlns:ns2="http://www.bicat.com/wise4all/ws">
+ <ns2:systeem>D</ns2:systeem>
+</ns2:DoRequest>
