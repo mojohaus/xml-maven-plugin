@@ -103,7 +103,7 @@ Transformation Set Configuration
 | attributes          | Specifies attributes, which are being set on the transformer    |
 |                     | factory by invoking the setAttribute(String, Object) method.    |
 *---------------------+-----------------------------------------------------------------+
-| addToClasspath      | Specifies, whether the output directory is being added to the   |
+| addedToClasspath    | Specifies, whether the output directory is being added to the   |
 |                     | to the classpath. Defaults to true.                             |
 *---------------------+-----------------------------------------------------------------+
 | dir                 | Sets the name of a directory, which is scanned for the files,   |

@@ -27,6 +27,10 @@
           due-to="Paul Lucassen" due-to-email="pglucassen@gmail.com">
         Fixed an NPE when specifying the schema via public ID.
       </action>
+      <action dev="jochen" type="fix" issue="MOJO-1690"
+          due-to="Jeff Martin" due-to-email="jeff@jeffmartin.com">
+        Wrong property name in documentation (transformation.html)
+      </action>
     </release>
 
     <release version="1.0" date="2011-Feb-14">
