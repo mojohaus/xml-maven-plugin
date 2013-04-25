@@ -7,7 +7,7 @@
   </parent>
   <artifactId>xml-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>Maven XML Plugin</name>
+  <name>XML Maven Plugin</name>
   <version>1.0.1-SNAPSHOT</version>
   <prerequisites>
     <maven>${mavenVersion}</maven>
