@@ -232,5 +232,8 @@
   </reporting>
   <properties>
     <mavenVersion>2.0.7</mavenVersion>
+
+    <!-- Override the 1.7 set in parent -->
+    <mojo.java.target>1.6</mojo.java.target>
   </properties>
 </project>
