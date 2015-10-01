@@ -62,6 +62,12 @@ public abstract class AbstractXmlMojo
 	@Parameter(defaultValue="${basedir}", required=true, readonly=true)
     private File basedir;
 
+	/**
+	 * Whether to skip execution.
+	 */
+	@Parameter(property="xml.skip", defaultValue="false")
+	private boolean skip;
+
     /** An XML catalog file, or URL, which is being used to resolve
      * entities.
      */
@@ -339,4 +345,9 @@ public abstract class AbstractXmlMojo
     	}
 		return locator;
 	}
+
+    protected boolean isSkipping()
+    {
+    	return skip;
+    }
 }

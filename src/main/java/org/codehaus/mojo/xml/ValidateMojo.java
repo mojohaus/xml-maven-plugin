@@ -325,6 +325,12 @@ public class ValidateMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+    	if (isSkipping())
+    	{
+    		getLog().debug("Skipping execution, as demanded by user.");
+    		return;
+    	}
+
         if ( validationSets == null || validationSets.length == 0 )
         {
             throw new MojoFailureException( "No ValidationSets configured." );

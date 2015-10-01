@@ -49,8 +49,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.xml.transformer.NameValuePair;
-import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -75,7 +73,7 @@ public class TransformMojo extends AbstractXmlMojo
      */
 	@Parameter(property="xml.forceCreation", defaultValue="false")
     private boolean forceCreation;
-
+	
     /**
      * Transformer factory use. By default, the systems default transformer
      * factory is used.
@@ -614,6 +612,11 @@ public class TransformMojo extends AbstractXmlMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+    	if (isSkipping())
+    	{
+    		getLog().debug("Skipping execution, as demanded by user.");
+    		return;
+    	}
         if ( transformationSets == null || transformationSets.length == 0 )
         {
             throw new MojoFailureException( "No TransformationSets configured." );
