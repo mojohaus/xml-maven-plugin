@@ -19,7 +19,7 @@ package org.codehaus.mojo.xml.test;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.xml.sax.SAXParseException;
 
-/** Test case for the {@link ValidateMojo}.
+/** Test case for the {@link CheckFormatMojo}.
  */
 public class ValidateMojoTest
     extends AbstractXmlMojoTestCase

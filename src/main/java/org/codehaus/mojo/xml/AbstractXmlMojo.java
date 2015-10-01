@@ -60,7 +60,7 @@ public abstract class AbstractXmlMojo
      * The base directory, relative to which directory names are
      * interpreted.
      */
-    @Parameter(defaultValue="${basedir}", required=true, readonly=true)
+    @Parameter(defaultValue="${project.basedir}", required=true, readonly=true)
     private File basedir;
 
     /**
