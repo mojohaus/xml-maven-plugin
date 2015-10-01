@@ -85,14 +85,14 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/xml-maven-plugin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/xml-maven-plugin</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/xml-maven-plugin</url>
+    <connection>scm:git:https://github.com/mojohaus/xml-maven-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/mojohaus/xml-maven-plugin.git</developerConnection>
+    <url>https://github.com/mojohaus/xml-maven-plugin</url>
   </scm>
 
   <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/MOJO/component/12247</url>
+    <system>GitHub Issues</system>
+    <url>https://github.com/mojohaus/xml-maven-plugin/issues</url>
   </issueManagement>
 
   <dependencies>
