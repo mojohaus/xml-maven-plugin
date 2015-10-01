@@ -9,6 +9,7 @@
   <packaging>maven-plugin</packaging>
   <name>XML Maven Plugin</name>
   <version>1.0.1-SNAPSHOT</version>
+  <url>http://www.mojohaus.org/xml-maven-plugin/</url>
   <prerequisites>
     <maven>${mavenVersion}</maven>
   </prerequisites>
