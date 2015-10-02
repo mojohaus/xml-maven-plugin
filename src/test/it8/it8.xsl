@@ -16,11 +16,11 @@
 
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:template match="/">
-		<root>
-			<vendor><xsl:value-of select="system-property('xsl:vendor')"/></vendor>
-			<vendor-url><xsl:value-of select="system-property('xsl:vendor-url')"/></vendor-url>
-			<version><xsl:value-of select="system-property('xsl:version')"/></version>
-		</root>
-	</xsl:template>
+    <xsl:template match="/">
+        <root>
+            <vendor><xsl:value-of select="system-property('xsl:vendor')"/></vendor>
+            <vendor-url><xsl:value-of select="system-property('xsl:vendor-url')"/></vendor-url>
+            <version><xsl:value-of select="system-property('xsl:version')"/></version>
+        </root>
+    </xsl:template>
 </xsl:stylesheet>

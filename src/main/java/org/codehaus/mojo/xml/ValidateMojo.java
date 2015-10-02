@@ -55,7 +55,7 @@ public class ValidateMojo
      * Specifies a set of document types, which are being
      * validated.
      */
-	@Parameter
+    @Parameter
     private ValidationSet[] validationSets;
 
     /**
@@ -322,11 +322,11 @@ public class ValidateMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-    	if (isSkipping())
-    	{
-    		getLog().debug("Skipping execution, as demanded by user.");
-    		return;
-    	}
+        if (isSkipping())
+        {
+            getLog().debug("Skipping execution, as demanded by user.");
+            return;
+        }
 
         if ( validationSets == null || validationSets.length == 0 )
         {

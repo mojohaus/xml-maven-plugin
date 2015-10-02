@@ -55,8 +55,8 @@ import org.xml.sax.ext.EntityResolver2;
 public class Resolver
     implements EntityResolver2, URIResolver, LSResourceResolver
 {
-	private final ResourceManager locator;
-	private final File baseDir;
+    private final ResourceManager locator;
+    private final File baseDir;
     private final CatalogResolver resolver;
     private boolean validating;
 
@@ -73,13 +73,13 @@ public class Resolver
         manager.setIgnoreMissingProperties( true );
         if ( pLogging )
         {
-        	System.err.println("Setting resolver verbosity to maximum.");
-        	manager.setVerbosity( Integer.MAX_VALUE );
+            System.err.println("Setting resolver verbosity to maximum.");
+            manager.setVerbosity( Integer.MAX_VALUE );
         }
         resolver = new CatalogResolver( manager );
         for ( int i = 0; i < pFiles.size(); i++ )
         {
-        	File file = (File) pFiles.get( i );
+            File file = (File) pFiles.get( i );
             try
             {
                 resolver.getCatalog().parseCatalog( file.getPath() );
@@ -93,16 +93,16 @@ public class Resolver
         }
         for ( int i = 0;  i < pUrls.size();  i++ )
         {
-        	URL url = (URL) pUrls.get( i );
-        	try
-        	{
-        		resolver.getCatalog().parseCatalog( url );
-        	}
-        	catch ( IOException e )
-        	{
-        		throw new MojoExecutionException( "Failed to parse catalog URL: "
-        				+ url + ": " + e.getMessage(), e );
-        	}
+            URL url = (URL) pUrls.get( i );
+            try
+            {
+                resolver.getCatalog().parseCatalog( url );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Failed to parse catalog URL: "
+                        + url + ": " + e.getMessage(), e );
+            }
         }
     }
 
@@ -112,13 +112,13 @@ public class Resolver
     public InputSource resolveEntity( String pPublicId, String pSystemId )
         throws SAXException, IOException
     {
-    	final InputSource source = resolver.resolveEntity( pPublicId, pSystemId );
-    	if ( source != null )
-    	{
-    		return source;
-    	}
+        final InputSource source = resolver.resolveEntity( pPublicId, pSystemId );
+        if ( source != null )
+        {
+            return source;
+        }
 
-    	URL url = resolve( pSystemId );
+        URL url = resolve( pSystemId );
         if ( url != null )
         {
             return asInputSource( url );
@@ -139,13 +139,13 @@ public class Resolver
     public Source resolve( String pHref, String pBase )
         throws TransformerException
     {
-    	final Source source = resolver.resolve( pHref, pBase );
-    	if ( source != null )
-    	{
-    		return source;
-    	}
+        final Source source = resolver.resolve( pHref, pBase );
+        if ( source != null )
+        {
+            return source;
+        }
 
-    	URL url = resolve( pHref );
+        URL url = resolve( pHref );
         if ( url != null )
         {
             try
@@ -181,13 +181,13 @@ public class Resolver
 
     private final LSInput newLSInput( InputSource pSource )
     {
-    	final LSInputImpl lsInput = new LSInputImpl();
-    	lsInput.setByteStream( pSource.getByteStream() );
-    	lsInput.setCharacterStream( pSource.getCharacterStream() );
-    	lsInput.setPublicId( lsInput.getPublicId() );
-    	lsInput.setSystemId( pSource.getSystemId() );
-    	lsInput.setEncoding( pSource.getEncoding() );
-    	return lsInput;
+        final LSInputImpl lsInput = new LSInputImpl();
+        lsInput.setByteStream( pSource.getByteStream() );
+        lsInput.setCharacterStream( pSource.getCharacterStream() );
+        lsInput.setPublicId( lsInput.getPublicId() );
+        lsInput.setSystemId( pSource.getSystemId() );
+        lsInput.setEncoding( pSource.getEncoding() );
+        return lsInput;
     }
     
     /**
@@ -196,20 +196,20 @@ public class Resolver
     public LSInput resolveResource( String pType, String pNamespaceURI, String pPublicId, String pSystemId,
                                     String pBaseURI )
     {
-    	if ( pPublicId != null )
-    	{
-    		final InputSource isource = resolver.resolveEntity( pPublicId, pSystemId );
-    		if ( isource != null )
-    		{
-    			return newLSInput( isource );
-    		}
-    	}
-    	InputSource isource = resolver.resolveEntity( pNamespaceURI, pSystemId );
-    	if ( isource != null )
-    	{
-    		return newLSInput( isource );
-    	}
-    	
+        if ( pPublicId != null )
+        {
+            final InputSource isource = resolver.resolveEntity( pPublicId, pSystemId );
+            if ( isource != null )
+            {
+                return newLSInput( isource );
+            }
+        }
+        InputSource isource = resolver.resolveEntity( pNamespaceURI, pSystemId );
+        if ( isource != null )
+        {
+            return newLSInput( isource );
+        }
+        
         URL url = resolve( pSystemId );
         if ( url != null )
         {
@@ -326,15 +326,15 @@ public class Resolver
 
         try
         {
-        	return locator.getResource( pResource ).getURL();
+            return locator.getResource( pResource ).getURL();
         }
         catch ( ResourceNotFoundException e )
         {
-        	return null;
+            return null;
         }
         catch ( IOException e )
         {
-        	return null;
+            return null;
         }
     }
 
@@ -352,13 +352,13 @@ public class Resolver
     public InputSource resolveEntity( String pName, String pPublicId, String pBaseURI, String pSystemId )
         throws SAXException, IOException
     {
-    	final InputSource source = resolver.resolveEntity( pPublicId, pSystemId );
-    	if ( source != null )
-    	{
-    		return source;
-    	}
-    	
-    	URL url = resolve( pSystemId );
+        final InputSource source = resolver.resolveEntity( pPublicId, pSystemId );
+        if ( source != null )
+        {
+            return source;
+        }
+        
+        URL url = resolve( pSystemId );
         if ( url != null )
         {
             return asInputSource( url );

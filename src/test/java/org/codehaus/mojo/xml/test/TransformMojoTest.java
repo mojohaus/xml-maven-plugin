@@ -192,7 +192,7 @@ public class TransformMojoTest
     {
         if ( !java1_6_Aware() )
         {
-        	System.out.println( " skip test due to non compliance jvm version need 1.6" );
+            System.out.println( " skip test due to non compliance jvm version need 1.6" );
             return;
         }
         final String dir = "src/test/it8";
@@ -210,48 +210,48 @@ public class TransformMojoTest
     public void testIt10()
         throws Exception
     {
-    	runTestIt4( "src/test/it10", "doc1.xml" );
+        runTestIt4( "src/test/it10", "doc1.xml" );
     }
 
     /**
      * Builds the it11 test project, tests in-place modification.
      */
     public void testIt11()
-    	throws Exception
+        throws Exception
     {
-    	String projectPath = "src/test/it11";
-    	File projectDirectory = new File( getBasedir(), projectPath );
-    	File targetDirectory = new File( projectPath, "target" );
-    	if ( targetDirectory.exists() ){
-    		FileUtils.cleanDirectory( targetDirectory );
-    	}
-    	File xmlInputDirectory = new File( projectDirectory, "xml" );
-    	File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
-    	/* copy to target since that is in an SCM-ignored directory */
-    	FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml" , null );
+        String projectPath = "src/test/it11";
+        File projectDirectory = new File( getBasedir(), projectPath );
+        File targetDirectory = new File( projectPath, "target" );
+        if ( targetDirectory.exists() ){
+            FileUtils.cleanDirectory( targetDirectory );
+        }
+        File xmlInputDirectory = new File( projectDirectory, "xml" );
+        File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
+        /* copy to target since that is in an SCM-ignored directory */
+        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml" , null );
 
-    	TransformMojo mojo = (TransformMojo) newMojo( projectPath );
-    	mojo.execute();
+        TransformMojo mojo = (TransformMojo) newMojo( projectPath );
+        mojo.execute();
 
-    	String fileToTransform = "doc1.xml";
-    	Document doc1 = parse( new File( xmlInputDirectory, fileToTransform ) );
-    	doc1.normalize();
-    	Document doc2 = parse( new File( xmlOutputDirectory, fileToTransform ) );
-    	doc2.normalize();
-    	Element doc1Element = doc1.getDocumentElement();
-    	assertEquals( "doc1", doc1Element.getLocalName() );
-    	assertNull( doc1Element.getNamespaceURI() );
-    	Element doc2Element = doc2.getDocumentElement();
-    	assertEquals( "doc2", doc2Element.getLocalName() );
-    	assertNull( doc2Element.getNamespaceURI() );
-    	Node text1 = doc1Element.getFirstChild();
-    	assertNotNull( text1 );
-    	assertNull( text1.getNextSibling() );
-    	assertEquals( Node.TEXT_NODE, text1.getNodeType() );
-    	Node text2 = doc2Element.getFirstChild();
-    	assertNotNull( text2 );
-    	assertNull( text2.getNextSibling() );
-    	assertEquals( Node.TEXT_NODE, text2.getNodeType() );
-    	assertEquals( text1.getNodeValue(), text2.getNodeValue() );
+        String fileToTransform = "doc1.xml";
+        Document doc1 = parse( new File( xmlInputDirectory, fileToTransform ) );
+        doc1.normalize();
+        Document doc2 = parse( new File( xmlOutputDirectory, fileToTransform ) );
+        doc2.normalize();
+        Element doc1Element = doc1.getDocumentElement();
+        assertEquals( "doc1", doc1Element.getLocalName() );
+        assertNull( doc1Element.getNamespaceURI() );
+        Element doc2Element = doc2.getDocumentElement();
+        assertEquals( "doc2", doc2Element.getLocalName() );
+        assertNull( doc2Element.getNamespaceURI() );
+        Node text1 = doc1Element.getFirstChild();
+        assertNotNull( text1 );
+        assertNull( text1.getNextSibling() );
+        assertEquals( Node.TEXT_NODE, text1.getNodeType() );
+        Node text2 = doc2Element.getFirstChild();
+        assertNotNull( text2 );
+        assertNull( text2.getNextSibling() );
+        assertEquals( Node.TEXT_NODE, text2.getNodeType() );
+        assertEquals( text1.getNodeValue(), text2.getNodeValue() );
     }
 }

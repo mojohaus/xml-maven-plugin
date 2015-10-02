@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
@@ -47,37 +48,38 @@ public abstract class AbstractXmlMojo
 {
     /** The Maven Project.
      */
-	@Parameter(defaultValue="${project}", required=true, readonly=true)
+    @Parameter(defaultValue="${project}", required=true, readonly=true)
     private MavenProject project;
 
     /** The Maven Settings.
      */
-	@Parameter(defaultValue="${settings}", required=true, readonly=true)
+    @Parameter(defaultValue="${settings}", required=true, readonly=true)
     private Settings settings;
 
     /**
      * The base directory, relative to which directory names are
      * interpreted.
      */
-	@Parameter(defaultValue="${basedir}", required=true, readonly=true)
+    @Parameter(defaultValue="${basedir}", required=true, readonly=true)
     private File basedir;
 
-	/**
-	 * Whether to skip execution.
-	 */
-	@Parameter(property="xml.skip", defaultValue="false")
-	private boolean skip;
+    /**
+     * Whether to skip execution.
+     */
+    @Parameter(property="xml.skip", defaultValue="false")
+    private boolean skip;
 
     /** An XML catalog file, or URL, which is being used to resolve
      * entities.
      */
-	@Parameter
+    @Parameter
     private String[] catalogs;
     
     /**
      * Plexus resource manager used to obtain XSL.
      */
-	@Parameter(required=true, readonly=true)
+    @Component
+    @Parameter(required=true, readonly=true)
     private ResourceManager locator;
 
     private boolean locatorInitialized;
@@ -123,15 +125,15 @@ public abstract class AbstractXmlMojo
 
         for ( int i = 0; i < catalogs.length; i++ )
         {
-        	try
-        	{
-        		URL url = new URL( catalogs[i] );
-        		pCatalogUrls.add( url );
-        	}
-        	catch ( MalformedURLException e )
-        	{
+            try
+            {
+                URL url = new URL( catalogs[i] );
+                pCatalogUrls.add( url );
+            }
+            catch ( MalformedURLException e )
+            {
                 pCatalogFiles.add( asAbsoluteFile( new File( catalogs[i] ) ) );
-        	}
+            }
         }
     }
 
@@ -141,12 +143,12 @@ public abstract class AbstractXmlMojo
     protected Resolver getResolver()
         throws MojoExecutionException
     {
-    	List catalogFiles = new ArrayList();
-    	List catalogUrls = new ArrayList();
-    	setCatalogs( catalogFiles, catalogUrls );
+        List catalogFiles = new ArrayList();
+        List catalogUrls = new ArrayList();
+        setCatalogs( catalogFiles, catalogUrls );
 
         return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator(),
-        		getLog().isDebugEnabled() );
+                getLog().isDebugEnabled() );
     }
 
     /**
@@ -320,11 +322,11 @@ public abstract class AbstractXmlMojo
     }
 
     protected URL getResource( String pResource )
-    	throws MojoFailureException
+        throws MojoFailureException
     {
         try
         {
-        	return getLocator().getResource( pResource ).getURL();
+            return getLocator().getResource( pResource ).getURL();
         }
         catch ( ResourceNotFoundException exception )
         {
@@ -332,22 +334,22 @@ public abstract class AbstractXmlMojo
         }
         catch ( IOException e )
         {
-        	throw new MojoFailureException( "Error while locating resource: " + pResource );
+            throw new MojoFailureException( "Error while locating resource: " + pResource );
         }
     }
 
     protected ResourceManager getLocator()
     {
-		if ( !locatorInitialized )
-    	{
-        	locator.addSearchPath( FileResourceLoader.ID, getBasedir().getAbsolutePath() );
-    		locatorInitialized = true;
-    	}
-		return locator;
-	}
+        if ( !locatorInitialized )
+        {
+            locator.addSearchPath( FileResourceLoader.ID, getBasedir().getAbsolutePath() );
+            locatorInitialized = true;
+        }
+        return locator;
+    }
 
     protected boolean isSkipping()
     {
-    	return skip;
+        return skip;
     }
 }

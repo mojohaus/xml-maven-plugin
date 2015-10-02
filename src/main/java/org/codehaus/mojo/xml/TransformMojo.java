@@ -67,21 +67,21 @@ public class TransformMojo extends AbstractXmlMojo
      * Specifies one or more sets of files, which are being
      * transformed.
      */
-	@Parameter
+    @Parameter
     private TransformationSet[] transformationSets;
 
     /**
      * Whether creating the transformed files should be forced.
      */
-	@Parameter(property="xml.forceCreation", defaultValue="false")
+    @Parameter(property="xml.forceCreation", defaultValue="false")
     private boolean forceCreation;
-	
+    
     /**
      * Transformer factory use. By default, the systems default transformer
      * factory is used.
      * <b>If you use this feature you must use at least jdk 1.6</b>
      */
-	@Parameter(property="xml.transformerFactory")
+    @Parameter(property="xml.transformerFactory")
     private String transformerFactory;
 
     private void setFeature( TransformerFactory pTransformerFactory, String name, Boolean value )
@@ -385,28 +385,28 @@ public class TransformMojo extends AbstractXmlMojo
         FileOutputStream fos = null;
         try
         {
-        	final boolean transformInPlace = output.equals( input );
-        	File tmpOutput = null;
-        	if ( transformInPlace ) {
-        		tmpOutput = File.createTempFile( "xml-maven-plugin", "xml" );
-        		tmpOutput.deleteOnExit();
+            final boolean transformInPlace = output.equals( input );
+            File tmpOutput = null;
+            if ( transformInPlace ) {
+                tmpOutput = File.createTempFile( "xml-maven-plugin", "xml" );
+                tmpOutput.deleteOnExit();
                 fos = new FileOutputStream( tmpOutput );
-        	}
-        	else
-        	{
-        		fos = new FileOutputStream( output );
-        	}
+            }
+            else
+            {
+                fos = new FileOutputStream( output );
+            }
 
-        	final String parentFile = input.getParent() == null
+            final String parentFile = input.getParent() == null
                 ? null : input.getParentFile().toURI().toURL().toExternalForm();
             pTransformer.transform( pResolver.resolve( input.toURI().toURL().toExternalForm(),
                                                        parentFile ), new StreamResult( fos ) );
             fos.close();
             fos = null;
             if ( transformInPlace ) {
-            	FileUtils.copyFile( tmpOutput, output );
-            	/* tmpOutput is a temporary file */
-            	tmpOutput.delete();
+                FileUtils.copyFile( tmpOutput, output );
+                /* tmpOutput is a temporary file */
+                tmpOutput.delete();
             }
         }
         catch ( IOException e )
@@ -473,20 +473,20 @@ public class TransformMojo extends AbstractXmlMojo
         InputStream stream = null;
         try
         {
-        	stream = stylesheetUrl.openStream();
-        	InputSource isource = new InputSource( stream );
-        	isource.setSystemId( stylesheetUrl.toExternalForm() );
-        	template = getTemplate( pResolver, new SAXSource( isource ), pTransformationSet );
-        	stream.close();
-        	stream = null;
+            stream = stylesheetUrl.openStream();
+            InputSource isource = new InputSource( stream );
+            isource.setSystemId( stylesheetUrl.toExternalForm() );
+            template = getTemplate( pResolver, new SAXSource( isource ), pTransformationSet );
+            stream.close();
+            stream = null;
         }
         catch ( IOException e )
         {
-        	throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( e.getMessage(), e );
         }
         finally
         {
-        	IOUtil.close( stream );
+            IOUtil.close( stream );
         }
         
         int filesTransformed = 0;
@@ -510,7 +510,7 @@ public class TransformMojo extends AbstractXmlMojo
                 dependsFiles.add( getProject().getFile() );
                 if ( "file".equals( stylesheetUrl.getProtocol() ) )
                 {
-                	dependsFiles.add( new File( stylesheetUrl.getFile() ) );
+                    dependsFiles.add( new File( stylesheetUrl.getFile() ) );
                 }
                 List catalogFiles = new ArrayList();
                 List catalogUrls = new ArrayList();
@@ -614,11 +614,11 @@ public class TransformMojo extends AbstractXmlMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-    	if (isSkipping())
-    	{
-    		getLog().debug("Skipping execution, as demanded by user.");
-    		return;
-    	}
+        if (isSkipping())
+        {
+            getLog().debug("Skipping execution, as demanded by user.");
+            return;
+        }
         if ( transformationSets == null || transformationSets.length == 0 )
         {
             throw new MojoFailureException( "No TransformationSets configured." );

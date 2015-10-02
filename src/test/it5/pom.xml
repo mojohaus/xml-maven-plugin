@@ -41,13 +41,13 @@
             <transformationSet>
               <dir>xml</dir>
               <stylesheet>it5.xsl</stylesheet>
-	      <parameters>
-	      <parameter>
-		<name>aParameter</name>
-		<value>parameter passed in</value>
-	      </parameter>
-		
-	      </parameters>
+          <parameters>
+          <parameter>
+        <name>aParameter</name>
+        <value>parameter passed in</value>
+          </parameter>
+        
+          </parameters>
             </transformationSet>
           </transformationSets>
         </configuration>
