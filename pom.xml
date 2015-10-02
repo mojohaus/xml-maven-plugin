@@ -248,7 +248,7 @@
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>0.7</version>
+        <version>0.11</version>
         <configuration>
           <excludes>
             <exclude>src/main/checkstyle/maven-header.txt</exclude>
