@@ -1,4 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.mojo</groupId>
@@ -33,32 +37,32 @@
   </developers>
   <contributors>
     <contributor>
-        <name>Ramón Torres Bátiz</name>
-        <email>rbatiz@gmail.com</email>
+      <name>Ramón Torres Bátiz</name>
+      <email>rbatiz@gmail.com</email>
     </contributor>
     <contributor>
-        <name>Andreas Eternach</name>
-        <email>a.eternach@directbox.com</email>
+      <name>Andreas Eternach</name>
+      <email>a.eternach@directbox.com</email>
     </contributor>
     <contributor>
-        <name>Mark Hobson</name>
-        <email>markhobson@gmail.com</email>
+      <name>Mark Hobson</name>
+      <email>markhobson@gmail.com</email>
     </contributor>
     <contributor>
       <name>Anagnostopoulos Kostis</name>
       <email>ankostis@gmail.com</email>
     </contributor>
     <contributor>
-        <name>Paul Lucassen</name>
-        <email>pglucassen@gmail.com</email>
+      <name>Paul Lucassen</name>
+      <email>pglucassen@gmail.com</email>
     </contributor>
     <contributor>
-        <name>Jeff Martin</name>
-        <email>jeff@jeffmartin.com</email>
+      <name>Jeff Martin</name>
+      <email>jeff@jeffmartin.com</email>
     </contributor>
     <contributor>
-        <name>Mykola Nikishov</name>
-        <email>mn@mn.com.ua</email>
+      <name>Mykola Nikishov</name>
+      <email>mn@mn.com.ua</email>
     </contributor>
     <contributor>
       <name>Luke W. Patterson</name>
@@ -205,6 +209,31 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <configuration>
+          <goalPrefix>xml</goalPrefix>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+              <goal>helpmojo</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+<!--           <execution> -->
+<!--             <id>help-descriptor</id> -->
+<!--             <goals> -->
+<!--             </goals> -->
+<!--             <phase>process-classes</phase> -->
+<!--           </execution> -->
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -236,7 +265,7 @@
     </plugins>
   </reporting>
   <properties>
-    <mavenVersion>2.0.7</mavenVersion>
+    <mavenVersion>2.2.1</mavenVersion>
 
     <!-- Override the 1.7 set in parent -->
     <mojo.java.target>1.6</mojo.java.target>

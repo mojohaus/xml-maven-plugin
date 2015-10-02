@@ -79,7 +79,6 @@ public abstract class AbstractXmlMojo
      * Plexus resource manager used to obtain XSL.
      */
     @Component
-    @Parameter(required=true, readonly=true)
     private ResourceManager locator;
 
     private boolean locatorInitialized;
