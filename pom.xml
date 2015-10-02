@@ -173,6 +173,18 @@
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <!--
+            ! Last version which uses Java 1.6
+          -->
+          <version>2.15</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -225,8 +237,17 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <!--
+          ! Last version which uses Java 1.6
+          ! Repeated version here to circumvent WARNING in Maven 3.0.5
+        -->
+        <version>2.15</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.1</version>
+        <version>2.11</version>
         <reportSets>
           <reportSet>
             <reports>
