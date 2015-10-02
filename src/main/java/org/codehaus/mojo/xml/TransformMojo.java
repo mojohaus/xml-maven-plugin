@@ -45,6 +45,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.xml.transformer.NameValuePair;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
@@ -56,31 +59,29 @@ import org.xml.sax.InputSource;
 
 /**
  * The TransformMojo is used for transforming a set of files using a common stylesheet.
- *
- * @goal transform
- * @phase generate-resources
  */
+@Mojo(defaultPhase=LifecyclePhase.GENERATE_RESOURCES, name = "transform", threadSafe=true)
 public class TransformMojo extends AbstractXmlMojo
 {
     /**
      * Specifies one or more sets of files, which are being
      * transformed.
-     * @parameter
      */
+	@Parameter
     private TransformationSet[] transformationSets;
 
     /**
      * Whether creating the transformed files should be forced.
-     * @parameter expression="${xml.forceCreation}" default-value="false"
      */
+	@Parameter(property="xml.forceCreation", defaultValue="false")
     private boolean forceCreation;
 
     /**
      * Transformer factory use. By default, the systems default transformer
      * factory is used.
      * <b>If you use this feature you must use at least jdk 1.6</b>
-     * @parameter expression="${xml.transformerFactory}"
      */
+	@Parameter(property="xml.transformerFactory")
     private String transformerFactory;
 
     private void setFeature( TransformerFactory pTransformerFactory, String name, Boolean value )
