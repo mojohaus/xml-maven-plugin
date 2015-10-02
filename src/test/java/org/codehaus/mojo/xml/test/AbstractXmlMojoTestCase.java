@@ -18,15 +18,25 @@ package org.codehaus.mojo.xml.test;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.apache.maven.plugin.testing.SilentLog;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.codehaus.mojo.xml.AbstractXmlMojo;
 import org.codehaus.mojo.xml.TransformMojo;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.resource.DefaultResourceManager;
+import org.codehaus.plexus.resource.loader.FileResourceLoader;
+import org.codehaus.plexus.resource.loader.JarResourceLoader;
+import org.codehaus.plexus.resource.loader.ResourceLoader;
+import org.codehaus.plexus.resource.loader.ThreadContextClasspathResourceLoader;
+import org.codehaus.plexus.resource.loader.URLResourceLoader;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -42,6 +52,40 @@ public abstract class AbstractXmlMojoTestCase
         File testPom = new File( new File( getBasedir(), pDir ), "pom.xml" );
         AbstractXmlMojo vm = (AbstractXmlMojo) lookupMojo( getGoal(), testPom );
         setVariableValueToObject( vm, "basedir", new File( getBasedir(), pDir ) );
+        DefaultResourceManager rm = new DefaultResourceManager()
+        {
+
+			@Override
+			protected Logger getLogger() {
+				Logger log = super.getLogger();
+				if (log == null) {
+					log = new SilentLog();
+					enableLogging( log );
+				}
+				return log;
+			}
+        	
+        };
+		setVariableValueToObject(  vm, "locator", rm );
+        final Map<String, ResourceLoader> resourceLoaders = new HashMap<String, ResourceLoader>();
+        resourceLoaders.put("file", new FileResourceLoader() );
+        resourceLoaders.put("jar", new JarResourceLoader() );
+        resourceLoaders.put("classloader", new ThreadContextClasspathResourceLoader() );
+        URLResourceLoader url = new URLResourceLoader()
+        {
+			@Override
+			protected Logger getLogger() {
+				Logger log = super.getLogger();
+				if (log == null) {
+					log = new SilentLog();
+					enableLogging( log );
+				}
+				return log;
+			}
+        };
+		resourceLoaders.put("url", url );
+        setVariableValueToObject( rm, "resourceLoaders", resourceLoaders );
+        
         final Build build = new Build();
         build.setDirectory( "target" );
         MavenProjectStub project = new MavenProjectStub()

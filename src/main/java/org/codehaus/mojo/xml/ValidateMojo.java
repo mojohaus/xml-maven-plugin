@@ -33,6 +33,9 @@ import javax.xml.validation.Validator;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.mojo.xml.validation.ValidationSet;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -43,18 +46,16 @@ import org.xml.sax.XMLReader;
 
 /**
  * The ValidatorMojo's task is the validation of XML files against a given schema.
- *
- * @goal validate
- * @phase test
  */
+@Mojo(name="validate", defaultPhase=LifecyclePhase.TEST, threadSafe=true)
 public class ValidateMojo
     extends AbstractXmlMojo
 {
     /**
      * Specifies a set of document types, which are being
      * validated.
-     * @parameter
      */
+	@Parameter
     private ValidationSet[] validationSets;
 
     /**
@@ -321,6 +322,12 @@ public class ValidateMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+    	if (isSkipping())
+    	{
+    		getLog().debug("Skipping execution, as demanded by user.");
+    		return;
+    	}
+
         if ( validationSets == null || validationSets.length == 0 )
         {
             throw new MojoFailureException( "No ValidationSets configured." );

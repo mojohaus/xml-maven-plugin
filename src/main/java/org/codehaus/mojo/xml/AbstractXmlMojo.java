@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
@@ -44,46 +45,39 @@ import org.codehaus.plexus.util.FileUtils;
 public abstract class AbstractXmlMojo
     extends AbstractMojo
 {
-    /**
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
+    /** The Maven Project.
      */
+	@Parameter(defaultValue="${project}", required=true, readonly=true)
     private MavenProject project;
 
-    /**
-     * The system settings for Maven. This is the instance resulting from 
-     * merging global- and user-level settings files.
-     * 
-     * @parameter expression="${settings}"
-     * @required
-     * @readonly
+    /** The Maven Settings.
      */
+	@Parameter(defaultValue="${settings}", required=true, readonly=true)
     private Settings settings;
 
     /**
      * The base directory, relative to which directory names are
      * interpreted.
-     *
-     * @parameter expression="${basedir}"
-     * @required
-     * @readonly
      */
+	@Parameter(defaultValue="${basedir}", required=true, readonly=true)
     private File basedir;
+
+	/**
+	 * Whether to skip execution.
+	 */
+	@Parameter(property="xml.skip", defaultValue="false")
+	private boolean skip;
 
     /** An XML catalog file, or URL, which is being used to resolve
      * entities.
-     * @parameter
      */
+	@Parameter
     private String[] catalogs;
     
     /**
      * Plexus resource manager used to obtain XSL.
-     * 
-     * @component
-     * @required
-     * @readonly
      */
+	@Parameter(required=true, readonly=true)
     private ResourceManager locator;
 
     private boolean locatorInitialized;
@@ -351,4 +345,9 @@ public abstract class AbstractXmlMojo
     	}
 		return locator;
 	}
+
+    protected boolean isSkipping()
+    {
+    	return skip;
+    }
 }
