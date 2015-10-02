@@ -23,15 +23,6 @@
   </properties>
   <body>
     <release version="1.0.1" date="Not yet released">
-      <action dev="jochen" type="add" issue="github #2">
-        Introduced skip parameter.
-      </action>
-      <action dev="jochen" type="fix">
-        Enabling parallel builds.
-      </action>
-      <action dev="jochen" type="fix" issue="github #5">
-        Replaced XDoclet with maven-plugin-annotations.
-      </action>
       <action dev="jochen" type="fix" issue="MOJO-1648"
           due-to="Paul Lucassen" due-to-email="pglucassen@gmail.com">
         Fixed an NPE when specifying the schema via public ID.
