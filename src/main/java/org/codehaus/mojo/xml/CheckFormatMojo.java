@@ -192,6 +192,12 @@ public class CheckFormatMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        if (isSkipping())
+        {
+            getLog().debug("Skipping execution, as demanded by user.");
+            return;
+        }
+
         if ( useDefaultFormatFileSet )
         {
             formatFileSets.add( FormatFileSet.getDefault( getBasedir(), encoding, indentSize ) );
