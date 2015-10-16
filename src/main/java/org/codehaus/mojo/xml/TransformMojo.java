@@ -241,9 +241,9 @@ public class TransformMojo extends AbstractXmlMojo
     private void addToClasspath( File pOutputDir )
     {
         MavenProject project = getProject();
-        for ( Iterator iter = project.getResources().iterator(); iter.hasNext(); )
+        for ( Iterator<Resource> iter = project.getResources().iterator(); iter.hasNext(); )
         {
-            Resource resource = (Resource) iter.next();
+            Resource resource = iter.next();
             if ( resource.getDirectory().equals( pOutputDir ) )
             {
                 return;
