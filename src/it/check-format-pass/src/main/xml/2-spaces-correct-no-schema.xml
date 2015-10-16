@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!-- license -->
+<root>
+  <parent-1>
+    <text-1>text in text-1</text-1>
+  </parent-1>
+  <parent-2>
+    <text-2>
+      text in text-2 text in text-2
+      text in text-2 text in text-2 long
+      text on level-2text in text-2 long text
+      on level-2 text in text-2
+    </text-2>
+  </parent-2>
+
+  <parent-3-with-empty-lines>
+
+    <text-3-with-empty-lines>
+
+      text in text-3 text in text-3
+      text in text-3 text in text-3
+
+      text in text-3 text in text-3
+      text in text-3 text in text-3
+
+    </text-3-with-empty-lines>
+
+  </parent-3-with-empty-lines>
+
+  <parent-4><text-4>text on level-4</text-4></parent-4>
+
+  <parent-4-1><text-4-1>
+    text on level-4
+  </text-4-1></parent-4-1>
+
+  <parent-5-textarea-like>
+    <text-5-textarea-like>text in text-5 text in text-5
+text in text-5 text in text-5
+text in text-5 text in text-5
+text in text-5 text in text-5</text-5-textarea-like>
+  </parent-5-textarea-like>
+
+  <parent-6-textarea-like-2>
+    <text-6-textarea-like-2>text in text-6 text in text-6
+text in text-6 text in text-6
+text in text-6 text in text-6
+text in text-6 text in text-6
+    </text-6-textarea-like-2>
+  </parent-6-textarea-like-2>
+
+  <parent-7>
+<!-- comment -->
+    <text-7>text in text-7</text-7>
+  </parent-7>
+
+  <parent-8>
+    <text-8>text in text-8</text-8>
+<!-- comment -->
+  </parent-8>
+
+  <parent-9>
+    <!-- comment --><text-9>text in text-9</text-9>
+  </parent-9>
+
+  <parent-9>
+    <text-9>text in text-9</text-9>
+  <!-- comment --></parent-9>
+
+</root>
