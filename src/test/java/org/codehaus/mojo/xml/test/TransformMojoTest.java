@@ -39,7 +39,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-
 /**
  * Test case for the {@link TransformMojo}.
  */
@@ -115,7 +114,7 @@ public class TransformMojoTest
         assertNotNull( text2 );
         assertNull( text2.getNextSibling() );
         assertEquals( Node.TEXT_NODE, text2.getNodeType() );
-        assertEquals(text2.getNodeValue(), "parameter passed in");
+        assertEquals( text2.getNodeValue(), "parameter passed in" );
     }
 
     /**
@@ -129,11 +128,12 @@ public class TransformMojoTest
         runTestIt4( "src/test/it6", "doc1.fo" );
     }
 
-    private String read( File file ) throws IOException
+    private String read( File file )
+        throws IOException
     {
         final StringBuffer sb = new StringBuffer();
         final Reader reader = new InputStreamReader( new FileInputStream( file ), "UTF-8" );
-        final char[] buffer = new char[ 4096 ];
+        final char[] buffer = new char[4096];
         for ( ;; )
         {
             final int res = reader.read( buffer );
@@ -153,7 +153,8 @@ public class TransformMojoTest
     /**
      * Builds the it7 test project.
      */
-    public void testIt7() throws Exception
+    public void testIt7()
+        throws Exception
     {
         final File dir = new File( "src/test/it7" );
         final File target = new File( dir, "target/generated-resources/xml/xslt/doc1.xml" );
@@ -163,7 +164,8 @@ public class TransformMojoTest
         String result = read( target );
         assertFalse( result.startsWith( "<?xml" ) );
         mojo = (TransformMojo) newMojo( "src/test/it7" );
-        TransformationSet[] transformationSets = (TransformationSet[]) getVariableValueFromObject( mojo, "transformationSets" );
+        TransformationSet[] transformationSets =
+            (TransformationSet[]) getVariableValueFromObject( mojo, "transformationSets" );
         transformationSets[0].getOutputProperties()[0].setValue( "no" );
         FileUtils.fileDelete( target.getPath() );
         mojo.execute();
@@ -171,15 +173,16 @@ public class TransformMojoTest
         assertTrue( result.startsWith( "<?xml" ) );
     }
 
-    private String eval( Node contextNode, String str ) throws TransformerException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    private String eval( Node contextNode, String str )
+        throws TransformerException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         final String xsl = "<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>\n"
-            + "<xsl:template match='*'>\n"
-            + "<xsl:value-of select='" + str + "'/>\n"
-            + "</xsl:template>\n"
+            + "<xsl:template match='*'>\n" + "<xsl:value-of select='" + str + "'/>\n" + "</xsl:template>\n"
             + "</xsl:stylesheet>\n";
         final StringWriter sw = new StringWriter();
-        final Transformer t = TransformMojo.newTransformerFactory( org.apache.xalan.processor.TransformerFactoryImpl.class.getName(), getClass().getClassLoader()).newTransformer( new StreamSource( new StringReader( xsl ) ) );
+        final Transformer t =
+            TransformMojo.newTransformerFactory( org.apache.xalan.processor.TransformerFactoryImpl.class.getName(),
+                                                 getClass().getClassLoader() ).newTransformer( new StreamSource( new StringReader( xsl ) ) );
         t.setOutputProperty( OutputKeys.OMIT_XML_DECLARATION, "yes" );
         t.transform( new DOMSource( contextNode ), new StreamResult( sw ) );
         return sw.toString();
@@ -188,7 +191,8 @@ public class TransformMojoTest
     /**
      * Builds the it7 test project.
      */
-    public void testIt8() throws Exception
+    public void testIt8()
+        throws Exception
     {
         if ( !java1_6_Aware() )
         {
@@ -198,10 +202,10 @@ public class TransformMojoTest
         final String dir = "src/test/it8";
         runTest( dir );
         Document doc1 = parse( new File( dir, "target/generated-resources/xml/xslt/doc1.xml" ) );
-        
-        assertEquals("SAXON 8.7 from Saxonica", eval( doc1, "/root/vendor" ) );
-        assertEquals("http://www.saxonica.com/", eval( doc1, "/root/vendor-url" ) );
-        assertEquals("2.0", eval( doc1, "/root/version" ) );
+
+        assertEquals( "SAXON 8.7 from Saxonica", eval( doc1, "/root/vendor" ) );
+        assertEquals( "http://www.saxonica.com/", eval( doc1, "/root/vendor-url" ) );
+        assertEquals( "2.0", eval( doc1, "/root/version" ) );
     }
 
     /**
@@ -222,13 +226,14 @@ public class TransformMojoTest
         String projectPath = "src/test/it11";
         File projectDirectory = new File( getBasedir(), projectPath );
         File targetDirectory = new File( projectPath, "target" );
-        if ( targetDirectory.exists() ){
+        if ( targetDirectory.exists() )
+        {
             FileUtils.cleanDirectory( targetDirectory );
         }
         File xmlInputDirectory = new File( projectDirectory, "xml" );
         File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
         /* copy to target since that is in an SCM-ignored directory */
-        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml" , null );
+        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml", null );
 
         TransformMojo mojo = (TransformMojo) newMojo( projectPath );
         mojo.execute();

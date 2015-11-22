@@ -21,10 +21,8 @@ package org.codehaus.mojo.xml.validation;
 
 import java.io.File;
 
-
 /**
- * An instance of this class is used to specify a set of files,
- * which are validated against a common schema.
+ * An instance of this class is used to specify a set of files, which are validated against a common schema.
  */
 public class ValidationSet
 {
@@ -53,8 +51,7 @@ public class ValidationSet
     }
 
     /**
-     * Returns patterns of files, which are being excluded from
-     * the validation set.
+     * Returns patterns of files, which are being excluded from the validation set.
      */
     public String[] getExcludes()
     {
@@ -62,8 +59,7 @@ public class ValidationSet
     }
 
     /**
-     * Returns patterns of files, which are being included into
-     * the validation set.
+     * Returns patterns of files, which are being included into the validation set.
      */
     public String[] getIncludes()
     {
@@ -71,9 +67,8 @@ public class ValidationSet
     }
 
     /**
-     * Returns the schemas public ID. May be null, if the schema is
-     * loaded through its system ID or if the documents are being
-     * validated for wellformedness only.
+     * Returns the schemas public ID. May be null, if the schema is loaded through its system ID or if the documents are
+     * being validated for wellformedness only.
      */
     public String getPublicId()
     {
@@ -81,11 +76,9 @@ public class ValidationSet
     }
 
     /**
-     * Returns the schema language. May be null, if the documents
-     * are being validated for wellformedness only, or if the default
-     * schema language (W3C XML Schema) is being used. See
-     * http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html
-     * for possible values.
+     * Returns the schema language. May be null, if the documents are being validated for wellformedness only, or if the
+     * default schema language (W3C XML Schema) is being used. See
+     * http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html for possible values.
      */
     public String getSchemaLanguage()
     {
@@ -93,9 +86,8 @@ public class ValidationSet
     }
 
     /**
-     * Returns the schemas system ID. May be null, if the schema is
-     * loaded through its public ID or if the documents are being
-     * validated for wellformedness only.
+     * Returns the schemas system ID. May be null, if the schema is loaded through its public ID or if the documents are
+     * being validated for wellformedness only.
      */
     public String getSystemId()
     {
@@ -103,8 +95,7 @@ public class ValidationSet
     }
 
     /**
-     * Returns, whether Maven's default excludes are being ignored.
-     * Defaults to false (Default excludes are being used).
+     * Returns, whether Maven's default excludes are being ignored. Defaults to false (Default excludes are being used).
      */
     public boolean isSkipDefaultExcludes()
     {
@@ -112,11 +103,9 @@ public class ValidationSet
     }
 
     /**
-     * If the documents are being validated for wellformedness only:
-     * Returns, whether the parser should be validating. (In
-     * other words: Whether documents must contain a document type
-     * or xml schema declaration.) The property is ignored otherwise.
-     * The default value is false.
+     * If the documents are being validated for wellformedness only: Returns, whether the parser should be validating.
+     * (In other words: Whether documents must contain a document type or xml schema declaration.) The property is
+     * ignored otherwise. The default value is false.
      */
     public boolean isValidating()
     {
@@ -132,8 +121,7 @@ public class ValidationSet
     }
 
     /**
-     * Sets patterns of files, which are being excluded from
-     * the validation set.
+     * Sets patterns of files, which are being excluded from the validation set.
      */
     public void setExcludes( String[] pExcludes )
     {
@@ -141,8 +129,7 @@ public class ValidationSet
     }
 
     /**
-     * Sets patterns of files, which are being included into
-     * the validation set.
+     * Sets patterns of files, which are being included into the validation set.
      */
     public void setIncludes( String[] pIncludes )
     {
@@ -150,9 +137,8 @@ public class ValidationSet
     }
 
     /**
-     * Sets the schemas public ID. May be null, if the schema is
-     * loaded through its system ID or if the documents are being
-     * validated for wellformedness only.
+     * Sets the schemas public ID. May be null, if the schema is loaded through its system ID or if the documents are
+     * being validated for wellformedness only.
      */
     public void setPublicId( String pPublicId )
     {
@@ -160,11 +146,9 @@ public class ValidationSet
     }
 
     /**
-     * Sets the schema language. May be null, if the documents
-     * are being validated for wellformedness only, or if the default
-     * schema language (W3C XML Schema) is being used. See
-     * http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html
-     * for possible values.
+     * Sets the schema language. May be null, if the documents are being validated for wellformedness only, or if the
+     * default schema language (W3C XML Schema) is being used. See
+     * http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html for possible values.
      */
     public void setSchemaLanguage( String pSchemaLanguage )
     {
@@ -172,8 +156,7 @@ public class ValidationSet
     }
 
     /**
-     * Sets, whether Maven's default excludes are being ignored.
-     * Defaults to false (Default excludes are being used).
+     * Sets, whether Maven's default excludes are being ignored. Defaults to false (Default excludes are being used).
      */
     public void setSkipDefaultExcludes( boolean pSkipDefaultExcludes )
     {
@@ -181,9 +164,8 @@ public class ValidationSet
     }
 
     /**
-     * Sets the schemas system ID. May be null, if the schema is
-     * loaded through its public ID or if the documents are being
-     * validated for wellformedness only.
+     * Sets the schemas system ID. May be null, if the schema is loaded through its public ID or if the documents are
+     * being validated for wellformedness only.
      */
     public void setSystemId( String pSystemId )
     {
@@ -191,11 +173,9 @@ public class ValidationSet
     }
 
     /**
-     * If the documents are being validated for wellformedness only:
-     * Sets, whether the parser should be validating. (In
-     * other words: Whether documents must contain a document type
-     * or xml schema declaration.) The property is ignored otherwise.
-     * The default value is false.
+     * If the documents are being validated for wellformedness only: Sets, whether the parser should be validating. (In
+     * other words: Whether documents must contain a document type or xml schema declaration.) The property is ignored
+     * otherwise. The default value is false.
      */
     public void setValidating( boolean pValidating )
     {

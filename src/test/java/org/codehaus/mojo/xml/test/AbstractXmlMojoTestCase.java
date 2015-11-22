@@ -54,17 +54,17 @@ public abstract class AbstractXmlMojoTestCase
         setVariableValueToObject( vm, "basedir", new File( getBasedir(), pDir ) );
         final Log log = new SilentLog();
         DefaultResourceManager rm = new DefaultResourceManager();
-        setVariableValueToObject(  rm, "logger", log );
-        setVariableValueToObject(  vm, "locator", rm );
+        setVariableValueToObject( rm, "logger", log );
+        setVariableValueToObject( vm, "locator", rm );
         final Map<String, ResourceLoader> resourceLoaders = new HashMap<String, ResourceLoader>();
-        resourceLoaders.put("file", new FileResourceLoader() );
-        resourceLoaders.put("jar", new JarResourceLoader() );
-        resourceLoaders.put("classloader", new ThreadContextClasspathResourceLoader() );
+        resourceLoaders.put( "file", new FileResourceLoader() );
+        resourceLoaders.put( "jar", new JarResourceLoader() );
+        resourceLoaders.put( "classloader", new ThreadContextClasspathResourceLoader() );
         URLResourceLoader url = new URLResourceLoader();
         setVariableValueToObject( url, "logger", log );
-        resourceLoaders.put("url", url );
+        resourceLoaders.put( "url", url );
         setVariableValueToObject( rm, "resourceLoaders", resourceLoaders );
-        
+
         final Build build = new Build();
         build.setDirectory( "target" );
         MavenProjectStub project = new MavenProjectStub()
@@ -92,14 +92,14 @@ public abstract class AbstractXmlMojoTestCase
         dbf.setNamespaceAware( true );
         return dbf.newDocumentBuilder().parse( pFile );
     }
-    
+
     protected boolean java1_6_Aware()
         throws IllegalAccessException, InvocationTargetException
     {
         try
         {
-            TransformMojo.newTransformerFactory( "net.sf.saxon.TransformerFactoryImpl", Thread.currentThread()
-                .getContextClassLoader() );
+            TransformMojo.newTransformerFactory( "net.sf.saxon.TransformerFactoryImpl",
+                                                 Thread.currentThread().getContextClassLoader() );
             return true;
         }
         catch ( NoSuchMethodException e )

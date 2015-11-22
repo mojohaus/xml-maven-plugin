@@ -50,7 +50,7 @@ import org.xml.sax.InputSource;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-@Mojo(defaultPhase=LifecyclePhase.VALIDATE, name = "check-format", threadSafe=true)
+@Mojo( defaultPhase = LifecyclePhase.VALIDATE, name = "check-format", threadSafe = true )
 public class CheckFormatMojo
     extends AbstractXmlMojo
 {
@@ -98,7 +98,7 @@ public class CheckFormatMojo
      * The encoding of files included in {@link #formatFileSets}. Note that the
      * {@code encoding can be set also per FormatFileSet}.
      */
-    @Parameter(property="xml.encoding", defaultValue="${project.build.sourceEncoding}")
+    @Parameter( property = "xml.encoding", defaultValue = "${project.build.sourceEncoding}" )
     private String encoding;
 
     /**
@@ -106,7 +106,7 @@ public class CheckFormatMojo
      * reported on the console as ERRORs and the build will fail. if {@code false}, all violations will be reported on
      * the console as WARNs and the build will proceed further.
      */
-    @Parameter(property="xml.failOnFormatViolation", defaultValue="true")
+    @Parameter( property = "xml.failOnFormatViolation", defaultValue = "true" )
     private boolean failOnFormatViolation;
 
     /**
@@ -119,7 +119,7 @@ public class CheckFormatMojo
      * The number of spaces expected for indentation. Note that {@code indentSize} can be configuread also per
      * {@link FormatFileSet}.
      */
-    @Parameter(property="xml.indentSize", defaultValue="2")
+    @Parameter( property = "xml.indentSize", defaultValue = "2" )
     private int indentSize;
 
     /** A {@link SAXParserFactory} */
@@ -129,7 +129,7 @@ public class CheckFormatMojo
      * If set to {@code true}, the result of {@link FormatFileSet#getDefault(String, int)} will be appended to
      * {@link #formatFileSets} before the processing.
      */
-    @Parameter(property="xml.useDefaultFormatFileSet", defaultValue="true")
+    @Parameter( property = "xml.useDefaultFormatFileSet", defaultValue = "true" )
     private boolean useDefaultFormatFileSet;
 
     /**
@@ -192,9 +192,9 @@ public class CheckFormatMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        if (isSkipping())
+        if ( isSkipping() )
         {
-            getLog().debug("Skipping execution, as demanded by user.");
+            getLog().debug( "Skipping execution, as demanded by user." );
             return;
         }
 

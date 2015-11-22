@@ -19,7 +19,6 @@ package org.codehaus.mojo.xml.transformer;
  * under the License.
  */
 
-
 /**
  * An instance of this class is used to specify an output property.
  */

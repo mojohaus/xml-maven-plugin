@@ -41,40 +41,42 @@ import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 
-/** Abstract base class for the plugins Mojo's.
+/**
+ * Abstract base class for the plugins Mojo's.
  */
 public abstract class AbstractXmlMojo
     extends AbstractMojo
 {
-    /** The Maven Project.
+    /**
+     * The Maven Project.
      */
-    @Parameter(defaultValue="${project}", required=true, readonly=true)
+    @Parameter( defaultValue = "${project}", required = true, readonly = true )
     private MavenProject project;
 
-    /** The Maven Settings.
+    /**
+     * The Maven Settings.
      */
-    @Parameter(defaultValue="${settings}", required=true, readonly=true)
+    @Parameter( defaultValue = "${settings}", required = true, readonly = true )
     private Settings settings;
 
     /**
-     * The base directory, relative to which directory names are
-     * interpreted.
+     * The base directory, relative to which directory names are interpreted.
      */
-    @Parameter(defaultValue="${project.basedir}", required=true, readonly=true)
+    @Parameter( defaultValue = "${project.basedir}", required = true, readonly = true )
     private File basedir;
 
     /**
      * Whether to skip execution.
      */
-    @Parameter(property="xml.skip", defaultValue="false")
+    @Parameter( property = "xml.skip", defaultValue = "false" )
     private boolean skip;
 
-    /** An XML catalog file, or URL, which is being used to resolve
-     * entities.
+    /**
+     * An XML catalog file, or URL, which is being used to resolve entities.
      */
     @Parameter
     private String[] catalogs;
-    
+
     /**
      * Plexus resource manager used to obtain XSL.
      */
@@ -82,7 +84,7 @@ public abstract class AbstractXmlMojo
     private ResourceManager locator;
 
     private boolean locatorInitialized;
-    
+
     /**
      * Returns the maven project.
      */
@@ -100,8 +102,7 @@ public abstract class AbstractXmlMojo
     }
 
     /**
-     * Converts the given file into an file with an absolute
-     * path.
+     * Converts the given file into an file with an absolute path.
      */
     protected File asAbsoluteFile( File f )
     {
@@ -117,7 +118,7 @@ public abstract class AbstractXmlMojo
      */
     protected void setCatalogs( List pCatalogFiles, List pCatalogUrls )
     {
-        if ( catalogs == null  ||  catalogs.length == 0 )
+        if ( catalogs == null || catalogs.length == 0 )
         {
             return;
         }
@@ -146,8 +147,7 @@ public abstract class AbstractXmlMojo
         List catalogUrls = new ArrayList();
         setCatalogs( catalogFiles, catalogUrls );
 
-        return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator(),
-                getLog().isDebugEnabled() );
+        return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator(), getLog().isDebugEnabled() );
     }
 
     /**
@@ -159,13 +159,13 @@ public abstract class AbstractXmlMojo
         if ( pDir == null )
         {
             throw new MojoFailureException( "A ValidationSet or TransformationSet"
-                                            + " requires a nonempty 'dir' child element." );
+                + " requires a nonempty 'dir' child element." );
         }
         final File dir = asAbsoluteFile( pDir );
         if ( !dir.isDirectory() )
         {
             getLog().warn( "The directory " + dir.getPath()
-                           + ", which is a base directory of a ValidationSet or TransformationSet, does not exist." );
+                + ", which is a base directory of a ValidationSet or TransformationSet, does not exist." );
             return new String[0];
         }
         final DirectoryScanner ds = new DirectoryScanner();
@@ -183,8 +183,8 @@ public abstract class AbstractXmlMojo
     }
 
     /**
-     * Converts the given set of file names into a set of {@link File}
-     * instances. The file names may be relative to the given base directory.
+     * Converts the given set of file names into a set of {@link File} instances. The file names may be relative to the
+     * given base directory.
      */
     protected File[] asFiles( File pDir, String[] pFileNames )
     {
@@ -222,7 +222,7 @@ public abstract class AbstractXmlMojo
         }
 
         String[] defaultExcludes = FileUtils.getDefaultExcludes();
-        if ( origExcludes == null  ||  origExcludes.length == 0 )
+        if ( origExcludes == null || origExcludes.length == 0 )
         {
             return defaultExcludes;
         }
@@ -234,7 +234,7 @@ public abstract class AbstractXmlMojo
 
     private boolean isEmpty( String value )
     {
-        return value == null  ||  value.trim().length() == 0;
+        return value == null || value.trim().length() == 0;
     }
 
     private void setProperty( List pProperties, String pKey, String pValue )
@@ -291,19 +291,17 @@ public abstract class AbstractXmlMojo
         setProperty( properties, passwordProperty, passwordValue );
         final String nonProxyHosts = proxy.getNonProxyHosts();
         final String nonProxyHostsProperty = prefix + "nonProxyHosts";
-        final String nonProxyHostsValue = isEmpty( nonProxyHosts ) ? null : nonProxyHosts.replace( ',' , '|' );
+        final String nonProxyHostsValue = isEmpty( nonProxyHosts ) ? null : nonProxyHosts.replace( ',', '|' );
         setProperty( properties, nonProxyHostsProperty, nonProxyHostsValue );
-        getLog().debug( "Proxy settings: " + hostProperty + "=" + hostValue
-                       + ", " + portProperty + "=" + portValue
-                       + ", " + userProperty + "=" + userValue
-                       + ", " + passwordProperty + "=" + (passwordValue == null ? "null" : "<PasswordNotLogged>")
-                       + ", " + nonProxyHostsProperty + "=" + nonProxyHostsValue );
+        getLog().debug( "Proxy settings: " + hostProperty + "=" + hostValue + ", " + portProperty + "=" + portValue
+            + ", " + userProperty + "=" + userValue + ", " + passwordProperty + "="
+            + ( passwordValue == null ? "null" : "<PasswordNotLogged>" ) + ", " + nonProxyHostsProperty + "="
+            + nonProxyHostsValue );
         return properties;
     }
 
     /**
-     * Called to restore the proxy settings, which have been installed
-     * when the plugin was invoked.
+     * Called to restore the proxy settings, which have been installed when the plugin was invoked.
      */
     protected void passivateProxy( Object pProperties )
     {
@@ -312,7 +310,7 @@ public abstract class AbstractXmlMojo
             return;
         }
         final List properties = (List) pProperties;
-        for ( Iterator iter = properties.iterator();  iter.hasNext(); )
+        for ( Iterator iter = properties.iterator(); iter.hasNext(); )
         {
             final String key = (String) iter.next();
             final String value = (String) iter.next();

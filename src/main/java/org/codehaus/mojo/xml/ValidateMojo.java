@@ -43,23 +43,22 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-
 /**
  * The ValidatorMojo's task is the validation of XML files against a given schema.
  */
-@Mojo(name="validate", defaultPhase=LifecyclePhase.TEST, threadSafe=true)
+@Mojo( name = "validate", defaultPhase = LifecyclePhase.TEST, threadSafe = true )
 public class ValidateMojo
     extends AbstractXmlMojo
 {
     /**
-     * Specifies a set of document types, which are being
-     * validated.
+     * Specifies a set of document types, which are being validated.
      */
     @Parameter
     private ValidationSet[] validationSets;
 
     /**
      * Reads a validation sets schema.
+     * 
      * @param pResolver The resolver to use for loading external entities.
      * @param pValidationSet The validation set to configure.
      * @return The validation sets schema, if any, or null.
@@ -123,6 +122,7 @@ public class ValidateMojo
 
     /**
      * Called for parsing or validating a single file.
+     * 
      * @param pResolver The resolver to use for loading external entities.
      * @param pValidationSet The parsers or validators configuration.
      * @param pSchema The schema to use.
@@ -205,6 +205,7 @@ public class ValidateMojo
 
     /**
      * Creates a new instance of {@link SAXParserFactory}.
+     * 
      * @param pValidationSet The parser factories configuration.
      * @return A new SAX parser factory.
      */
@@ -216,8 +217,7 @@ public class ValidateMojo
         {
             try
             {
-                spf.setFeature( "http://apache.org/xml/features/validation/schema",
-                                true );
+                spf.setFeature( "http://apache.org/xml/features/validation/schema", true );
             }
             catch ( SAXException e )
             {
@@ -249,6 +249,7 @@ public class ValidateMojo
 
     /**
      * Called for validating a single file.
+     * 
      * @param pResolver The resolver to use for loading external entities.
      * @param pValidationSet The validators configuration.
      * @param pFile The file to validate.
@@ -290,6 +291,7 @@ public class ValidateMojo
 
     /**
      * Called for validating a set of XML files against a common schema.
+     * 
      * @param pResolver The resolver to use for loading external entities.
      * @param pValidationSet The set of XML files to validate.
      * @throws MojoExecutionException Validating the set of files failed.
@@ -299,14 +301,13 @@ public class ValidateMojo
         throws MojoExecutionException, MojoFailureException
     {
         final Schema schema = getSchema( pResolver, pValidationSet );
-        final File[] files = getFiles( pValidationSet.getDir(),
-                                       pValidationSet.getIncludes(),
-                                       getExcludes( pValidationSet.getExcludes(),
-                                                    pValidationSet.isSkipDefaultExcludes() ) );
+        final File[] files =
+            getFiles( pValidationSet.getDir(), pValidationSet.getIncludes(),
+                      getExcludes( pValidationSet.getExcludes(), pValidationSet.isSkipDefaultExcludes() ) );
         if ( files.length == 0 )
         {
             getLog().info( "No matching files found for ValidationSet with public ID " + pValidationSet.getPublicId()
-                           + ", system ID " + pValidationSet.getSystemId() + "." );
+                + ", system ID " + pValidationSet.getSystemId() + "." );
         }
         for ( int i = 0; i < files.length; i++ )
         {
@@ -316,15 +317,16 @@ public class ValidateMojo
 
     /**
      * Called by Maven for executing the Mojo.
+     * 
      * @throws MojoExecutionException Running the Mojo failed.
      * @throws MojoFailureException A configuration error was detected.
      */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        if (isSkipping())
+        if ( isSkipping() )
         {
-            getLog().debug("Skipping execution, as demanded by user.");
+            getLog().debug( "Skipping execution, as demanded by user." );
             return;
         }
 

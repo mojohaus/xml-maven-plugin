@@ -23,10 +23,8 @@ import java.io.File;
 
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 
-
 /**
- * An instance of this class is used to specify a set of files,
- * which are transformed by a common XSLT stylesheet.
+ * An instance of this class is used to specify a set of files, which are transformed by a common XSLT stylesheet.
  */
 public class TransformationSet
 {
@@ -59,8 +57,7 @@ public class TransformationSet
     private boolean validating;
 
     /**
-     * Sets patterns of files, which are being excluded from
-     * the transformation set.
+     * Sets patterns of files, which are being excluded from the transformation set.
      */
     public void setExcludes( String[] pExcludes )
     {
@@ -68,8 +65,7 @@ public class TransformationSet
     }
 
     /**
-     * Sets patterns of files, which are being included into
-     * the transformation set.
+     * Sets patterns of files, which are being included into the transformation set.
      */
     public void setIncludes( String[] pIncludes )
     {
@@ -77,8 +73,7 @@ public class TransformationSet
     }
 
     /**
-     * Sets patterns of additional files, which are being considered
-     * for the uptodate check.
+     * Sets patterns of additional files, which are being considered for the uptodate check.
      */
     public void setOtherDepends( String[] pOtherDepends )
     {
@@ -94,8 +89,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns a directory, which is scanned
-     * for files to transform.
+     * Returns a directory, which is scanned for files to transform.
      */
     public File getDir()
     {
@@ -103,8 +97,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns patterns of files, which are being excluded from
-     * the transformation set.
+     * Returns patterns of files, which are being excluded from the transformation set.
      */
     public String[] getExcludes()
     {
@@ -112,8 +105,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns patterns of files, which are being included into
-     * the transformation set.
+     * Returns patterns of files, which are being included into the transformation set.
      */
     public String[] getIncludes()
     {
@@ -121,8 +113,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns patterns of additional files, which are being considered
-     * for the uptodate check.
+     * Returns patterns of additional files, which are being considered for the uptodate check.
      */
     public String[] getOtherDepends()
     {
@@ -130,8 +121,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns the output directory,
-     * where the generated files are being placed. Defaults to
+     * Returns the output directory, where the generated files are being placed. Defaults to
      * {project.build.directory}/generated-resources/xml/xslt.
      */
     public File getOutputDir()
@@ -148,8 +138,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns the XSLT stylesheet, which is being used to control
-     * the transformation.
+     * Returns the XSLT stylesheet, which is being used to control the transformation.
      */
     public String getStylesheet()
     {
@@ -157,8 +146,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns, whether the output directory is added to the classpath.
-     * Defaults to false.
+     * Returns, whether the output directory is added to the classpath. Defaults to false.
      */
     public boolean isAddedToClasspath()
     {
@@ -166,8 +154,9 @@ public class TransformationSet
     }
 
     /**
-     * Returns, whether Maven's default excludes are being ignored.
-     * Defaults to false (Default excludes are being used).
+     * Returns, whether Maven's default excludes are being ignored. Defaults to false (Default excludes are being used).
+     * 
+     * @return {@link #skipDefaultExcludes}
      */
     public boolean isSkipDefaultExcludes()
     {
@@ -175,17 +164,17 @@ public class TransformationSet
     }
 
     /**
-     * Sets, whether the output directory is added to the classpath.
-     * Defaults to false.
+     * Sets, whether the output directory is added to the classpath. Defaults to false.
+     * 
+     * @param addedToClasspath true/false.
      */
-    public void setAddedToClasspath( boolean pAddedToClasspath )
+    public void setAddedToClasspath( boolean addedToClasspath )
     {
-        addedToClasspath = pAddedToClasspath;
+        this.addedToClasspath = addedToClasspath;
     }
 
     /**
-     * Sets the name of a directory, which is scanned
-     * for files to transform.
+     * Sets the name of a directory, which is scanned for files to transform.
      */
     public void setDir( File pDir )
     {
@@ -193,8 +182,7 @@ public class TransformationSet
     }
 
     /**
-     * Sets the output directory,
-     * where the generated files are being placed. Defaults to
+     * Sets the output directory, where the generated files are being placed. Defaults to
      * {project.build.directory}/generated-resources/xml/xslt.
      */
     public void setOutputDir( File pOutputDir )
@@ -203,8 +191,7 @@ public class TransformationSet
     }
 
     /**
-     * Sets, whether Maven's default excludes are being ignored.
-     * Defaults to false (Default excludes are being used).
+     * Sets, whether Maven's default excludes are being ignored. Defaults to false (Default excludes are being used).
      */
     public void setSkipDefaultExcludes( boolean pSkipDefaultExcludes )
     {
@@ -212,8 +199,7 @@ public class TransformationSet
     }
 
     /**
-     * Sets the XSLT stylesheet, which is being used to control
-     * the transformation.
+     * Sets the XSLT stylesheet, which is being used to control the transformation.
      */
     public void setStylesheet( String pStylesheet )
     {
@@ -221,8 +207,7 @@ public class TransformationSet
     }
 
     /**
-     * Returns a set of file mappers, which are being used to
-     * convert the generated files name.
+     * Returns a set of file mappers, which are being used to convert the generated files name.
      */
     public FileMapper[] getFileMappers()
     {
@@ -230,8 +215,7 @@ public class TransformationSet
     }
 
     /**
-     * Sets a set of file mappers, which are being used to
-     * convert the generated files name.
+     * Sets a set of file mappers, which are being used to convert the generated files name.
      */
     public void setFileMappers( FileMapper[] pFileMappers )
     {
@@ -239,8 +223,8 @@ public class TransformationSet
     }
 
     /**
-     * Returns, whether the transformer should create validating XML parsers
-     * for reading XML documents. The default value is false.
+     * Returns, whether the transformer should create validating XML parsers for reading XML documents. The default
+     * value is false.
      */
     public boolean isValidating()
     {
@@ -248,8 +232,8 @@ public class TransformationSet
     }
 
     /**
-     * Sets, whether the transformer should create validating XML parsers
-     * for reading XML documents. The default value is false.
+     * Sets, whether the transformer should create validating XML parsers for reading XML documents. The default value
+     * is false.
      */
     public void setValidating( boolean pValidating )
     {

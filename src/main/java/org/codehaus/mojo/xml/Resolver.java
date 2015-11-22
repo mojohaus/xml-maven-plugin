@@ -46,21 +46,24 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.EntityResolver2;
 
-
 /**
- * An implementation of {@link org.xml.sax.EntityResolver},
- * {@link URIResolver}, and {@link LSResourceResolver},
- * based on the Apache catalog resolver.
+ * An implementation of {@link org.xml.sax.EntityResolver}, {@link URIResolver}, and {@link LSResourceResolver}, based
+ * on the Apache catalog resolver.
  */
 public class Resolver
     implements EntityResolver2, URIResolver, LSResourceResolver
 {
     private final ResourceManager locator;
+
     private final File baseDir;
+
     private final CatalogResolver resolver;
+
     private boolean validating;
 
-    /** Creates a new instance.
+    /**
+     * Creates a new instance.
+     * 
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
@@ -73,7 +76,7 @@ public class Resolver
         manager.setIgnoreMissingProperties( true );
         if ( pLogging )
         {
-            System.err.println("Setting resolver verbosity to maximum.");
+            System.err.println( "Setting resolver verbosity to maximum." );
             manager.setVerbosity( Integer.MAX_VALUE );
         }
         resolver = new CatalogResolver( manager );
@@ -86,12 +89,11 @@ public class Resolver
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "Failed to parse catalog file: "
-                                                  + file.getPath() + ": "
-                                                  + e.getMessage(), e );
+                throw new MojoExecutionException( "Failed to parse catalog file: " + file.getPath() + ": "
+                    + e.getMessage(), e );
             }
         }
-        for ( int i = 0;  i < pUrls.size();  i++ )
+        for ( int i = 0; i < pUrls.size(); i++ )
         {
             URL url = (URL) pUrls.get( i );
             try
@@ -100,8 +102,7 @@ public class Resolver
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "Failed to parse catalog URL: "
-                        + url + ": " + e.getMessage(), e );
+                throw new MojoExecutionException( "Failed to parse catalog URL: " + url + ": " + e.getMessage(), e );
             }
         }
     }
@@ -126,7 +127,8 @@ public class Resolver
         return null;
     }
 
-    private InputSource asInputSource( URL url ) throws IOException
+    private InputSource asInputSource( URL url )
+        throws IOException
     {
         InputSource isource = new InputSource( url.openStream() );
         isource.setSystemId( url.toExternalForm() );
@@ -189,7 +191,7 @@ public class Resolver
         lsInput.setEncoding( pSource.getEncoding() );
         return lsInput;
     }
-    
+
     /**
      * Implementation of {@link LSResourceResolver#resolveResource(String, String, String, String, String)}.
      */
@@ -209,7 +211,7 @@ public class Resolver
         {
             return newLSInput( isource );
         }
-        
+
         URL url = resolve( pSystemId );
         if ( url != null )
         {
@@ -228,7 +230,7 @@ public class Resolver
     /**
      * Sets, whether the Resolver should create validating parsers.
      */
-    public void setValidating ( boolean pValidating )
+    public void setValidating( boolean pValidating )
     {
         validating = pValidating;
     }
@@ -236,7 +238,7 @@ public class Resolver
     /**
      * Returns, whether the Resolver should create validating parsers.
      */
-    public boolean isValidating ( )
+    public boolean isValidating()
     {
         return validating;
     }
@@ -341,7 +343,8 @@ public class Resolver
     /**
      * Implementation of {@link EntityResolver2#getExternalSubset(String, String)}
      */
-    public InputSource getExternalSubset( String name, String baseURI ) throws SAXException, IOException
+    public InputSource getExternalSubset( String name, String baseURI )
+        throws SAXException, IOException
     {
         return null;
     }
@@ -357,7 +360,7 @@ public class Resolver
         {
             return source;
         }
-        
+
         URL url = resolve( pSystemId );
         if ( url != null )
         {

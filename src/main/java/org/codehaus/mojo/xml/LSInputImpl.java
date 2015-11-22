@@ -24,7 +24,6 @@ import java.io.Reader;
 
 import org.w3c.dom.ls.LSInput;
 
-
 /**
  * Implementation of {@link LSInput}, for use by the {@link Resolver}.
  */

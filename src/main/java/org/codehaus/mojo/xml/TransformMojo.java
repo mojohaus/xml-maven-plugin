@@ -56,16 +56,15 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.xml.sax.InputSource;
 
-
 /**
  * The TransformMojo is used for transforming a set of files using a common stylesheet.
  */
-@Mojo(defaultPhase=LifecyclePhase.GENERATE_RESOURCES, name = "transform", threadSafe=true)
-public class TransformMojo extends AbstractXmlMojo
+@Mojo( defaultPhase = LifecyclePhase.GENERATE_RESOURCES, name = "transform", threadSafe = true )
+public class TransformMojo
+    extends AbstractXmlMojo
 {
     /**
-     * Specifies one or more sets of files, which are being
-     * transformed.
+     * Specifies one or more sets of files, which are being transformed.
      */
     @Parameter
     private TransformationSet[] transformationSets;
@@ -73,15 +72,14 @@ public class TransformMojo extends AbstractXmlMojo
     /**
      * Whether creating the transformed files should be forced.
      */
-    @Parameter(property="xml.forceCreation", defaultValue="false")
+    @Parameter( property = "xml.forceCreation", defaultValue = "false" )
     private boolean forceCreation;
-    
+
     /**
-     * Transformer factory use. By default, the systems default transformer
-     * factory is used.
-     * <b>If you use this feature you must use at least jdk 1.6</b>
+     * Transformer factory use. By default, the systems default transformer factory is used. <b>If you use this feature
+     * you must use at least jdk 1.6</b>
      */
-    @Parameter(property="xml.transformerFactory")
+    @Parameter( property = "xml.transformerFactory" )
     private String transformerFactory;
 
     private void setFeature( TransformerFactory pTransformerFactory, String name, Boolean value )
@@ -91,7 +89,7 @@ public class TransformMojo extends AbstractXmlMojo
         Method m;
         try
         {
-            m = pTransformerFactory.getClass().getMethod( "setFeature", new Class[]{ String.class, boolean.class } );
+            m = pTransformerFactory.getClass().getMethod( "setFeature", new Class[] { String.class, boolean.class } );
         }
         catch ( NoSuchMethodException e )
         {
@@ -106,7 +104,7 @@ public class TransformMojo extends AbstractXmlMojo
         {
             try
             {
-                m.invoke( pTransformerFactory, new Object[]{ name, value } );
+                m.invoke( pTransformerFactory, new Object[] { name, value } );
             }
             catch ( IllegalAccessException e )
             {
@@ -132,11 +130,11 @@ public class TransformMojo extends AbstractXmlMojo
         NameValuePair[] features = transformationSet.getFeatures();
         if ( features != null )
         {
-            for ( int i = 0;  i < features.length;  i++ )
+            for ( int i = 0; i < features.length; i++ )
             {
                 final NameValuePair feature = features[i];
                 final String name = feature.getName();
-                if ( name == null  ||  name.length() == 0 )
+                if ( name == null || name.length() == 0 )
                 {
                     throw new MojoFailureException( "A features name is missing or empty." );
                 }
@@ -151,11 +149,11 @@ public class TransformMojo extends AbstractXmlMojo
         NameValuePair[] attributes = transformationSet.getAttributes();
         if ( attributes != null )
         {
-            for ( int i = 0;  i < attributes.length;  i++ )
+            for ( int i = 0; i < attributes.length; i++ )
             {
                 final NameValuePair attribute = attributes[i];
                 final String name = attribute.getName();
-                if ( name == null  ||  name.length() == 0 )
+                if ( name == null || name.length() == 0 )
                 {
                     throw new MojoFailureException( "An attributes name is missing or empty." );
                 }
@@ -176,17 +174,18 @@ public class TransformMojo extends AbstractXmlMojo
             throw new MojoExecutionException( "Failed to parse stylesheet " + stylesheet + ": " + e.getMessage(), e );
         }
     }
-    
+
     /**
      * Creates a new instance of {@link TransformerFactory}.
      */
-    private TransformerFactory getTransformerFactory( ) throws MojoFailureException, MojoExecutionException
+    private TransformerFactory getTransformerFactory()
+        throws MojoFailureException, MojoExecutionException
     {
         if ( transformerFactory == null )
         {
             return TransformerFactory.newInstance();
         }
-        
+
         try
         {
             return newTransformerFactory( transformerFactory, Thread.currentThread().getContextClassLoader() );
@@ -204,7 +203,7 @@ public class TransformMojo extends AbstractXmlMojo
             throw new MojoExecutionException( "Cannot instantiate transformer factory", exception );
         }
     }
-    
+
     // public for use by unit test
     public static TransformerFactory newTransformerFactory( String factoryClassName, ClassLoader classLoader )
         throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
@@ -212,11 +211,11 @@ public class TransformMojo extends AbstractXmlMojo
         // use reflection to avoid JAXP 1.4 (and hence JDK6) requirement
 
         Class[] methodTypes = new Class[] { String.class, ClassLoader.class };
-        
+
         Method method = TransformerFactory.class.getDeclaredMethod( "newInstance", methodTypes );
-        
+
         Object[] methodArgs = new Object[] { factoryClassName, classLoader };
-        
+
         return (TransformerFactory) method.invoke( null, methodArgs );
     }
 
@@ -284,13 +283,11 @@ public class TransformMojo extends AbstractXmlMojo
     }
 
     /**
-     * 
      * @param files the fileNames or URLs to scan their lastModified timestamp.
-     * @param oldest if true, returns the latest modificationDate of all files,
-     *      otherwise returns the earliest.
+     * @param oldest if true, returns the latest modificationDate of all files, otherwise returns the earliest.
      * @return the older or younger last modification timestamp of all files.
      */
-    protected long findLastModified( List/*<Object>*/files, boolean oldest )
+    protected long findLastModified( List/* <Object> */ files, boolean oldest )
     {
         long timeStamp = ( oldest ? Long.MIN_VALUE : Long.MAX_VALUE );
         for ( Iterator it = files.iterator(); it.hasNext(); )
@@ -306,7 +303,7 @@ public class TransformMojo extends AbstractXmlMojo
                 }
                 else // either URL or filePath
                 {
-                    
+
                     String sdep = no.toString();
 
                     try
@@ -328,8 +325,8 @@ public class TransformMojo extends AbstractXmlMojo
                     {
                         fileModifTime = ( oldest ? Long.MIN_VALUE : Long.MAX_VALUE );
                         getLog().warn( "Skipping URL '" + no
-                                           + "' from up-to-date check due to error while opening connection: "
-                                           + getAllExMsgs( ex, true ) );
+                            + "' from up-to-date check due to error while opening connection: "
+                            + getAllExMsgs( ex, true ) );
                     }
 
                 }
@@ -346,7 +343,7 @@ public class TransformMojo extends AbstractXmlMojo
         if ( timeStamp == Long.MIN_VALUE )
         {
             // no older file found
-            return Long.MAX_VALUE; // assume re-execution required. 
+            return Long.MAX_VALUE; // assume re-execution required.
         }
         else if ( timeStamp == Long.MAX_VALUE )
         {
@@ -358,9 +355,8 @@ public class TransformMojo extends AbstractXmlMojo
     }
 
     /**
-     * @return true to indicate results are up-to-date, that is, when the latest 
-     *          from input files is earlier than the younger from the output 
-     *          files (meaning no re-execution required).
+     * @return true to indicate results are up-to-date, that is, when the latest from input files is earlier than the
+     *         younger from the output files (meaning no re-execution required).
      */
     protected boolean isUpdToDate( List dependsFiles, List producesFiles )
     {
@@ -368,12 +364,11 @@ public class TransformMojo extends AbstractXmlMojo
         long inputTimeStamp = findLastModified( dependsFiles, true );
 
         // The younger of all destination files.
-        long destTimeStamp = producesFiles == null
-            ? Long.MIN_VALUE : findLastModified( producesFiles, false ); 
-    
-            getLog().debug( "Depends timeStamp: " + inputTimeStamp + ", produces timestamp: " + destTimeStamp );
+        long destTimeStamp = producesFiles == null ? Long.MIN_VALUE : findLastModified( producesFiles, false );
 
-        return inputTimeStamp < destTimeStamp; 
+        getLog().debug( "Depends timeStamp: " + inputTimeStamp + ", produces timestamp: " + destTimeStamp );
+
+        return inputTimeStamp < destTimeStamp;
     }
 
     private void transform( Transformer pTransformer, File input, File output, Resolver pResolver )
@@ -387,7 +382,8 @@ public class TransformMojo extends AbstractXmlMojo
         {
             final boolean transformInPlace = output.equals( input );
             File tmpOutput = null;
-            if ( transformInPlace ) {
+            if ( transformInPlace )
+            {
                 tmpOutput = File.createTempFile( "xml-maven-plugin", "xml" );
                 tmpOutput.deleteOnExit();
                 fos = new FileOutputStream( tmpOutput );
@@ -397,13 +393,14 @@ public class TransformMojo extends AbstractXmlMojo
                 fos = new FileOutputStream( output );
             }
 
-            final String parentFile = input.getParent() == null
-                ? null : input.getParentFile().toURI().toURL().toExternalForm();
-            pTransformer.transform( pResolver.resolve( input.toURI().toURL().toExternalForm(),
-                                                       parentFile ), new StreamResult( fos ) );
+            final String parentFile =
+                input.getParent() == null ? null : input.getParentFile().toURI().toURL().toExternalForm();
+            pTransformer.transform( pResolver.resolve( input.toURI().toURL().toExternalForm(), parentFile ),
+                                    new StreamResult( fos ) );
             fos.close();
             fos = null;
-            if ( transformInPlace ) {
+            if ( transformInPlace )
+            {
                 FileUtils.copyFile( tmpOutput, output );
                 /* tmpOutput is a temporary file */
                 tmpOutput.delete();
@@ -440,7 +437,7 @@ public class TransformMojo extends AbstractXmlMojo
         String name = pName;
         if ( pFileMappers != null )
         {
-            for ( int i = 0;  i < pFileMappers.length;  i++ )
+            for ( int i = 0; i < pFileMappers.length; i++ )
             {
                 name = pFileMappers[i].getMappedFileName( name );
             }
@@ -451,10 +448,9 @@ public class TransformMojo extends AbstractXmlMojo
     private void transform( Resolver pResolver, TransformationSet pTransformationSet )
         throws MojoExecutionException, MojoFailureException
     {
-        String[] fileNames = getFileNames( pTransformationSet.getDir(),
-                                           pTransformationSet.getIncludes(),
-                                           getExcludes( pTransformationSet.getExcludes(),
-                                                        pTransformationSet.isSkipDefaultExcludes() ) );
+        String[] fileNames =
+            getFileNames( pTransformationSet.getDir(), pTransformationSet.getIncludes(),
+                          getExcludes( pTransformationSet.getExcludes(), pTransformationSet.isSkipDefaultExcludes() ) );
         if ( fileNames == null || fileNames.length == 0 )
         {
             getLog().warn( "No files found for transformation by stylesheet " + pTransformationSet.getStylesheet() );
@@ -488,14 +484,14 @@ public class TransformMojo extends AbstractXmlMojo
         {
             IOUtil.close( stream );
         }
-        
+
         int filesTransformed = 0;
         File inputDir = getDir( pTransformationSet.getDir() );
         File outputDir = getOutputDir( pTransformationSet.getOutputDir() );
         for ( int i = 0; i < fileNames.length; i++ )
         {
             final Transformer t;
-            
+
             File input = getFile( inputDir, fileNames[i] );
             File output = getOutputFile( outputDir, fileNames[i], pTransformationSet.getFileMappers() );
 
@@ -518,16 +514,16 @@ public class TransformMojo extends AbstractXmlMojo
                 dependsFiles.addAll( catalogFiles );
                 dependsFiles.add( input );
                 File[] files = asFiles( getBasedir(), pTransformationSet.getOtherDepends() );
-                for ( int j = 0;  j < files.length;  j++ )
+                for ( int j = 0; j < files.length; j++ )
                 {
                     dependsFiles.add( files[j] );
                 }
 
                 producesFiles.add( output );
-                
+
                 needsTransform = !isUpdToDate( dependsFiles, producesFiles );
             }
-            
+
             if ( !needsTransform )
             {
                 getLog().debug( "Skipping XSL transformation.  File " + fileNames[i] + " is up-to-date." );
@@ -535,7 +531,7 @@ public class TransformMojo extends AbstractXmlMojo
             else
             {
                 filesTransformed++;
-                
+
                 // Perform transformation.
                 try
                 {
@@ -545,15 +541,15 @@ public class TransformMojo extends AbstractXmlMojo
                     NameValuePair[] parameters = pTransformationSet.getParameters();
                     if ( parameters != null )
                     {
-                        for ( int j = 0;  j < parameters.length;  j++  )
+                        for ( int j = 0; j < parameters.length; j++ )
                         {
                             NameValuePair key = parameters[j];
                             t.setParameter( key.getName(), key.getValue() );
                         }
                     }
-                    
+
                     transform( t, input, output, pResolver );
-                    
+
                 }
                 catch ( TransformerConfigurationException e )
                 {
@@ -566,7 +562,7 @@ public class TransformMojo extends AbstractXmlMojo
         {
             getLog().info( "Transformed " + filesTransformed + " file(s)." );
         }
-        
+
         if ( pTransformationSet.isAddedToClasspath() )
         {
             addToClasspath( pTransformationSet.getOutputDir() );
@@ -580,10 +576,10 @@ public class TransformMojo extends AbstractXmlMojo
         NameValuePair[] properties = pTransformationSet.getOutputProperties();
         if ( properties != null )
         {
-            for ( int i = 0;  i < properties.length;  i++ )
+            for ( int i = 0; i < properties.length; i++ )
             {
                 final String name = properties[i].getName();
-                if ( name == null  ||  "".equals( name ) )
+                if ( name == null || "".equals( name ) )
                 {
                     throw new MojoFailureException( "Missing or empty output property name" );
                 }
@@ -598,10 +594,8 @@ public class TransformMojo extends AbstractXmlMojo
                 }
                 catch ( IllegalArgumentException e )
                 {
-                    throw new MojoExecutionException( "Unsupported property name or value: "
-                                                      + name + " => "
-                                                      + value
-                                                      + e.getMessage(), e );
+                    throw new MojoExecutionException( "Unsupported property name or value: " + name + " => " + value
+                        + e.getMessage(), e );
                 }
             }
         }
@@ -614,9 +608,9 @@ public class TransformMojo extends AbstractXmlMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        if (isSkipping())
+        if ( isSkipping() )
         {
-            getLog().debug("Skipping execution, as demanded by user.");
+            getLog().debug( "Skipping execution, as demanded by user." );
             return;
         }
         if ( transformationSets == null || transformationSets.length == 0 )
@@ -627,7 +621,7 @@ public class TransformMojo extends AbstractXmlMojo
         Object oldProxySettings = activateProxy();
         try
         {
-            Resolver resolver = getResolver( );
+            Resolver resolver = getResolver();
             for ( int i = 0; i < transformationSets.length; i++ )
             {
                 TransformationSet transformationSet = transformationSets[i];
