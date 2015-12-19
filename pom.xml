@@ -275,5 +275,6 @@
 
     <!-- Override the 1.7 set in parent -->
     <mojo.java.target>1.6</mojo.java.target>
+    <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
   </properties>
 </project>
