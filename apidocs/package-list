@@ -1,0 +1,4 @@
+org.codehaus.mojo.xml
+org.codehaus.mojo.xml.format
+org.codehaus.mojo.xml.transformer
+org.codehaus.mojo.xml.validation
