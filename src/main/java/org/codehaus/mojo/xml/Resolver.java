@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
@@ -60,6 +61,8 @@ public class Resolver
     private final CatalogResolver resolver;
 
     private boolean validating;
+    
+    private boolean xincludeAware;
 
     /**
      * Creates a new instance.
@@ -141,13 +144,39 @@ public class Resolver
     public Source resolve( String pHref, String pBase )
         throws TransformerException
     {
+
+        URL url = null;
+        
         final Source source = resolver.resolve( pHref, pBase );
+        
         if ( source != null )
         {
-            return source;
+            if ( xincludeAware )
+            {
+                /*
+                 * Avoid risky cast use correct resolved systemid
+                 * to configure a xinclude aware source. 
+                 */
+                try
+                {
+                    url = new URI( source.getSystemId() ).toURL();
+                }
+                catch ( Exception e )
+                {
+                    throw new TransformerException( e );
+                }
+            }
+            else
+            {
+                return source;
+            }
         }
 
-        URL url = resolve( pHref );
+        if ( null == url )
+        {
+            url = resolve( pHref );
+        }
+
         if ( url != null )
         {
             try
@@ -176,6 +205,7 @@ public class Resolver
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setValidating( validating );
         spf.setNamespaceAware( true );
+        spf.setXIncludeAware( xincludeAware );
         XMLReader xmlReader = spf.newSAXParser().getXMLReader();
         xmlReader.setEntityResolver( this );
         return new SAXSource( xmlReader, isource );
@@ -367,5 +397,23 @@ public class Resolver
             return asInputSource( url );
         }
         return null;
+    }
+    
+    /**
+     * Returns, whether the transformer should create xinclude aware XML parsers for reading XML documents. The default
+     * value is false.
+     */    
+    public boolean isXincludeAware()
+    {
+        return xincludeAware;
+    }
+    
+    /**
+     * Sets, whether the transformer should create xinclude aware XML parsers for reading XML documents. The default value
+     * is false.
+     */
+    public void setXincludeAware(boolean pXIncludeAware)
+    {
+        xincludeAware = pXIncludeAware;
     }
 }
