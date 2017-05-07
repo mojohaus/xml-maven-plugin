@@ -151,3 +151,5 @@ Transformation Set Configuration
 |                     | the fileset. A stylesheet must be specified, there is no        |
 |                     | default.                                                        |
 *---------------------+-----------------------------------------------------------------+
+| xincludeAware       | If 'true' enables XInclude support. Disabled by default.        |
+*---------------------+-----------------------------------------------------------------+

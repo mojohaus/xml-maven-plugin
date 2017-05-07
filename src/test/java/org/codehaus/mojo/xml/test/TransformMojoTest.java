@@ -23,6 +23,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -30,6 +32,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.codehaus.mojo.xml.TransformMojo;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
@@ -258,5 +263,81 @@ public class TransformMojoTest
         assertNull( text2.getNextSibling() );
         assertEquals( Node.TEXT_NODE, text2.getNodeType() );
         assertEquals( text1.getNodeValue(), text2.getNodeValue() );
+    }
+    
+    /**
+     * Builds the xinclude test project, tests xinclude enabled transformation
+     */
+    public void testItXIncludeEnabled()
+        throws Exception
+    {
+        String projectPath = "src/test/xinclude-xsl";
+        File projectDirectory = new File( getBasedir(), projectPath );
+        File targetDirectory = new File( projectPath, "target" );
+        if ( targetDirectory.exists() )
+        {
+            FileUtils.cleanDirectory( targetDirectory );
+        }
+        File xmlInputDirectory = new File( projectDirectory, "xml" );
+        File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
+        /* copy to target since that is in an SCM-ignored directory */
+        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml", null );
+
+        TransformMojo mojo = (TransformMojo) newMojo( projectPath );
+        mojo.execute();
+        
+        
+        Document doc = parse( new File( xmlOutputDirectory, "book.xml" ) );
+
+        XPath xPath = XPathFactory.newInstance().newXPath();
+
+        // Make simple assertions
+        List<String> xPathNodes = Arrays.asList(
+            "//book",
+            "//book/chapter",
+            "//book/chapter/section"
+            );
+        
+        for (String xpath : xPathNodes) {
+            assertNotNull("Missing :" + xpath, xPath.evaluate(xpath, doc, XPathConstants.NODE));
+        }
+    }
+    
+    /**
+     * Builds the xinclude test project, tests xinclude disabled transformation
+     */
+    public void testItXIncludeDisabled()
+        throws Exception
+    {
+        String projectPath = "src/test/xinclude-xsl";
+        File projectDirectory = new File( getBasedir(), projectPath );
+        File targetDirectory = new File( projectPath, "target" );
+        if ( targetDirectory.exists() )
+        {
+            FileUtils.cleanDirectory( targetDirectory );
+        }
+        File xmlInputDirectory = new File( projectDirectory, "xml" );
+        File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
+        /* copy to target since that is in an SCM-ignored directory */
+        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml", null );
+
+        TransformMojo mojo = (TransformMojo) newMojo( projectPath );
+        mojo.execute();
+        
+        
+        Document doc = parse( new File( xmlOutputDirectory, "chapter.xml" ) );
+
+        XPath xPath = XPathFactory.newInstance().newXPath();
+
+        // Make simple assertions
+        List<String> xPathNodes = Arrays.asList(
+            "//chapter",
+            "//chapter/*[local-name()='include']",
+            "//chapter/*[local-name()='include']/*[local-name()='fallback']/fallbackSection"
+            );
+        
+        for (String xpath : xPathNodes) {
+            assertNotNull("Missing :" + xpath, xPath.evaluate(xpath, doc, XPathConstants.NODE));
+        }
     }
 }
