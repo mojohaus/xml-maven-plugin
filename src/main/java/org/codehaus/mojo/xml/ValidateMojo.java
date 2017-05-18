@@ -147,23 +147,7 @@ public class ValidateMojo
                 {
                     validator.setResourceResolver( pResolver );
                 }
-                
-                if ( pValidationSet.isXincludeAware() )
-                {
-                    SAXParserFactory spf = SAXParserFactory.newInstance();
-                    spf.setNamespaceAware( true );
-                    spf.setXIncludeAware( pValidationSet.isXincludeAware() );
-
-                    InputSource isource = new InputSource( pFile.toURI().toASCIIString() );
-                    XMLReader xmlReader = spf.newSAXParser().getXMLReader();
-                    xmlReader.setEntityResolver( pResolver );
-
-                    validator.validate( new SAXSource( xmlReader, isource ) );
-                }
-                else
-                {
-                    validator.validate( new StreamSource( pFile ) );
-                }
+                validator.validate( new StreamSource( pFile ) );
             }
         }
         catch ( SAXParseException e )
@@ -358,7 +342,6 @@ public class ValidateMojo
             for ( int i = 0; i < validationSets.length; i++ )
             {
                 ValidationSet validationSet = validationSets[i];
-                resolver.setXincludeAware(validationSet.isValidating() );
                 resolver.setValidating( validationSet.isValidating() );
                 validate( resolver, validationSet );
             }

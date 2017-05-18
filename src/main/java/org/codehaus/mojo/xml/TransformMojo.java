@@ -625,7 +625,6 @@ public class TransformMojo
             for ( int i = 0; i < transformationSets.length; i++ )
             {
                 TransformationSet transformationSet = transformationSets[i];
-                resolver.setXincludeAware( transformationSet.isXincludeAware() );
                 resolver.setValidating( transformationSet.isValidating() );
                 transform( resolver, transformationSet );
             }

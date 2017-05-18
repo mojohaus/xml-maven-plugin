@@ -56,8 +56,6 @@ public class TransformationSet
 
     private boolean validating;
 
-    private boolean xincludeAware;
-
     /**
      * Sets patterns of files, which are being excluded from the transformation set.
      */
@@ -288,23 +286,5 @@ public class TransformationSet
     public void setAttributes( NameValuePair[] pAttributes )
     {
         attributes = pAttributes;
-    }
-    
-    /**
-     * Returns, whether the transformer should create xinclude aware XML parsers for reading XML documents. The default
-     * value is false.
-     */    
-    public boolean isXincludeAware()
-    {
-        return xincludeAware;
-    }
-    
-    /**
-     * Sets, whether the transformer should create xinclude aware XML parsers for reading XML documents. The default value
-     * is false.
-     */
-    public void setXincludeAware(boolean pXIncludeAware)
-    {
-        xincludeAware = pXIncludeAware;
     }
 }

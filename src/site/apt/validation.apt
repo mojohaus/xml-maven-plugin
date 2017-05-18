@@ -135,5 +135,3 @@ Validation Set Configuration
 | skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
 |                     | be added to the excludes list.                                  |
 *---------------------+-----------------------------------------------------------------+
-| xincludeAware       | If 'true' enables XInclude support. Disabled by default.        |
-*---------------------+-----------------------------------------------------------------+

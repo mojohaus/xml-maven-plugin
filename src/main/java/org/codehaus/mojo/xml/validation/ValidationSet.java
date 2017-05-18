@@ -41,8 +41,6 @@ public class ValidationSet
     private String[] excludes;
 
     private boolean skipDefaultExcludes;
-    
-    private boolean xincludeAware;
 
     /**
      * Returns a directory, which is scanned for files to validate.
@@ -182,23 +180,5 @@ public class ValidationSet
     public void setValidating( boolean pValidating )
     {
         validating = pValidating;
-    }
-    
-    /**
-     * Returns, whether the validator should create xinclude aware XML parsers for reading XML documents. The default
-     * value is false.
-     */    
-    public boolean isXincludeAware()
-    {
-        return xincludeAware;
-    }
-    
-    /**
-     * Sets, whether the validator should create xinclude aware XML parsers for reading XML documents. The default value
-     * is false.
-     */
-    public void setXincludeAware(boolean pXIncludeAware)
-    {
-        xincludeAware = pXIncludeAware;
     }
 }

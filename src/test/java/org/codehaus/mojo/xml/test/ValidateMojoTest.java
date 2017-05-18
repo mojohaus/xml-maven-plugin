@@ -86,13 +86,4 @@ public class ValidateMojoTest
     {
         runTest( "src/test/it12" );
     }
-
-    /**
-     * Builds and runs the xinclude test project
-     */
-    public void testXIncludeEnabled()
-        throws Exception
-    {
-        runTest( "src/test/xinclude-xsd" );
-    }
 }
