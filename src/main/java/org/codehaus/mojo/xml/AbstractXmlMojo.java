@@ -116,7 +116,7 @@ public abstract class AbstractXmlMojo
     /**
      * Returns the plugins catalog files.
      */
-    protected void setCatalogs( List pCatalogFiles, List pCatalogUrls )
+    protected void setCatalogs( List pCatalogFiles, List pCatalogUrls ) throws MojoExecutionException
     {
         if ( catalogs == null || catalogs.length == 0 )
         {
@@ -132,7 +132,11 @@ public abstract class AbstractXmlMojo
             }
             catch ( MalformedURLException e )
             {
-                pCatalogFiles.add( asAbsoluteFile( new File( catalogs[i] ) ) );
+                File absoluteCatalog = asAbsoluteFile( new File( catalogs[i] ) );
+                if (!absoluteCatalog.exists() || !absoluteCatalog.isFile()){
+                    throw new MojoExecutionException("That catalog does not exist:"+absoluteCatalog.getPath(), e);
+                }
+                pCatalogFiles.add(absoluteCatalog  );
             }
         }
     }
@@ -154,7 +158,7 @@ public abstract class AbstractXmlMojo
      * Scans a directory for files and returns a set of path names.
      */
     protected String[] getFileNames( File pDir, String[] pIncludes, String[] pExcludes )
-        throws MojoFailureException
+        throws MojoFailureException, MojoExecutionException
     {
         if ( pDir == null )
         {
@@ -164,9 +168,8 @@ public abstract class AbstractXmlMojo
         final File dir = asAbsoluteFile( pDir );
         if ( !dir.isDirectory() )
         {
-            getLog().warn( "The directory " + dir.getPath()
-                + ", which is a base directory of a ValidationSet or TransformationSet, does not exist." );
-            return new String[0];
+            throw new MojoExecutionException("The directory " + dir.getPath()
+                + ", which is a base directory of a ValidationSet or TransformationSet, does not exist.");
         }
         final DirectoryScanner ds = new DirectoryScanner();
         ds.setBasedir( dir );
@@ -206,7 +209,7 @@ public abstract class AbstractXmlMojo
      * Scans a directory for files and returns a set of {@link File} instances.
      */
     protected File[] getFiles( File pDir, String[] pIncludes, String[] pExcludes )
-        throws MojoFailureException
+        throws MojoFailureException, MojoExecutionException
     {
         return asFiles( pDir, getFileNames( pDir, pIncludes, pExcludes ) );
     }
