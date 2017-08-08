@@ -88,6 +88,36 @@ public class ValidateMojoTest
     }
 
     /**
+     * Builds and runs the it13 test project (Issue #16)
+     */
+    public void testIt13()
+        throws Exception
+    {
+        try{
+            runTest( "src/test/it13" );
+            fail("Catalog file does not exist - an exception should have been thrown");
+        }
+        catch(MojoExecutionException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Builds and runs the it13 test project (Issue #16)
+     */
+    public void testIt14()
+        throws Exception
+    {
+        try{
+            runTest( "src/test/it14" );
+            fail("Errorneous Directory name in config should have thrown an exception");
+        }
+        catch(MojoExecutionException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Builds and runs the xinclude test project
      */
     public void testXIncludeEnabled()
