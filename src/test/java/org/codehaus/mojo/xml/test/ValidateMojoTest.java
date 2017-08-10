@@ -52,11 +52,12 @@ public class ValidateMojoTest
         }
         catch ( MojoExecutionException e )
         {
-            Throwable t = e.getCause();
-            assertNotNull( t );
-            assertTrue( t instanceof SAXParseException );
-            SAXParseException ex = (SAXParseException) t;
-            assertEquals( 20, ex.getLineNumber() );
+            //validation exceptions no longer have an attached cause.
+//            Throwable t = e.getCause();
+//            assertNotNull( t );
+//            assertTrue( t instanceof SAXParseException );
+//            SAXParseException ex = (SAXParseException) t;
+//            assertEquals( 20, ex.getLineNumber() );
         }
     }
 
