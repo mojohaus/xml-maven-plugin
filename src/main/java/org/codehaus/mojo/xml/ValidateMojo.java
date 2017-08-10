@@ -379,7 +379,8 @@ public class ValidateMojo
             messageBuffer.append(error.getType().toString());
             messageBuffer.append(": " );
             messageBuffer.append(e.getMessage());
-            messageBuffer.append(System.lineSeparator());
+            String lineSep = System.getProperty("line.separator");
+            messageBuffer.append(lineSep);
             
     }
 }
