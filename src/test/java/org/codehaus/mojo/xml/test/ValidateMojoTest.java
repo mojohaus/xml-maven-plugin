@@ -118,6 +118,19 @@ public class ValidateMojoTest
         }
     }
 
+    public void testIt15()
+        throws Exception
+    {
+        try{
+            runTest( "src/test/it15" );
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    
     /**
      * Builds and runs the xinclude test project
      */
