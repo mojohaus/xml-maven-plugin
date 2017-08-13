@@ -52,12 +52,11 @@ public class ValidateMojoTest
         }
         catch ( MojoExecutionException e )
         {
-            //validation exceptions no longer have an attached cause.
-//            Throwable t = e.getCause();
-//            assertNotNull( t );
-//            assertTrue( t instanceof SAXParseException );
-//            SAXParseException ex = (SAXParseException) t;
-//            assertEquals( 20, ex.getLineNumber() );
+            Throwable t = e.getCause();
+            assertNotNull( t );
+            assertTrue( t instanceof SAXParseException );
+            SAXParseException ex = (SAXParseException) t;
+            assertEquals( 20, ex.getLineNumber() );
         }
     }
 
@@ -118,19 +117,6 @@ public class ValidateMojoTest
         }
     }
 
-    public void testIt15()
-        throws Exception
-    {
-        try{
-            runTest( "src/test/it15" );
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    
     /**
      * Builds and runs the xinclude test project
      */

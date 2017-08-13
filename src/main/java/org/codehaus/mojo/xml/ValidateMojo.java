@@ -21,7 +21,6 @@ package org.codehaus.mojo.xml;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,7 +36,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.mojo.xml.validation.ValidationErrorHandler;
 import org.codehaus.mojo.xml.validation.ValidationSet;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -52,8 +50,6 @@ import org.xml.sax.XMLReader;
 public class ValidateMojo
     extends AbstractXmlMojo
 {
-    private static final String INTRINSIC_NS_URI="http://componentcorp.com/xml/ns/xml-model/1.0";
-    
     /**
      * Specifies a set of document types, which are being validated.
      */
@@ -71,47 +67,42 @@ public class ValidateMojo
     private Schema getSchema( Resolver pResolver, ValidationSet pValidationSet )
         throws MojoExecutionException
     {
+        final String publicId = pValidationSet.getPublicId();
+        final String systemId = pValidationSet.getSystemId();
+        if ( ( publicId == null || "".equals( publicId ) ) && ( systemId == null || "".equals( systemId ) ) )
+        {
+            return null;
+        }
+
+        getLog().debug( "Loading schema with public Id " + publicId + ", system Id " + systemId );
+        InputSource inputSource = null;
+        if ( pResolver != null )
+        {
+            try
+            {
+                inputSource = pResolver.resolveEntity( publicId, systemId );
+            }
+            catch ( SAXException e )
+            {
+                throw new MojoExecutionException( e.getMessage(), e );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( e.getMessage(), e );
+            }
+        }
+        if ( inputSource == null )
+        {
+            inputSource = new InputSource();
+            inputSource.setPublicId( publicId );
+            inputSource.setSystemId( systemId );
+        }
+        final SAXSource saxSource = new SAXSource( inputSource );
+
         String schemaLanguage = pValidationSet.getSchemaLanguage();
         if ( schemaLanguage == null || "".equals( schemaLanguage ) )
         {
             schemaLanguage = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-        }
-        final String publicId = pValidationSet.getPublicId();
-        final String systemId = pValidationSet.getSystemId();
-        if ( ( publicId == null || "".equals( publicId ) ) && ( systemId == null || "".equals( systemId ) ) && !INTRINSIC_NS_URI.equals(schemaLanguage))
-        {
-            return null;
-        }
-        final SAXSource saxSource;
-        if (INTRINSIC_NS_URI.equals(schemaLanguage) && ( publicId == null || "".equals( publicId ) ) && ( systemId == null || "".equals( systemId ) ) ){
-            //publicId and systemID make no sense for the IntrinsicSchemaValidator.
-            saxSource=null;
-        }
-        else{
-            getLog().debug( "Loading schema with public Id " + publicId + ", system Id " + systemId );
-            InputSource inputSource = null;
-            if ( pResolver != null )
-            {
-                try
-                {
-                    inputSource = pResolver.resolveEntity( publicId, systemId );
-                }
-                catch ( SAXException e )
-                {
-                    throw new MojoExecutionException( e.getMessage(), e );
-                }
-                catch ( IOException e )
-                {
-                    throw new MojoExecutionException( e.getMessage(), e );
-                }
-            }
-            if ( inputSource == null )
-            {
-                inputSource = new InputSource();
-                inputSource.setPublicId( publicId );
-                inputSource.setSystemId( systemId );
-            }
-            saxSource = new SAXSource( inputSource );
         }
         try
         {
@@ -120,7 +111,7 @@ public class ValidateMojo
             {
                 schemaFactory.setResourceResolver( pResolver );
             }
-            return saxSource==null?schemaFactory.newSchema():schemaFactory.newSchema( saxSource );
+            return schemaFactory.newSchema( saxSource );
         }
         catch ( SAXException e )
         {
@@ -138,22 +129,20 @@ public class ValidateMojo
      * @param pFile The file to parse or validate.
      * @throws MojoExecutionException Parsing or validating the file failed.
      */
-    private void validate( final Resolver pResolver, ValidationSet pValidationSet, Schema pSchema, File pFile, ValidationErrorHandler errorHandler )
+    private void validate( final Resolver pResolver, ValidationSet pValidationSet, Schema pSchema, File pFile )
         throws MojoExecutionException
     {
-        errorHandler.setContext(pFile);
         try
         {
             if ( pSchema == null )
             {
                 getLog().debug( "Parsing " + pFile.getPath() );
-                parse( pResolver, pValidationSet, pFile ,errorHandler);
+                parse( pResolver, pValidationSet, pFile );
             }
             else
             {
                 getLog().debug( "Validating " + pFile.getPath() );
                 Validator validator = pSchema.newValidator();
-                validator.setErrorHandler(errorHandler);
                 if ( pResolver != null )
                 {
                     validator.setResourceResolver( pResolver );
@@ -168,7 +157,7 @@ public class ValidateMojo
                     InputSource isource = new InputSource( pFile.toURI().toASCIIString() );
                     XMLReader xmlReader = spf.newSAXParser().getXMLReader();
                     xmlReader.setEntityResolver( pResolver );
-                    
+
                     validator.validate( new SAXSource( xmlReader, isource ) );
                 }
                 else
@@ -179,12 +168,50 @@ public class ValidateMojo
         }
         catch ( SAXParseException e )
         {
-            try{
-                errorHandler.fatalError(e);
+            final String publicId = e.getPublicId();
+            final String systemId = e.getSystemId();
+            final int lineNum = e.getLineNumber();
+            final int colNum = e.getColumnNumber();
+            final String location;
+            if ( publicId == null && systemId == null && lineNum == -1 && colNum == -1 )
+            {
+                location = "";
             }
-            catch(SAXException se){
-                throw new MojoExecutionException( "While parsing " + pFile + ": " + e.getMessage(), se );
+            else
+            {
+                final StringBuffer loc = new StringBuffer();
+                String sep = "";
+                if ( publicId != null )
+                {
+                    loc.append( "Public ID " );
+                    loc.append( publicId );
+                    sep = ", ";
+                }
+                if ( systemId != null )
+                {
+                    loc.append( sep );
+                    loc.append( systemId );
+                    sep = ", ";
+                }
+                if ( lineNum != -1 )
+                {
+                    loc.append( sep );
+                    loc.append( "line " );
+                    loc.append( lineNum );
+                    sep = ", ";
+                }
+                if ( colNum != -1 )
+                {
+                    loc.append( sep );
+                    loc.append( " column " );
+                    loc.append( colNum );
+                    sep = ", ";
+                }
+                location = loc.toString();
             }
+            final String msg = "While parsing " + pFile.getPath() + ( "".equals( location ) ? "" : ", at " + location )
+                + ": " + e.getMessage();
+            throw new MojoExecutionException( msg, e );
         }
         catch ( Exception e )
         {
@@ -246,7 +273,7 @@ public class ValidateMojo
      * @throws SAXException Parsing the file failed.
      * @throws ParserConfigurationException Creating an XML parser failed.
      */
-    private void parse( Resolver pResolver, ValidationSet pValidationSet, File pFile , ErrorHandler errorHandler)
+    private void parse( Resolver pResolver, ValidationSet pValidationSet, File pFile )
         throws IOException, SAXException, ParserConfigurationException
     {
         XMLReader xr = newSAXParserFactory( pValidationSet ).newSAXParser().getXMLReader();
@@ -254,7 +281,27 @@ public class ValidateMojo
         {
             xr.setEntityResolver( pResolver );
         }
-        xr.setErrorHandler( errorHandler );
+        xr.setErrorHandler( new ErrorHandler()
+        {
+            public void error( SAXParseException pException )
+                throws SAXException
+            {
+                throw pException;
+            }
+
+            public void fatalError( SAXParseException pException )
+                throws SAXException
+            {
+                throw pException;
+            }
+
+            public void warning( SAXParseException pException )
+                throws SAXException
+            {
+                throw pException;
+            }
+
+        } );
         xr.parse( pFile.toURI().toURL().toExternalForm() );
     }
 
@@ -266,7 +313,7 @@ public class ValidateMojo
      * @throws MojoExecutionException Validating the set of files failed.
      * @throws MojoFailureException A configuration error was detected.
      */
-    private void validate( Resolver pResolver, ValidationSet pValidationSet,ValidationErrorHandler errorHandler )
+    private void validate( Resolver pResolver, ValidationSet pValidationSet )
         throws MojoExecutionException, MojoFailureException
     {
         final Schema schema = getSchema( pResolver, pValidationSet );
@@ -280,7 +327,7 @@ public class ValidateMojo
         }
         for ( int i = 0; i < files.length; i++ )
         {
-            validate( pResolver, pValidationSet, schema, files[i],errorHandler );
+            validate( pResolver, pValidationSet, schema, files[i] );
         }
     }
 
@@ -299,7 +346,6 @@ public class ValidateMojo
             return;
         }
 
-        final ValidationErrorHandler errorHandler = new ValidationErrorHandler();
         if ( validationSets == null || validationSets.length == 0 )
         {
             throw new MojoFailureException( "No ValidationSets configured." );
@@ -314,80 +360,12 @@ public class ValidateMojo
                 ValidationSet validationSet = validationSets[i];
                 resolver.setXincludeAware(validationSet.isValidating() );
                 resolver.setValidating( validationSet.isValidating() );
-                validate( resolver, validationSet ,errorHandler);
-            }
-            List<ValidationErrorHandler.ErrorRecord> errorRecords=errorHandler.getErrors();
-            if (!errorRecords.isEmpty()){
-                final StringBuffer message=new StringBuffer();
-                for(ValidationErrorHandler.ErrorRecord error:errorRecords){
-                    appendMessage(message,error);
-                }
-                if (errorHandler.getErrorCount()+errorHandler.getFatalCount()>0){
-                    throw new MojoExecutionException( message.toString());
-                }
-                else{
-                    getLog().warn(message.toString());
-                }
+                validate( resolver, validationSet );
             }
         }
         finally
         {
             passivateProxy( oldProxySettings );
         }
-    }
-
-    private void appendMessage(StringBuffer messageBuffer,ValidationErrorHandler.ErrorRecord error) {
-        SAXParseException e = error.getException();
-            final String publicId = e.getPublicId();
-            final String systemId = e.getSystemId();
-            final int lineNum = e.getLineNumber();
-            final int colNum = e.getColumnNumber();
-            final String location;
-            if ( publicId == null && systemId == null && lineNum == -1 && colNum == -1 )
-            {
-                location = "";
-            }
-            else
-            {
-                final StringBuffer loc = new StringBuffer();
-                String sep = "";
-                if ( publicId != null )
-                {
-                    loc.append( "Public ID " );
-                    loc.append( publicId );
-                    sep = ", ";
-                }
-                if ( systemId != null )
-                {
-                    loc.append( sep );
-                    loc.append( systemId );
-                    sep = ", ";
-                }
-                if ( lineNum != -1 )
-                {
-                    loc.append( sep );
-                    loc.append( "line " );
-                    loc.append( lineNum );
-                    sep = ", ";
-                }
-                if ( colNum != -1 )
-                {
-                    loc.append( sep );
-                    loc.append( " column " );
-                    loc.append( colNum );
-                    sep = ", ";
-                }
-                location = loc.toString();
-            }
-            messageBuffer.append("While parsing ");
-            messageBuffer.append(error.getContext().getPath());
-            messageBuffer.append(( "".equals( location ) ? "" : ", at " + location ));
-            messageBuffer.append(": " );
-            messageBuffer.append(error.getType().toString());
-            messageBuffer.append(": " );
-            messageBuffer.append(e.getMessage());
-            String lineSep = System.getProperty("line.separator");
-            messageBuffer.append(lineSep);
-            
     }
 }

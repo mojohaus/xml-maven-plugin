@@ -1,5 +1,0 @@
-
-element counter { 
-    
-    element item { empty }*
-}

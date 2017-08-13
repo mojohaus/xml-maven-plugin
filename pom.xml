@@ -161,18 +161,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.componentcorp.xml.validation</groupId>
-      <artifactId>jxvc</artifactId>
-      <version>0.9.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.componentcorp.xml.validation</groupId>
-      <artifactId>relaxng-compact</artifactId>
-      <version>0.9.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
       <scope>provided</scope>
