@@ -50,6 +50,8 @@ import org.xml.sax.XMLReader;
 public class ValidateMojo
     extends AbstractXmlMojo
 {
+    private static final String INTRINSIC_NS_URI="http://componentcorp.com/xml/ns/xml-model/1.0";
+    
     /**
      * Specifies a set of document types, which are being validated.
      */
@@ -67,42 +69,47 @@ public class ValidateMojo
     private Schema getSchema( Resolver pResolver, ValidationSet pValidationSet )
         throws MojoExecutionException
     {
-        final String publicId = pValidationSet.getPublicId();
-        final String systemId = pValidationSet.getSystemId();
-        if ( ( publicId == null || "".equals( publicId ) ) && ( systemId == null || "".equals( systemId ) ) )
-        {
-            return null;
-        }
-
-        getLog().debug( "Loading schema with public Id " + publicId + ", system Id " + systemId );
-        InputSource inputSource = null;
-        if ( pResolver != null )
-        {
-            try
-            {
-                inputSource = pResolver.resolveEntity( publicId, systemId );
-            }
-            catch ( SAXException e )
-            {
-                throw new MojoExecutionException( e.getMessage(), e );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( e.getMessage(), e );
-            }
-        }
-        if ( inputSource == null )
-        {
-            inputSource = new InputSource();
-            inputSource.setPublicId( publicId );
-            inputSource.setSystemId( systemId );
-        }
-        final SAXSource saxSource = new SAXSource( inputSource );
-
         String schemaLanguage = pValidationSet.getSchemaLanguage();
         if ( schemaLanguage == null || "".equals( schemaLanguage ) )
         {
             schemaLanguage = XMLConstants.W3C_XML_SCHEMA_NS_URI;
+        }
+        final String publicId = pValidationSet.getPublicId();
+        final String systemId = pValidationSet.getSystemId();
+        if ( ( publicId == null || "".equals( publicId ) ) && ( systemId == null || "".equals( systemId ) ) && !INTRINSIC_NS_URI.equals(schemaLanguage))
+        {
+            return null;
+        }
+        final SAXSource saxSource;
+        if (INTRINSIC_NS_URI.equals(schemaLanguage) && ( publicId == null || "".equals( publicId ) ) && ( systemId == null || "".equals( systemId ) ) ){
+            //publicId and systemID make no sense for the IntrinsicSchemaValidator.
+            saxSource=null;
+        }
+        else{
+            getLog().debug( "Loading schema with public Id " + publicId + ", system Id " + systemId );
+            InputSource inputSource = null;
+            if ( pResolver != null )
+            {
+                try
+                {
+                    inputSource = pResolver.resolveEntity( publicId, systemId );
+                }
+                catch ( SAXException e )
+                {
+                    throw new MojoExecutionException( e.getMessage(), e );
+                }
+                catch ( IOException e )
+                {
+                    throw new MojoExecutionException( e.getMessage(), e );
+                }
+            }
+            if ( inputSource == null )
+            {
+                inputSource = new InputSource();
+                inputSource.setPublicId( publicId );
+                inputSource.setSystemId( systemId );
+            }
+            saxSource = new SAXSource( inputSource );
         }
         try
         {
@@ -111,7 +118,7 @@ public class ValidateMojo
             {
                 schemaFactory.setResourceResolver( pResolver );
             }
-            return schemaFactory.newSchema( saxSource );
+            return saxSource==null?schemaFactory.newSchema():schemaFactory.newSchema( saxSource );
         }
         catch ( SAXException e )
         {
