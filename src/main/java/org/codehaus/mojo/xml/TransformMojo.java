@@ -544,6 +544,7 @@ public class TransformMojo
                         for ( int j = 0; j < parameters.length; j++ )
                         {
                             NameValuePair key = parameters[j];
+                            getLog().debug("Setting Parameter: " + key.getName() + "=" + key.getValue());
                             t.setParameter( key.getName(), key.getValue() );
                         }
                     }

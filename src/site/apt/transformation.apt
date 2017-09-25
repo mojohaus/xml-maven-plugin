@@ -85,6 +85,10 @@ Goal properties
 |                    | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
 |                    | article for details on catalog files and their formats.         |
 *--------------------+-----------------------------------------------------------------+
+| forceCreation       | If 'true', no up-to-date check is performed and                |
+|                     | the transformation is always performed.                        |
+|                     | Defaults to "${xml.forceCreation}" or 'false'.                 |
+*---------------------+----------------------------------------------------------------+
 | transformationSets | A transformation set configures a set of XML files, which are   |
 |                    | transformed by applying a common XSLT stylesheet. If you want   |
 |                    | apply multiple stylesheets, use multiple transformation sets.   |
@@ -116,10 +120,6 @@ Transformation Set Configuration
 *---------------------+-----------------------------------------------------------------+
 | features            | Specifies features, which are being set on the transformer      |
 |                     | factory by invoking the setFeature(String,boolean) method.      |
-*---------------------+-----------------------------------------------------------------+
-| forceCreation       | If 'true', no up-to-date check is performed and                 |
-|                     | the transformation is always performed.                         |
-|                     | Defaults to "${xml.forceCreation}" or 'false'.                  |
 *---------------------+-----------------------------------------------------------------+
 | includes            | Specifies a pattern of files, which are being included. By      |
 |                     | default, all files are included. The pattern is relative to     |
