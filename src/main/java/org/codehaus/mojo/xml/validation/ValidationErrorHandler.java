@@ -28,7 +28,6 @@ import org.xml.sax.SAXParseException;
  * @author rlamont
  */
 public class ValidationErrorHandler implements ErrorHandler{
-    
     private final List<ErrorRecord> errors=new ArrayList<ErrorRecord>();
     private final List<ErrorRecord> publicErrors = Collections.unmodifiableList(errors);
     private int warningCount=0;
@@ -73,10 +72,6 @@ public class ValidationErrorHandler implements ErrorHandler{
     public void setContext(File context) {
         this.context = context;
     }
-    
-    
-    
-    
     
     public enum ErrorType{
         WARNING{
@@ -136,9 +131,5 @@ public class ValidationErrorHandler implements ErrorHandler{
         public File getContext() {
             return context;
         }
-        
-        
-        
-        
     }
 }

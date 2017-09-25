@@ -381,6 +381,5 @@ public class ValidateMojo
             messageBuffer.append(e.getMessage());
             String lineSep = System.getProperty("line.separator");
             messageBuffer.append(lineSep);
-            
     }
 }
