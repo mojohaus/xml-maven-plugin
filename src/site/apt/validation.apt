@@ -64,35 +64,49 @@ Goal properties
 
   The "xml:validate" goal offers the following configurable properties:
 
-*----------------+-----------------------------------------------------------------+
-| Property Name  | Description                                                     |
-*----------------+-----------------------------------------------------------------+
-| basedir        | The base directory, which is used for interpreting relative     |
-|                | paths. Defaults to the project directory, in which the POM      |
-|                | resides.                                                        |
-*----------------+-----------------------------------------------------------------+
-| catalogs       | A set of catalog files, which configure the entity resolver.    |
-|                | For example, it allows to map public ID's or external URL's to  |
-|                | local files. Multiple catalog files are supported. In other     |
-|                | words, to configure a single catalog file, you would need a     |
-|                | section like this:                                              |
-|                |                                                                 |
-|                | \<catalogs\>                                                    |
-|                |   \<catalog\>mycatalog.xml\</catalog\>                          |
-|                | \</catalogs\>                                                   |
-|                |                                                                 |
-|                | The interpretation of catalog files is done by the Apache XML   |
-|                | resolver. See                                                   |
-|                | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
-|                | article for details on catalog files and their formats.         |
-*----------------+-----------------------------------------------------------------+
-| validationSets | A validation set configures a set of XML files, which are       |
-|                | validated against a common XML schema. If you want to validate  |
-|                | against multiple schemata, use one validation set per schema.   |
-|                | See the above example, which specifies two validation sets.     |
-|                | The various child elements of a \<validationSet\> section are   |
-|                | listed in the following section.                                |
-*----------------+-----------------------------------------------------------------+
+*-----------------+-----------------------------------------------------------------+
+| Property Name   | Description                                                     |
+*-----------------+-----------------------------------------------------------------+
+| basedir         | The base directory, which is used for interpreting relative     |
+|                 | paths. Defaults to the project directory, in which the POM      |
+|                 | resides.                                                        |
+*-----------------+-----------------------------------------------------------------+
+| catalogHandling | How to handle entities which cannot be resolved from the        |
+|                 | catalogs. There are 3 possible values:\                         |
+|                 |                                                                 |
+|                 | * 'passThrough' indicates that the entity resolver should       |
+|                 |   attempt to resolve system and public IDs through default      |
+|                 |   mechanisms, typically by resolving URI formatted system IDs.\ |
+|                 |                                                                 |
+|                 | * 'local' indicates that the entity resolver should behave as   |
+|                 |   for 'passThrough' but only where URI's are 'file' format      |
+|                 |   URIs.\                                                        |
+|                 |                                                                 |
+|                 | * 'strict' indicates that any entity which cannot be found in   |
+|                 |   a catalog should generate an error.                           |
+*-----------------+-----------------------------------------------------------------+
+| catalogs        | A set of catalog files, which configure the entity resolver.    |
+|                 | For example, it allows to map public ID's or external URL's to  |
+|                 | local files. Multiple catalog files are supported. In other     |
+|                 | words, to configure a single catalog file, you would need a     |
+|                 | section like this:\                                             |
+|                 | \                                                               |
+|                 | \<catalogs\>\                                                   |
+|                 |   \<catalog\>mycatalog.xml\</catalog\>\                         |
+|                 | \</catalogs\>\                                                  |
+|                 | \                                                               |
+|                 | The interpretation of catalog files is done by the Apache XML   |
+|                 | resolver. See                                                   |
+|                 | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
+|                 | article for details on catalog files and their formats.         |
+*-----------------+-----------------------------------------------------------------+
+| validationSets  | A validation set configures a set of XML files, which are       |
+|                 | validated against a common XML schema. If you want to validate  |
+|                 | against multiple schemata, use one validation set per schema.   |
+|                 | See the above example, which specifies two validation sets.     |
+|                 | The various child elements of a \<validationSet\> section are   |
+|                 | listed in the following section.                                |
+*-----------------+-----------------------------------------------------------------+
 
 Validation Set Configuration
 

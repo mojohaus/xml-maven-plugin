@@ -108,8 +108,8 @@ public class ValidateMojo
             if ( inputSource == null )
             {
                 inputSource = new InputSource();
-                inputSource.setPublicId( publicId );
-                inputSource.setSystemId( systemId );
+                inputSource.setPublicId( pResolver.filterPossibleURI( publicId ));
+                inputSource.setSystemId( pResolver.filterPossibleURI(systemId ));
             }
             saxSource = new SAXSource( inputSource );
         }
@@ -304,6 +304,7 @@ public class ValidateMojo
         {
             throw new MojoFailureException( "No ValidationSets configured." );
         }
+        checkCatalogHandling();
 
         Object oldProxySettings = activateProxy();
         try

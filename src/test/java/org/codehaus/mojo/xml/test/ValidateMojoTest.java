@@ -17,10 +17,10 @@ package org.codehaus.mojo.xml.test;
  */
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.xml.sax.SAXParseException;
+import org.codehaus.mojo.xml.ValidateMojo;
 
 /**
- * Test case for the {@link CheckFormatMojo}.
+ * Test case for the {@link ValidateMojo}.
  */
 public class ValidateMojoTest
     extends AbstractXmlMojoTestCase
@@ -127,6 +127,47 @@ public class ValidateMojoTest
         catch(Exception e){
             e.printStackTrace();
             fail();
+        }
+    }
+
+    
+    /*
+        Notes on how this test works:
+            - we try to validate a document using a public schema for which we have
+            no mapping in our catalog.  Because the catalogHandling is set to "strict",
+            the test should fail.
+    */
+    /**
+     * Builds and runs the it16 test project (Issue #19 - adding a "strict" setting on all mojo)
+     * @throws Exception 
+     */
+    public void testIt16()
+        throws Exception
+    {
+        try{
+            runTest( "src/test/it16" );
+            fail();
+        }
+        catch(MojoExecutionException e){
+           
+        }
+    }
+
+    
+    /**
+     * Builds and runs the it17 test project (Issue #19 - adding a "strict" setting on all mojo).
+     * This test is just a sanity test of the "local" setting for catalogHandling.
+     * @throws Exception 
+     */
+    public void testIt17()
+        throws Exception
+    {
+        try{
+            runTest( "src/test/it17" );
+        }
+        catch(MojoExecutionException e){
+            fail();
+           
         }
     }
 
