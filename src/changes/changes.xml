@@ -22,14 +22,9 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="1.0.1" date="Not yet released">
-      <action dev="jochen" type="fix" issue="MOJO-1648"
-          due-to="Paul Lucassen" due-to-email="pglucassen@gmail.com">
-        Fixed an NPE when specifying the schema via public ID.
-      </action>
-      <action dev="jochen" type="fix" issue="MOJO-1690"
-          due-to="Jeff Martin" due-to-email="jeff@jeffmartin.com">
-        Wrong property name in documentation (transformation.html)
+    <release version="1.0.2" date="Not yet released">
+      <action dev="khmarbaise" type="fix" issue="#16" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
+        Sanity check mojo parameters.
       </action>
       <action dev="jochen" type="fix" issue="#26" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
         Multiple validation problems can now be reported, improving usability.
@@ -39,6 +34,17 @@
       </action>
       <action dev="jochen" type="fix" issue="#21" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
         Support xml-model processing instruction
+      </action>
+    </release>
+
+    <release version="1.0.1" date="2015-Dec-20">
+      <action dev="jochen" type="fix" issue="MOJO-1648"
+          due-to="Paul Lucassen" due-to-email="pglucassen@gmail.com">
+        Fixed an NPE when specifying the schema via public ID.
+      </action>
+      <action dev="jochen" type="fix" issue="MOJO-1690"
+          due-to="Jeff Martin" due-to-email="jeff@jeffmartin.com">
+        Wrong property name in documentation (transformation.html)
       </action>
     </release>
 
