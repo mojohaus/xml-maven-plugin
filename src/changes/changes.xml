@@ -41,6 +41,9 @@
       <action dev="jochen" type="fix" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
         Changes.xml tidy up
       </action>
+      <action dev="jochen" type="add" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
+        Added the "catalogHandling" parameter.
+      </action>
     </release>
 
     <release version="1.0.1" date="2015-Dec-20">
