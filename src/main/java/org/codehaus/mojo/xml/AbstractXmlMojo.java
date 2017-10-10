@@ -76,6 +76,29 @@ public abstract class AbstractXmlMojo
      */
     @Parameter
     private String[] catalogs;
+    
+    public enum CatalogHandling{
+        /**
+         * Unmatched entities are resolved through URI resolution
+         */
+        passThrough,
+        /**
+         * Unmatched entities are resolved through file only URI resolution
+         */
+        local,
+        /**
+         * Unmatched entities generate an error
+         */
+        strict
+        
+        
+    }
+    
+    /**
+     * How to handle entities which cannot be found in any catalog.
+     */
+    @Parameter ( defaultValue="passThrough")
+    private CatalogHandling catalogHandling;
 
     /**
      * Plexus resource manager used to obtain XSL.
@@ -85,6 +108,11 @@ public abstract class AbstractXmlMojo
 
     private boolean locatorInitialized;
 
+    public AbstractXmlMojo() {
+    }
+
+    
+    
     /**
      * Returns the maven project.
      */
@@ -151,7 +179,7 @@ public abstract class AbstractXmlMojo
         List catalogUrls = new ArrayList();
         setCatalogs( catalogFiles, catalogUrls );
 
-        return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator(), getLog().isDebugEnabled() );
+        return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator(), catalogHandling,getLog().isDebugEnabled() );
     }
 
     /**
@@ -352,4 +380,17 @@ public abstract class AbstractXmlMojo
     {
         return skip;
     }
+    
+    void checkCatalogHandling() throws MojoFailureException{
+        if (getCatalogHandling()==null){
+            throw new MojoFailureException("Illegal value for catalogHandling parameter");
+        }
+
+    }
+
+    protected CatalogHandling getCatalogHandling() {
+        return catalogHandling;
+    }
+    
+    
 }

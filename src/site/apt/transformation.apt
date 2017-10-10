@@ -70,16 +70,30 @@ Goal properties
 |                    | paths. Defaults to the project directory, in which the POM      |
 |                    | resides.                                                        |
 *--------------------+-----------------------------------------------------------------+
+| catalogHandling    | How to handle entities which cannot be resolved from the        |
+|                    | catalogs. There are 3 possible values: \                        |
+|                    |                                                                 |
+|                    | * 'passThrough' indicates that the entity resolver should       |
+|                    |   attempt to resolve system and public IDs through default      |
+|                    |   mechanisms, typically by resolving URI formatted system IDs.\ |
+|                    |                                                                 |
+|                    | * 'local' indicates that the entity resolver should behave as   |
+|                    |   for 'passThrough' but only where URI's are 'file' format      |
+|                    |   URIs.\                                                        |
+|                    |                                                                 |
+|                    | * 'strict' indicates that any entity which cannot be found in   |
+|                    |   a catalog should generate an error.                           |
+*--------------------+-----------------------------------------------------------------+
 | catalogs           | A set of catalog files, which configure the entity resolver.    |
 |                    | For example, it allows to map public ID's or external URL's to  |
 |                    | local files. Multiple catalog files are supported. In other     |
 |                    | words, to configure a single catalog file, you would need a     |
-|                    | section like this:                                              |
-|                    |                                                                 |
-|                    | \<catalogs\>                                                    |
-|                    |   \<catalog\>mycatalog.xml\</catalog\>                          |
-|                    | \</catalogs\>                                                   |
-|                    |                                                                 |
+|                    | section like this:\                                             |
+|                    | \                                                               |
+|                    | \<catalogs\>\                                                   |
+|                    |   \<catalog\>mycatalog.xml\</catalog\>\                         |
+|                    | \</catalogs\>\                                                  |
+|                    | \                                                               |
 |                    | The interpretation of catalog files is done by the Apache XML   |
 |                    | resolver. See                                                   |
 |                    | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |

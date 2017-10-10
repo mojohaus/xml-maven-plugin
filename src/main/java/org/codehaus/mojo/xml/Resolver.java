@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -63,6 +64,8 @@ public class Resolver
     private boolean validating;
     
     private boolean xincludeAware;
+    
+    private final AbstractXmlMojo.CatalogHandling catalogHandling;
 
     /**
      * Creates a new instance.
@@ -70,7 +73,7 @@ public class Resolver
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
-    Resolver( File pBaseDir, List pFiles, List pUrls, ResourceManager pLocator, boolean pLogging )
+    Resolver( File pBaseDir, List pFiles, List pUrls, ResourceManager pLocator, AbstractXmlMojo.CatalogHandling catalogHandling,boolean pLogging )
         throws MojoExecutionException
     {
         baseDir = pBaseDir;
@@ -108,6 +111,7 @@ public class Resolver
                 throw new MojoExecutionException( "Failed to parse catalog URL: " + url + ": " + e.getMessage(), e );
             }
         }
+        this.catalogHandling=catalogHandling;
     }
 
     /**
@@ -333,8 +337,9 @@ public class Resolver
     /**
      * Attempts to resolve the given URI.
      */
-    public URL resolve( String pResource )
+    private URL resolve( String pResource )
     {
+        pResource=filterPossibleURI(pResource);
         if ( pResource == null )
         {
             return null;
@@ -415,5 +420,28 @@ public class Resolver
     public void setXincludeAware(boolean pXIncludeAware)
     {
         xincludeAware = pXIncludeAware;
+    }
+
+    String filterPossibleURI(String pResource) {
+        switch (catalogHandling){
+            case strict:
+                return null;
+            case local:
+        
+                try
+                {
+                    URI resourceAsURI = new URI(pResource );
+                    String scheme =resourceAsURI.getScheme();
+                    if (scheme==null || "file".equals( scheme )){
+                        break;
+                    }
+                    return null;
+                }
+                catch ( URISyntaxException ex )
+                {
+                    return null;
+                }
+        }
+        return pResource;
     }
 }

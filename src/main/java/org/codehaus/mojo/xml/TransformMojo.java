@@ -618,6 +618,7 @@ public class TransformMojo
         {
             throw new MojoFailureException( "No TransformationSets configured." );
         }
+        checkCatalogHandling();
 
         Object oldProxySettings = activateProxy();
         try
