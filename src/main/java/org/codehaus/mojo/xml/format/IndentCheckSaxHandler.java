@@ -15,7 +15,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * A {@link DefaultHandler} implementation that detects formatting violations and reports them to the supplied
- * {@link #violationHandler}.
+ * {@link XmlFormatViolationHandler}.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
@@ -122,7 +122,7 @@ public class IndentCheckSaxHandler
     }
 
     /**
-     * Stores the passed characters into {@link #charBuffer}.
+     * Stores the passed characters into a character buffer.
      *
      * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
      */

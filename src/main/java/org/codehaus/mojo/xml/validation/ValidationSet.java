@@ -46,6 +46,7 @@ public class ValidationSet
 
     /**
      * Returns a directory, which is scanned for files to validate.
+     * @return The directory to scan.
      */
     public File getDir()
     {
@@ -54,6 +55,7 @@ public class ValidationSet
 
     /**
      * Returns patterns of files, which are being excluded from the validation set.
+     * @return Patters of excluded files.
      */
     public String[] getExcludes()
     {
@@ -62,6 +64,7 @@ public class ValidationSet
 
     /**
      * Returns patterns of files, which are being included into the validation set.
+     * @return Patters of included files.
      */
     public String[] getIncludes()
     {
@@ -71,6 +74,7 @@ public class ValidationSet
     /**
      * Returns the schemas public ID. May be null, if the schema is loaded through its system ID or if the documents are
      * being validated for wellformedness only.
+     * @return The schemas public ID, if available, or null.
      */
     public String getPublicId()
     {
@@ -81,6 +85,7 @@ public class ValidationSet
      * Returns the schema language. May be null, if the documents are being validated for wellformedness only, or if the
      * default schema language (W3C XML Schema) is being used. See
      * http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html for possible values.
+     * @return The schema language, if available, or null.
      */
     public String getSchemaLanguage()
     {
@@ -90,6 +95,7 @@ public class ValidationSet
     /**
      * Returns the schemas system ID. May be null, if the schema is loaded through its public ID or if the documents are
      * being validated for wellformedness only.
+     * @return The schemas system ID, if available, or null.
      */
     public String getSystemId()
     {
@@ -98,6 +104,8 @@ public class ValidationSet
 
     /**
      * Returns, whether Maven's default excludes are being ignored. Defaults to false (Default excludes are being used).
+     * @return Whether to ignore Maven's default excludes, or not. (Default=false, thus by default those
+     * excludes are in place.)
      */
     public boolean isSkipDefaultExcludes()
     {
@@ -108,6 +116,7 @@ public class ValidationSet
      * If the documents are being validated for wellformedness only: Returns, whether the parser should be validating.
      * (In other words: Whether documents must contain a document type or xml schema declaration.) The property is
      * ignored otherwise. The default value is false.
+     * @return Whether documents are being validated, or not.
      */
     public boolean isValidating()
     {
@@ -116,6 +125,7 @@ public class ValidationSet
 
     /**
      * Sets a directory, which is scanned for files to validate.
+     * @param pDir The directory to scan.
      */
     public void setDir( File pDir )
     {
@@ -124,6 +134,7 @@ public class ValidationSet
 
     /**
      * Sets patterns of files, which are being excluded from the validation set.
+     * @param pExcludes Patters of excluded files.
      */
     public void setExcludes( String[] pExcludes )
     {
@@ -132,6 +143,7 @@ public class ValidationSet
 
     /**
      * Sets patterns of files, which are being included into the validation set.
+     * @param pIncludes Patters of excluded files.
      */
     public void setIncludes( String[] pIncludes )
     {
@@ -141,6 +153,7 @@ public class ValidationSet
     /**
      * Sets the schemas public ID. May be null, if the schema is loaded through its system ID or if the documents are
      * being validated for wellformedness only.
+     * @param pPublicId The schemas public Id, if available, or null.
      */
     public void setPublicId( String pPublicId )
     {
@@ -151,6 +164,7 @@ public class ValidationSet
      * Sets the schema language. May be null, if the documents are being validated for wellformedness only, or if the
      * default schema language (W3C XML Schema) is being used. See
      * http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html for possible values.
+     * @param pSchemaLanguage The schema language, if available, or null.
      */
     public void setSchemaLanguage( String pSchemaLanguage )
     {
@@ -159,6 +173,7 @@ public class ValidationSet
 
     /**
      * Sets, whether Maven's default excludes are being ignored. Defaults to false (Default excludes are being used).
+     * @param pSkipDefaultExcludes Sets, whether to apply Maven's default ecxludes (false, default), or not (true).
      */
     public void setSkipDefaultExcludes( boolean pSkipDefaultExcludes )
     {
@@ -168,6 +183,7 @@ public class ValidationSet
     /**
      * Sets the schemas system ID. May be null, if the schema is loaded through its public ID or if the documents are
      * being validated for wellformedness only.
+     * @param pSystemId The schemas system ID, if available, or null.
      */
     public void setSystemId( String pSystemId )
     {
@@ -178,6 +194,7 @@ public class ValidationSet
      * If the documents are being validated for wellformedness only: Sets, whether the parser should be validating. (In
      * other words: Whether documents must contain a document type or xml schema declaration.) The property is ignored
      * otherwise. The default value is false.
+     * @param pValidating Whether documents are being validated (true), or not (false, default).
      */
     public void setValidating( boolean pValidating )
     {
@@ -187,6 +204,7 @@ public class ValidationSet
     /**
      * Returns, whether the validator should create xinclude aware XML parsers for reading XML documents. The default
      * value is false.
+     * @return Whether XML parsers should be xinclude aware (true), or not (false, default).
      */    
     public boolean isXincludeAware()
     {
@@ -196,6 +214,7 @@ public class ValidationSet
     /**
      * Sets, whether the validator should create xinclude aware XML parsers for reading XML documents. The default value
      * is false.
+     * @param pXIncludeAware Whether XML parsers should be xinclude aware (true), or not (false, default).
      */
     public void setXincludeAware(boolean pXIncludeAware)
     {

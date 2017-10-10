@@ -57,15 +57,18 @@ public class TransformMojoTest
 
     /**
      * Common code for the it4, it6 and it10 test projects.
+     * @param pDir The tests base directory.
+     * @param pTargetFile Name (not path) of the transformations output file.
+     * @throws Exception The test failed.
      */
-    public void runTestIt4( String dir, String targetFile )
+    public void runTestIt4( String pDir, String pTargetFile )
         throws Exception
     {
-        TransformMojo mojo = (TransformMojo) newMojo( dir );
+        TransformMojo mojo = (TransformMojo) newMojo( pDir );
         mojo.execute();
-        Document doc1 = parse( new File( dir, "xml/doc1.xml" ) );
+        Document doc1 = parse( new File( pDir, "xml/doc1.xml" ) );
         doc1.normalize();
-        Document doc2 = parse( new File( dir, "target/generated-resources/xml/xslt/" + targetFile ) );
+        Document doc2 = parse( new File( pDir, "target/generated-resources/xml/xslt/" + pTargetFile ) );
         doc2.normalize();
         Element doc1Element = doc1.getDocumentElement();
         assertEquals( "doc1", doc1Element.getLocalName() );
@@ -86,6 +89,7 @@ public class TransformMojoTest
 
     /**
      * Builds the it4 test project.
+     * @throws Exception The test failed.
      */
     public void testIt4()
         throws Exception
@@ -95,6 +99,7 @@ public class TransformMojoTest
 
     /**
      * Builds the it5 test project.
+     * @throws Exception The test failed.
      */
     public void testIt5()
         throws Exception
@@ -124,6 +129,7 @@ public class TransformMojoTest
 
     /**
      * Builds the it6 test project.
+     * @throws Exception The test failed.
      */
     public void testIt6()
         throws Exception
@@ -157,6 +163,7 @@ public class TransformMojoTest
 
     /**
      * Builds the it7 test project.
+     * @throws Exception The test failed.
      */
     public void testIt7()
         throws Exception
@@ -194,7 +201,8 @@ public class TransformMojoTest
     }
 
     /**
-     * Builds the it7 test project.
+     * Builds the it8 test project.
+     * @throws Exception The test failed.
      */
     public void testIt8()
         throws Exception
@@ -215,6 +223,7 @@ public class TransformMojoTest
 
     /**
      * Builds the it10 test project.
+     * @throws Exception The test failed.
      */
     public void testIt10()
         throws Exception
@@ -224,6 +233,7 @@ public class TransformMojoTest
 
     /**
      * Builds the it11 test project, tests in-place modification.
+     * @throws Exception The test failed.
      */
     public void testIt11()
         throws Exception
@@ -267,6 +277,7 @@ public class TransformMojoTest
     
     /**
      * Builds the xinclude test project, tests xinclude enabled transformation
+     * @throws Exception The test failed.
      */
     public void testItXIncludeEnabled()
         throws Exception
@@ -305,6 +316,7 @@ public class TransformMojoTest
     
     /**
      * Builds the xinclude test project, tests xinclude disabled transformation
+     * @throws Exception The test failed.
      */
     public void testItXIncludeDisabled()
         throws Exception

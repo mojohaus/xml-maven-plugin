@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.maven.model.FileSet;
 
 /**
- * An extension of {@link FileSet} that adds {@link #encoding} and {@link #indentSize} fields.
+ * An extension of {@link FileSet} that adds {@link #getEncoding()} and {@link #getIndentSize()} fields.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */

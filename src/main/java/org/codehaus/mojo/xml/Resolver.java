@@ -259,6 +259,7 @@ public class Resolver
 
     /**
      * Sets, whether the Resolver should create validating parsers.
+     * @param pValidating True, if created parsers should validate. Otherwise false.
      */
     public void setValidating( boolean pValidating )
     {
@@ -267,6 +268,7 @@ public class Resolver
 
     /**
      * Returns, whether the Resolver should create validating parsers.
+     * @return True, if created parsers should validate. Otherwise false.
      */
     public boolean isValidating()
     {
@@ -332,6 +334,8 @@ public class Resolver
 
     /**
      * Attempts to resolve the given URI.
+     * @param pResource The URI to resolve.
+     * @return The URL, which is being referred to by the URI. Null, if no such URL can be found.
      */
     public URL resolve( String pResource )
     {
@@ -402,6 +406,7 @@ public class Resolver
     /**
      * Returns, whether the transformer should create xinclude aware XML parsers for reading XML documents. The default
      * value is false.
+     * @return True, if transformers parser should be xinclud aware. Otherwise false.
      */    
     public boolean isXincludeAware()
     {
@@ -411,6 +416,7 @@ public class Resolver
     /**
      * Sets, whether the transformer should create xinclude aware XML parsers for reading XML documents. The default value
      * is false.
+     * @param pXIncludeAware True, if transformers parser should be xinclud aware. Otherwise false.
      */
     public void setXincludeAware(boolean pXIncludeAware)
     {

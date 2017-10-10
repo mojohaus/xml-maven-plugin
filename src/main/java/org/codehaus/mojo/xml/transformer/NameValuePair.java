@@ -28,6 +28,7 @@ public class NameValuePair
 
     /**
      * Returns the parameter name.
+     * @return The parameter name-
      */
     public String getName()
     {
@@ -36,6 +37,7 @@ public class NameValuePair
 
     /**
      * Sets the parameter name.
+     * @param pName The parameter name-
      */
     public void setName( String pName )
     {
@@ -44,6 +46,7 @@ public class NameValuePair
 
     /**
      * Returns the parameter value.
+     * @return The parameter value.
      */
     public String getValue()
     {
@@ -52,6 +55,7 @@ public class NameValuePair
 
     /**
      * Sets the parameter value.
+     * @param pValue The parameter name-
      */
     public void setValue( String pValue )
     {

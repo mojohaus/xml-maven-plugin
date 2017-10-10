@@ -17,10 +17,11 @@ package org.codehaus.mojo.xml.test;
  */
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.mojo.xml.ValidateMojo;
 import org.xml.sax.SAXParseException;
 
 /**
- * Test case for the {@link CheckFormatMojo}.
+ * Test case for the {@link ValidateMojo}.
  */
 public class ValidateMojoTest
     extends AbstractXmlMojoTestCase
@@ -32,6 +33,7 @@ public class ValidateMojoTest
 
     /**
      * Builds the it1 test project.
+     * @throws Exception The test failed.
      */
     public void testIt1()
         throws Exception
@@ -41,6 +43,7 @@ public class ValidateMojoTest
 
     /**
      * Builds the it2 test project.
+     * @throws Exception The test failed.
      */
     public void testIt2()
         throws Exception
@@ -63,6 +66,7 @@ public class ValidateMojoTest
 
     /**
      * Builds the it3 test project.
+     * @throws Exception The test failed.
      */
     public void testIt3()
         throws Exception
@@ -72,6 +76,7 @@ public class ValidateMojoTest
 
     /**
      * Builds the it9 test project.
+     * @throws Exception The test failed.
      */
     public void testIt9()
         throws Exception
@@ -81,6 +86,7 @@ public class ValidateMojoTest
 
     /**
      * Builds and runs the it12 test project (MOJO-1648)
+     * @throws Exception The test failed.
      */
     public void testIt12()
         throws Exception
@@ -90,6 +96,7 @@ public class ValidateMojoTest
 
     /**
      * Builds and runs the it13 test project (Issue #16)
+     * @throws Exception The test failed.
      */
     public void testIt13()
         throws Exception
@@ -105,6 +112,7 @@ public class ValidateMojoTest
 
     /**
      * Builds and runs the it13 test project (Issue #16)
+     * @throws Exception The test failed.
      */
     public void testIt14()
         throws Exception
@@ -118,6 +126,10 @@ public class ValidateMojoTest
         }
     }
 
+    /**
+     * Builds, and runs the it15 project.
+     * @throws Exception The test failed.
+     */
     public void testIt15()
         throws Exception
     {
@@ -133,6 +145,7 @@ public class ValidateMojoTest
     
     /**
      * Builds and runs the xinclude test project
+     * @throws Exception The test failed.
      */
     public void testXIncludeEnabled()
         throws Exception
