@@ -256,9 +256,7 @@ public class CheckFormatMojo
 
         DirectoryScanner scanner = new DirectoryScanner();
 
-        @SuppressWarnings( "unchecked" )
         List<String> includes = fileSet.getIncludes();
-        @SuppressWarnings( "unchecked" )
         List<String> excludes = fileSet.getExcludes();
 
         if ( includes != null && includes.size() > 0 )

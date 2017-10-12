@@ -142,7 +142,7 @@ public abstract class AbstractXmlMojo
     /**
      * Returns the plugins catalog files.
      */
-    protected void setCatalogs( List pCatalogFiles, List pCatalogUrls ) throws MojoExecutionException
+    protected void setCatalogs(List<File> pCatalogFiles, List<URL> pCatalogUrls ) throws MojoExecutionException
     {
         if ( catalogs == null || catalogs.length == 0 )
         {
@@ -173,8 +173,8 @@ public abstract class AbstractXmlMojo
     protected Resolver getResolver()
         throws MojoExecutionException
     {
-        List catalogFiles = new ArrayList();
-        List catalogUrls = new ArrayList();
+        List<File> catalogFiles = new ArrayList<File>();
+        List<URL> catalogUrls = new ArrayList<URL>();
         setCatalogs( catalogFiles, catalogUrls );
 
         return new Resolver( getBasedir(), catalogFiles, catalogUrls, getLocator(), catalogHandling,getLog().isDebugEnabled() );
@@ -266,7 +266,7 @@ public abstract class AbstractXmlMojo
         return value == null || value.trim().length() == 0;
     }
 
-    private void setProperty( List pProperties, String pKey, String pValue )
+    private void setProperty( List<String> pProperties, String pKey, String pValue )
     {
         if ( pProperties != null )
         {
@@ -298,7 +298,7 @@ public abstract class AbstractXmlMojo
             return null;
         }
 
-        final List properties = new ArrayList();
+        final List<String> properties = new ArrayList<String>();
         final String protocol = proxy.getProtocol();
         final String prefix = isEmpty( protocol ) ? "" : ( protocol + "." );
 
@@ -338,11 +338,12 @@ public abstract class AbstractXmlMojo
         {
             return;
         }
-        final List properties = (List) pProperties;
-        for ( Iterator iter = properties.iterator(); iter.hasNext(); )
+        @SuppressWarnings( "unchecked" )
+        final List<String> properties = (List<String>) pProperties;
+        for ( Iterator<String> iter = properties.iterator(); iter.hasNext(); )
         {
-            final String key = (String) iter.next();
-            final String value = (String) iter.next();
+            final String key = iter.next();
+            final String value = iter.next();
             setProperty( null, key, value );
         }
     }
