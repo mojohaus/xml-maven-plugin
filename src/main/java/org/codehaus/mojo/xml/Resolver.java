@@ -73,7 +73,7 @@ public class Resolver
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
      */
-    Resolver( File pBaseDir, List pFiles, List pUrls, ResourceManager pLocator, AbstractXmlMojo.CatalogHandling catalogHandling,boolean pLogging )
+    Resolver( File pBaseDir, List<File> pFiles, List<URL> pUrls, ResourceManager pLocator, AbstractXmlMojo.CatalogHandling catalogHandling,boolean pLogging )
         throws MojoExecutionException
     {
         baseDir = pBaseDir;
@@ -446,6 +446,8 @@ public class Resolver
                 {
                     return null;
                 }
+            default:
+                break;
         }
         return pResource;
     }

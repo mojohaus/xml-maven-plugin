@@ -210,7 +210,7 @@ public class TransformMojo
     {
         // use reflection to avoid JAXP 1.4 (and hence JDK6) requirement
 
-        Class[] methodTypes = new Class[] { String.class, ClassLoader.class };
+        Class<?>[] methodTypes = new Class[] { String.class, ClassLoader.class };
 
         Method method = TransformerFactory.class.getDeclaredMethod( "newInstance", methodTypes );
 
@@ -287,10 +287,10 @@ public class TransformMojo
      * @param oldest if true, returns the latest modificationDate of all files, otherwise returns the earliest.
      * @return the older or younger last modification timestamp of all files.
      */
-    protected long findLastModified( List/* <Object> */ files, boolean oldest )
+    protected long findLastModified( List<?> files, boolean oldest )
     {
         long timeStamp = ( oldest ? Long.MIN_VALUE : Long.MAX_VALUE );
-        for ( Iterator it = files.iterator(); it.hasNext(); )
+        for ( Iterator<?> it = files.iterator(); it.hasNext(); )
         {
             Object no = it.next();
 
@@ -358,7 +358,7 @@ public class TransformMojo
      * @return true to indicate results are up-to-date, that is, when the latest from input files is earlier than the
      *         younger from the output files (meaning no re-execution required).
      */
-    protected boolean isUpdToDate( List dependsFiles, List producesFiles )
+    protected boolean isUpdToDate( List<?> dependsFiles, List<?> producesFiles )
     {
         // The older timeStamp of all input files;
         long inputTimeStamp = findLastModified( dependsFiles, true );
@@ -499,8 +499,8 @@ public class TransformMojo
             boolean needsTransform = forceCreation;
             if ( !needsTransform )
             {
-                List dependsFiles = new ArrayList();
-                List producesFiles = new ArrayList();
+                List<File> dependsFiles = new ArrayList<File>();
+                List<File> producesFiles = new ArrayList<File>();
 
                 // Depends from pom.xml file for when project configuration changes.
                 dependsFiles.add( getProject().getFile() );
@@ -508,8 +508,8 @@ public class TransformMojo
                 {
                     dependsFiles.add( new File( stylesheetUrl.getFile() ) );
                 }
-                List catalogFiles = new ArrayList();
-                List catalogUrls = new ArrayList();
+                List<File> catalogFiles = new ArrayList<File>();
+                List<URL> catalogUrls = new ArrayList<URL>();
                 setCatalogs( catalogFiles, catalogUrls );
                 dependsFiles.addAll( catalogFiles );
                 dependsFiles.add( input );
