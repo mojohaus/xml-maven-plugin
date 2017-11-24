@@ -178,7 +178,7 @@ public class Resolver
 
         if ( null == url )
         {
-            url = resolve( pHref );
+            url = resolve( pHref );     //probably should call new method resolve(String,URI) but left alone for legacy reasons.
         }
 
         if ( url != null )
@@ -245,8 +245,19 @@ public class Resolver
         {
             return newLSInput( isource );
         }
+        URI baseURI = null;
+        if (pBaseURI!=null){
+            try
+            {
+                baseURI = new URI(pBaseURI);
+            }
+            catch ( URISyntaxException ex )
+            {
+                baseURI=null;   //or perhaps this should be an UndeclaredThrowableException
+            }
+        }
 
-        URL url = resolve( pSystemId );
+        URL url = resolve( pSystemId ,baseURI);
         if ( url != null )
         {
             try
@@ -305,7 +316,7 @@ public class Resolver
         }
     }
 
-    private URL resolveAsURL( String pResource )
+    private URL resolveAsURL( String pResource,URI pBaseURI )
     {
         InputStream stream = null;
         try
@@ -318,7 +329,7 @@ public class Resolver
         }
         catch ( IOException e )
         {
-            return null;
+            //fall through to relative URI resolution
         }
         finally
         {
@@ -334,6 +345,41 @@ public class Resolver
                 }
             }
         }
+        try{
+            URI resourceASURI = new URI (pResource);
+            if (pBaseURI!=null &&!resourceASURI.isAbsolute() && pBaseURI.isAbsolute()){
+                resourceASURI=pBaseURI.resolve( resourceASURI );
+                final URL url = resourceASURI.toURL();
+                stream = url.openStream();
+                stream.close();
+                stream = null;
+                return url;
+                
+            }
+        }
+        catch ( URISyntaxException ex )
+        {
+            //ignore
+        }
+        catch ( IOException e )
+        {
+            //ignore
+        }
+        finally
+        {
+            if ( stream != null )
+            {
+                try
+                {
+                    stream.close();
+                }
+                catch ( Throwable t )
+                {
+                    // Ignore me
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -343,6 +389,11 @@ public class Resolver
      */
     public URL resolve( String pResource )
     {
+        return resolve(pResource,(URI)null);
+    }
+    
+    
+    private URL resolve(String pResource,URI pBaseURI){
         if ( pResource == null )
         {
             return null;
@@ -357,16 +408,19 @@ public class Resolver
         URL url = resolveAsResource( pResource );
         if ( url == null )
         {
-            url = resolveAsURL( pResource );
+            url = resolveAsURL( pResource,null );   //original style resolution
             if ( url == null )
             {
                 url = resolveAsFile( pResource );
+            }
+            if (url == null){   //relative URL resolution
+                url = resolveAsURL( pResource,pBaseURI );
             }
         }
 
         try
         {
-            return locator.getResource( pResource ).getURL();
+            return locator.getResource( url.toExternalForm()).getURL();
         }
         catch ( ResourceNotFoundException e )
         {
@@ -398,8 +452,18 @@ public class Resolver
         {
             return source;
         }
-
-        URL url = resolve( pSystemId );
+        URI baseURI = null;
+        if (pBaseURI!=null){
+            try
+            {
+                baseURI = new URI(pBaseURI);
+            }
+            catch ( URISyntaxException ex )
+            {
+                throw new SAXException("Incorrectly formatted base URI", ex);
+            }
+        }
+        URL url = resolve( pSystemId ,baseURI);
         if ( url != null )
         {
             return asInputSource( url );

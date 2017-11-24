@@ -163,13 +163,13 @@
     <dependency>
       <groupId>com.componentcorp.xml.validation</groupId>
       <artifactId>jxvc</artifactId>
-      <version>0.9.3</version>
+      <version>0.9.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.componentcorp.xml.validation</groupId>
       <artifactId>relaxng-compact</artifactId>
-      <version>0.9.3</version>
+      <version>0.9.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
