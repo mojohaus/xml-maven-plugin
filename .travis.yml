@@ -19,7 +19,7 @@ matrix:
     env: CUSTOM_MVN_VERION="3.2.5"
   - jdk: openjdk7
     env: CUSTOM_MVN_VERION="3.3.9"
-  - jdk: oraclejdk8
+  - jdk: openjdk8
     env: CUSTOM_MVN_VERION="3.5.0"
 
 install:
