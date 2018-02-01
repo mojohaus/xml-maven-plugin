@@ -22,29 +22,6 @@
     <title>Changes in the Maven XML Plugin</title>
   </properties>
   <body>
-    <release version="1.0.2" date="Not yet released">
-      <action dev="khmarbaise" type="fix" issue="#16" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
-        Sanity check mojo parameters.
-      </action>
-      <action dev="jochen" type="fix" issue="#26" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
-        Multiple validation problems can now be reported, improving usability.
-      </action>
-      <action dev="jochen" type="fix" issue="#28" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
-        Changed build JVM version on Travis-CI (Github build system) to 1.7, because 1.6 is no longer supported there.
-      </action>
-      <action dev="jochen" type="fix" issue="#21" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
-        Support xml-model processing instruction
-      </action>
-      <action dev="jochen" type="fix" issue="#25">
-        Fix documentation of the "forceCreation property. (It's a Mojo parameter, not a TransformationSet attribute.)"
-      </action>
-      <action dev="jochen" type="fix" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
-        Changes.xml tidy up
-      </action>
-      <action dev="jochen" type="add" due-to="rosslamont" due-to-email="rlamont@componentcorp.com">
-        Added the "catalogHandling" parameter.
-      </action>
-    </release>
 
     <release version="1.0.1" date="2015-Dec-20">
       <action dev="jochen" type="fix" issue="MOJO-1648"
