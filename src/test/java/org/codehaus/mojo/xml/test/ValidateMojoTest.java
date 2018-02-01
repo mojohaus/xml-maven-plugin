@@ -143,6 +143,23 @@ public class ValidateMojoTest
 
     
     /**
+     * Builds, and runs the it18 project.
+     * @throws Exception The test failed.
+     */
+    public void testIt18()
+        throws Exception
+    {
+        try{
+            runTest( "src/test/it18" );
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    
+    /**
      * Builds and runs the xinclude test project
      * @throws Exception The test failed.
      */
