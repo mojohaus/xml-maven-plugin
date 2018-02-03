@@ -8,7 +8,7 @@
   <artifactId>xml-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>XML Maven Plugin</name>
-  <version>1.0.2-beta-1-SNAPSHOT</version>
+  <version>1.0.2-beta-1</version>
   <url>http://www.mojohaus.org/xml-maven-plugin/</url>
   <prerequisites>
     <maven>${mavenVersion}</maven>
@@ -97,7 +97,7 @@
     <connection>scm:git:https://github.com/mojohaus/xml-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojohaus/xml-maven-plugin.git</developerConnection>
     <url>https://github.com/mojohaus/xml-maven-plugin</url>
-    <tag>HEAD</tag>
+    <tag>xml-maven-plugin-1.0.2-beta-1</tag>
   </scm>
 
   <issueManagement>
