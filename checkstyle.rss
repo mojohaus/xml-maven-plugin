@@ -23,12 +23,12 @@ under the License.
     <link>http://www.mojohaus.org/xml-maven-plugin/</link>
     <description>XML Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2006 - 2015 The Apache Software Foundation</copyright>
+    <copyright>&#169;2006 - 2018 The Apache Software Foundation</copyright>
     <item>
-      <title>File: 14,
-             Errors: 7,
-             Warnings: 118,
-             Infos: 1
+      <title>File: 15,
+             Errors: 305,
+             Warnings: 85,
+             Infos: 4
       </title>
             <link>http://www.mojohaus.org/xml-maven-plugin//checkstyle.html</link>
       <description>
@@ -46,58 +46,16 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.validation.ValidationSet.java">org/codehaus/mojo/xml/validation/ValidationSet.java</a>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.CheckFormatMojo.java">org/codehaus/mojo/xml/CheckFormatMojo.java</a>
                 </td>
                 <td>
                   0
-                </td>
-                <td>
-                  16
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.format.IndentCheckSaxHandler.java">org/codehaus/mojo/xml/format/IndentCheckSaxHandler.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-                <td>
-                  2
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.TransformMojo.java">org/codehaus/mojo/xml/TransformMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  5
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.Resolver.java">org/codehaus/mojo/xml/Resolver.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  31
                 </td>
                 <td>
                   1
+                </td>
+                <td>
+                  0
                 </td>
               </tr>
                           <tr>
@@ -116,44 +74,44 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.transformer.NameValuePair.java">org/codehaus/mojo/xml/transformer/NameValuePair.java</a>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.validation.ValidationErrorHandler.java">org/codehaus/mojo/xml/validation/ValidationErrorHandler.java</a>
                 </td>
                 <td>
-                  0
+                  3
                 </td>
                 <td>
-                  4
+                  12
                 </td>
                 <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.HelpMojo.java">org/codehaus/mojo/xml/HelpMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
+                  79
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.CheckFormatMojo.java">org/codehaus/mojo/xml/CheckFormatMojo.java</a>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.ValidateMojo.java">org/codehaus/mojo/xml/ValidateMojo.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  1
+                  0
+                </td>
+                <td>
+                  99
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.Resolver.java">org/codehaus/mojo/xml/Resolver.java</a>
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  27
+                </td>
+                <td>
+                  79
                 </td>
               </tr>
                           <tr>
@@ -172,16 +130,16 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.AbstractXmlMojo.java">org/codehaus/mojo/xml/AbstractXmlMojo.java</a>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.TransformMojo.java">org/codehaus/mojo/xml/TransformMojo.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  29
+                  5
                 </td>
                 <td>
-                  0
+                  2
                 </td>
               </tr>
                           <tr>
@@ -196,6 +154,62 @@ under the License.
                 </td>
                 <td>
                   1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.HelpMojo.java">org/codehaus/mojo/xml/HelpMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.format.IndentCheckSaxHandler.java">org/codehaus/mojo/xml/format/IndentCheckSaxHandler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.transformer.NameValuePair.java">org/codehaus/mojo/xml/transformer/NameValuePair.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.AbstractXmlMojo.java">org/codehaus/mojo/xml/AbstractXmlMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  34
+                </td>
+                <td>
+                  35
                 </td>
               </tr>
                           <tr>
@@ -220,15 +234,15 @@ under the License.
                   0
                 </td>
                 <td>
-                  26
+                  0
                 </td>
                 <td>
-                  0
+                  3
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.ValidateMojo.java">org/codehaus/mojo/xml/ValidateMojo.java</a>
+                  <a href="http://www.mojohaus.org/xml-maven-plugin//checkstyle.html#org.codehaus.mojo.xml.validation.ValidationSet.java">org/codehaus/mojo/xml/validation/ValidationSet.java</a>
                 </td>
                 <td>
                   0
@@ -237,7 +251,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  0
+                  2
                 </td>
               </tr>
                       </tbody>
