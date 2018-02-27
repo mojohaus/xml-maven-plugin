@@ -418,6 +418,9 @@ public class Resolver
             }
         }
 
+        if (url==null){
+            return null;
+        }
         try
         {
             return locator.getResource( url.toExternalForm()).getURL();
