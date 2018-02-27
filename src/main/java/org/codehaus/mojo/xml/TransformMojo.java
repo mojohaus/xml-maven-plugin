@@ -566,7 +566,7 @@ public class TransformMojo
 
         if ( pTransformationSet.isAddedToClasspath() )
         {
-            addToClasspath( pTransformationSet.getOutputDir() );
+            addToClasspath( getOutputDir( pTransformationSet.getOutputDir() ));
         }
     }
 
