@@ -16,15 +16,16 @@
 ~~
 ~~
 
-           ------------------------------------------------------
-           Checking whether XML files are matching an XML Schema
-           ------------------------------------------------------
+           ---------------------------------------------------------
+           Checking whether XML files match a RelaxNG schema
+           ---------------------------------------------------------
 
-Checking whether XML files are matching an XML Schema
+Check whether XML files matching a RelaxNG schema
 
-  The following configuration snippet would check, whether all files
-  in the directory <<<src/main/xsd>>> are matching the schema
-  <<<src/main/xmlschema.xsd>>>.
+  The following configuration snippet would check whether all files
+  in the directory <<<src/main/relaxng>>> are matching the schema
+  <<<src/main/schema.rng>>>.  Note that additional libraries are required to 
+  support RelaxNG validation.
 
 +----------------------------------------------------------------------------------
   <build>
@@ -33,6 +34,18 @@ Checking whether XML files are matching an XML Schema
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>xml-maven-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>com.componentcorp.xml.validation</groupId>
+            <artifactId>jxvc</artifactId>
+            <version>0.9.4</version>
+          </dependency>
+          <dependency>
+            <groupId>com.componentcorp.xml.validation</groupId>
+            <artifactId>relaxng</artifactId>
+            <version>0.9.4</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <goals>
@@ -43,8 +56,10 @@ Checking whether XML files are matching an XML Schema
         <configuration>
           <validationSets>
             <validationSet>
-              <dir>src/main/xsd</dir>
-              <systemId>src/main/xmlschema.xml</systemId>
+              <dir>src/main/relaxng</dir>
+              <systemId>src/main/schema.rng</systemId>
+              <validating>true</validating>
+              <schemaLanguage>http://relaxng.org/ns/structure/1.0</schemaLanguage>
             </validationSet>
           </validationSets>
         </configuration>
