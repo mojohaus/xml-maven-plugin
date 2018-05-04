@@ -74,16 +74,16 @@ Goal properties
 | catalogHandling | How to handle entities which cannot be resolved from the        |
 |                 | catalogs. There are 3 possible values:\                         |
 |                 |                                                                 |
-|                 | * 'passThrough' indicates that the entity resolver should       |
+|                 | * '<<<passThrough>>>' indicates that the entity resolver should |
 |                 |   attempt to resolve system and public IDs through default      |
 |                 |   mechanisms, typically by resolving URI formatted system IDs.\ |
 |                 |                                                                 |
-|                 | * 'local' indicates that the entity resolver should behave as   |
-|                 |   for 'passThrough' but only where URI's are 'file' format      |
-|                 |   URIs.\                                                        |
+|                 | * '<<<local>>>' indicates that the entity resolver should behave|
+|                 |   as for '<<<passThrough>>>' but only where URI's are 'file'    |
+|                 |   format URIs.\                                                 |
 |                 |                                                                 |
-|                 | * 'strict' indicates that any entity which cannot be found in   |
-|                 |   a catalog should generate an error.                           |
+|                 | * '<<<strict>>>' indicates that any entity which cannot be found|
+|                 |   in a catalog should generate an error.                        |
 *-----------------+-----------------------------------------------------------------+
 | catalogs        | A set of catalog files, which configure the entity resolver.    |
 |                 | For example, it allows to map public ID's or external URL's to  |
@@ -91,9 +91,9 @@ Goal properties
 |                 | words, to configure a single catalog file, you would need a     |
 |                 | section like this:\                                             |
 |                 | \                                                               |
-|                 | \<catalogs\>\                                                   |
-|                 |   \<catalog\>mycatalog.xml\</catalog\>\                         |
-|                 | \</catalogs\>\                                                  |
+|                 | \ \ <<<\<catalogs\>>>>\                                         |
+|                 | \ \ \ \ <<< \<catalog\>mycatalog.xml\</catalog\>>>>\            |
+|                 | \ \ <<<\</catalogs\>>>>\                                        |
 |                 | \                                                               |
 |                 | The interpretation of catalog files is done by the Apache XML   |
 |                 | resolver. See                                                   |
@@ -115,39 +115,72 @@ Validation Set Configuration
 *---------------------+-----------------------------------------------------------------+
 | Element Name        | Description                                                     |
 *---------------------+-----------------------------------------------------------------+
-| publicId            | The schemas public ID. May be null, if the schema is loaded     |
-|                     | through its system ID or if the documents are being validated   |
-|                     | for wellformedness only.                                        |
+| publicId            | The public ID of an external schema used to validate this       |
+|                     | document. May be null if the document being validated identifies|
+|                     | its own schema (see the <<<validating>>> flag) or if a system ID|
+|                     | is used in place of a public ID, or if only checking for        |
+|                     | well-formedness.                                                |
+|                     |                                                                 |
+|                     | Due to limitations in the JAXP Validation API this cannot at    |
+|                     | present refer to a DTD, but any other validation language should|
+|                     | work.                                                           |
 *---------------------+-----------------------------------------------------------------+
-| systemId            | The schemas system ID. May be null, if the schema is loaded     |
-|                     | through its public ID or if the documents are being validated   |
-|                     | for wellformedness only.                                        |
+| systemId            | The system ID of an external schema used to validate this       |
+|                     | document. May be null if the document being validated identifies|
+|                     | its own schema (see the <<<validating>>> flag) or if a public ID|
+|                     | is used in place of a system ID, or if only checking for        |
+|                     | well-formedness.                                                |
+|                     |                                                                 |
+|                     | Due to limitations in the JAXP Validation API this cannot at    |
+|                     | present refer to a DTD, but any other validation language should|
+|                     | work.                                                           |
 *---------------------+-----------------------------------------------------------------+
-| schemaLanguage      | The schema language. Defaults to XML Schema. See                |
+| schemaLanguage      | The schema language. Defaults to XML Schema, however if not set |
+|                     | and none of <<<publicId>>>, <<<systemID>>> and <<<validating>>>  |
+|                     | are set, then only well-formedness checking will be done. See   |
 |                     | {{{http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html}this}} |
 |                     | description for other possible values.                          |
 *---------------------+-----------------------------------------------------------------+
-| validating          | If the documents are being validated for wellformedness only:   |
-|                     | Sets, whether the parser should be validating. (In other words: |
-|                     | Whether documents must contain a document type or xml schema    |
-|                     | declaration.) The property is ignored otherwise. The default    |
-|                     | value is false.                                                 |
+| validating          | Activate pre-JAXP DTD and XSD validation.  Because DTD          |
+|                     | validation is currently {{{http://java.sun.com/j2se/1.5.0/docs/api/javax/xml/validation/SchemaFactory.html}not supported}}
+|                     | via JAXP validation techniques, this is currently the only way  |
+|                     | to perform DTD validations.  Whilst XSD validation can be done  |
+|                     | this way, it ispreferable instead to set schemaLanguage to the  |
+|                     | appropriate URI for XSD validation.                             |
 *---------------------+-----------------------------------------------------------------+
 | dir                 | Sets the name of a directory, which is scanned for the files,   |
 |                     | which are being validated.                                      |
 *---------------------+-----------------------------------------------------------------+
 | includes            | Specifies a pattern of files, which are being included. By      |
 |                     | default, all files are included. The pattern is relative to     |
-|                     | the directory given by "dir". This element may be repeated      |
-|                     | as much as needed.                                              |
+|                     | the directory given by "dir". This element uses the normal maven|
+|                     | includes element convention to support multiple patterns:\      |
+|                     | \                                                               |
+|                     | \ \ <<<\<includes\>>>>\                                         |
+|                     | \ \ \ \ <<<\<include\>[file pattern #1]\</include\>>>>\         |
+|                     | \ \ \ \ <<<\<include\>[file pattern #2]\</include\>>>>\         |
+|                     | \ \ \ \ <<<...>>>\                                              |
+|                     | \ \ <<<\</includes\>>>>\                                        |
 *---------------------+-----------------------------------------------------------------+
 | excludes            | Specifies a pattern of files, which are being excluded. By      |
 |                     | default, no files are excluded. The pattern is relative to      |
-|                     | the directory given by "dir". This element may be repeated      |
-|                     | as much as needed.                                              |
+|                     | the directory given by "dir". This element uses the normal maven|
+|                     | includes element convention to support multiple patterns:\      |
+|                     | \                                                               |
+|                     | \ \ <<<\<excludes\>>>>\                                         |
+|                     | \ \ \ \ <<<\<exclude\>[file pattern #1]\</exclude\>>>>\         |
+|                     | \ \ \ \ <<<\<exclude\>[file pattern #2]\</exclude\>>>>\         |
+|                     | \ \ \ \ <<<...>>>\                                              |
+|                     | \ \ <<<\</excludes\>>>>\                                        |
 *---------------------+-----------------------------------------------------------------+
 | skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
 |                     | be added to the excludes list.                                  |
 *---------------------+-----------------------------------------------------------------+
 | xincludeAware       | If 'true' enables XInclude support. Disabled by default.        |
 *---------------------+-----------------------------------------------------------------+
+
+Well-formedness checking
+
+ It is possible to configure the validation goal to only check for well-formedness.  To 
+ do this, make sure that the <<<publicId>>>, <<<systemId>>>, <<<schemaLanguage>>> and 
+ <<<validation>>> elements are not set.

@@ -55,7 +55,8 @@ public class ValidateMojo
     private static final String INTRINSIC_NS_URI="http://componentcorp.com/xml/ns/xml-model/1.0";
     
     /**
-     * Specifies a set of document types, which are being validated.
+     * Specifies a set of document types, which are being validated.  See
+     * <a href="validation.html">Validating XML Files</a>
      */
     @Parameter
     private ValidationSet[] validationSets;

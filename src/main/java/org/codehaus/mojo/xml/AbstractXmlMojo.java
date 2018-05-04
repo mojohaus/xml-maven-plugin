@@ -72,7 +72,8 @@ public abstract class AbstractXmlMojo
     private boolean skip;
 
     /**
-     * An XML catalog file, or URL, which is being used to resolve entities.
+     * An XML catalog file, or URL, which is being used to resolve entities.  See
+     * <a href="examples/catalog.html">Catalog files</a>.
      */
     @Parameter
     private String[] catalogs;
@@ -93,7 +94,8 @@ public abstract class AbstractXmlMojo
     }
     
     /**
-     * How to handle entities which cannot be found in any catalog.
+     * How to handle entities which cannot be found in any catalog. See
+     * <a href="common-properties.html">Common Goal Properties</a>.
      */
     @Parameter (property="xml.catalogHandling", defaultValue="passThrough")
     private CatalogHandling catalogHandling;
