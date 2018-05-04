@@ -64,7 +64,8 @@ public class TransformMojo
     extends AbstractXmlMojo
 {
     /**
-     * Specifies one or more sets of files, which are being transformed.
+     * Specifies one or more sets of files, which are being transformed.   See
+     * <a href="transformation.html">Transforming XML Files</a>
      */
     @Parameter
     private TransformationSet[] transformationSets;
