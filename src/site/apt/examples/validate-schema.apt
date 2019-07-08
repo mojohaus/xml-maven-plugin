@@ -43,8 +43,8 @@ Checking whether XML files are matching an XML Schema
         <configuration>
           <validationSets>
             <validationSet>
-              <dir>src/main/xsd</dir>
-              <systemId>src/main/xmlschema.xml</systemId>
+              <dir>src/main/xml</dir>
+              <systemId>src/main/xmlschema.xsd</systemId>
             </validationSet>
           </validationSets>
         </configuration>
