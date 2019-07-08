@@ -23,7 +23,7 @@
 Checking whether XML files are matching an XML Schema
 
   The following configuration snippet would check, whether all files
-  in the directory <<<src/main/xsd>>> are matching the schema
+  in the directory <<<src/main/xml>>> are matching the schema
   <<<src/main/xmlschema.xsd>>>.
 
 +----------------------------------------------------------------------------------
