@@ -232,6 +232,7 @@ public class Resolver
     public LSInput resolveResource( String pType, String pNamespaceURI, String pPublicId, String pSystemId,
                                     String pBaseURI )
     {
+        pBaseURI = escapeWindowsDriveLetter( pBaseURI );
         if ( pPublicId != null )
         {
             final InputSource isource = resolver.resolveEntity( pPublicId, pSystemId );
@@ -270,6 +271,11 @@ public class Resolver
             }
         }
         return isource == null ? null : newLSInput( isource );
+    }
+
+    static String escapeWindowsDriveLetter( String pBaseURI )
+    {
+        return pBaseURI == null ? null : pBaseURI.replaceFirst("file:([a-zA-Z]:)", "file:/$1" );
     }
 
     /**
