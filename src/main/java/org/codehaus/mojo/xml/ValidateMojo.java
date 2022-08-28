@@ -93,9 +93,7 @@ public class ValidateMojo extends AbstractXmlMojo {
             if (pResolver != null) {
                 try {
                     inputSource = pResolver.resolveEntity(publicId, systemId);
-                } catch (SAXException e) {
-                    throw new MojoExecutionException(e.getMessage(), e);
-                } catch (IOException e) {
+                } catch (SAXException | IOException e) {
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
             }
@@ -186,17 +184,13 @@ public class ValidateMojo extends AbstractXmlMojo {
         if (pValidationSet.isValidating()) {
             try {
                 spf.setFeature("http://apache.org/xml/features/validation/schema", true);
-            } catch (SAXException e) {
-                // Ignore this
-            } catch (ParserConfigurationException e) {
+            } catch (SAXException | ParserConfigurationException e) {
                 // Ignore this
             }
         } else {
             try {
                 spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            } catch (SAXException e) {
-                // Ignore this
-            } catch (ParserConfigurationException e) {
+            } catch (SAXException | ParserConfigurationException e) {
                 // Ignore this
             }
         }
@@ -243,8 +237,8 @@ public class ValidateMojo extends AbstractXmlMojo {
             getLog().info("No matching files found for ValidationSet with public ID " + pValidationSet.getPublicId()
                     + ", system ID " + pValidationSet.getSystemId() + ".");
         }
-        for (int i = 0; i < files.length; i++) {
-            validate(pResolver, pValidationSet, schema, files[i], errorHandler);
+        for (File file : files) {
+            validate(pResolver, pValidationSet, schema, file, errorHandler);
         }
     }
 
@@ -269,8 +263,7 @@ public class ValidateMojo extends AbstractXmlMojo {
         Object oldProxySettings = activateProxy();
         try {
             Resolver resolver = getResolver();
-            for (int i = 0; i < validationSets.length; i++) {
-                ValidationSet validationSet = validationSets[i];
+            for (ValidationSet validationSet : validationSets) {
                 resolver.setXincludeAware(validationSet.isValidating());
                 resolver.setValidating(validationSet.isValidating());
                 validate(resolver, validationSet, errorHandler);
@@ -302,7 +295,7 @@ public class ValidateMojo extends AbstractXmlMojo {
         if (publicId == null && systemId == null && lineNum == -1 && colNum == -1) {
             location = "";
         } else {
-            final StringBuffer loc = new StringBuffer();
+            final StringBuilder loc = new StringBuilder();
             String sep = "";
             if (publicId != null) {
                 loc.append("Public ID ");

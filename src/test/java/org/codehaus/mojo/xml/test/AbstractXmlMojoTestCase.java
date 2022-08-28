@@ -20,14 +20,36 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionRequest;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.plugin.Mojo;
+import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+import org.apache.maven.plugin.descriptor.MojoDescriptor;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.apache.maven.plugin.testing.SilentLog;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuilder;
 import org.apache.maven.project.ProjectBuildingRequest;
 import org.codehaus.mojo.xml.AbstractXmlMojo;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ComponentConfigurator;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.codehaus.plexus.resource.DefaultResourceManager;
+import org.codehaus.plexus.resource.loader.FileResourceLoader;
+import org.codehaus.plexus.resource.loader.JarResourceLoader;
+import org.codehaus.plexus.resource.loader.ResourceLoader;
+import org.codehaus.plexus.resource.loader.ThreadContextClasspathResourceLoader;
+import org.codehaus.plexus.resource.loader.URLResourceLoader;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -47,6 +69,27 @@ public abstract class AbstractXmlMojoTestCase extends AbstractMojoTestCase {
         project.getBuild().setDirectory("target");
         AbstractXmlMojo vm = (AbstractXmlMojo) lookupConfiguredMojo(project, getGoal());
         setVariableValueToObject(vm, "basedir", new File(getBasedir(), pDir));
+        final Log log = new SilentLog();
+        DefaultResourceManager rm = new DefaultResourceManager();
+        setVariableValueToObject(rm, "logger", log);
+        setVariableValueToObject(vm, "locator", rm);
+        final Map<String, ResourceLoader> resourceLoaders = new HashMap<>();
+        resourceLoaders.put("file", new FileResourceLoader());
+        resourceLoaders.put("jar", new JarResourceLoader());
+        resourceLoaders.put("classloader", new ThreadContextClasspathResourceLoader());
+        URLResourceLoader url = new URLResourceLoader();
+        setVariableValueToObject(url, "logger", log);
+        resourceLoaders.put("url", url);
+        setVariableValueToObject(rm, "resourceLoaders", resourceLoaders);
+
+        //        MavenProjectStub project = new MavenProjectStub()
+        //        {
+        //            public Build getBuild()
+        //            {
+        //                return build;
+        //            }
+        //        };
+        //        setVariableValueToObject( vm, "project", project );
         return vm;
     }
 
@@ -59,5 +102,40 @@ public abstract class AbstractXmlMojoTestCase extends AbstractMojoTestCase {
         dbf.setValidating(false);
         dbf.setNamespaceAware(true);
         return dbf.newDocumentBuilder().parse(pFile);
+    }
+
+    // In maven-plugin-testing-harnes 2.1, this method had a simple error in it which resulted in
+    // the configuration being incorrectly generated.  In later versions, the error has been corrected.
+    // The error is annotated in the comments below.  This method should be removed when upgrading to later
+    // versions.
+    @Override
+    protected Mojo lookupConfiguredMojo(MavenSession session, MojoExecution execution)
+            throws Exception, ComponentConfigurationException {
+        MavenProject project = session.getCurrentProject();
+        MojoDescriptor mojoDescriptor = execution.getMojoDescriptor();
+
+        Mojo mojo = (Mojo) lookup(mojoDescriptor.getRole(), mojoDescriptor.getRoleHint());
+
+        ExpressionEvaluator evaluator = new PluginParameterExpressionEvaluator(session, execution);
+
+        Xpp3Dom configuration = null;
+        Plugin plugin = project.getPlugin(mojoDescriptor.getPluginDescriptor().getPluginLookupKey());
+        if (plugin != null) {
+            configuration = (Xpp3Dom) plugin.getConfiguration();
+        }
+        if (configuration == null) {
+            configuration = new Xpp3Dom("configuration");
+        }
+        // FIX: the parameters were in the wrong order on this call - they have been reversed
+        configuration = Xpp3Dom.mergeXpp3Dom(configuration, execution.getConfiguration());
+        // END FIX
+        PlexusConfiguration pluginConfiguration = new XmlPlexusConfiguration(configuration);
+
+        getContainer()
+                .lookup(ComponentConfigurator.class, "basic")
+                .configureComponent(
+                        mojo, pluginConfiguration, evaluator, getContainer().getContainerRealm());
+
+        return mojo;
     }
 }

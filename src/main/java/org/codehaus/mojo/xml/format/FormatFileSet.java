@@ -19,7 +19,8 @@ public class FormatFileSet extends FileSet {
     private static final List<String> DEFAULT_INCLUDED_EXTENSIONS =
             Collections.unmodifiableList(Arrays.asList("xml", "xsl"));
 
-    public static final List<String> DEFAULT_EXCLUDES = Collections.unmodifiableList(Arrays.asList("**/.*"));
+    public static final List<String> DEFAULT_EXCLUDES =
+            Collections.unmodifiableList(Collections.singletonList("**/.*"));
 
     public static FormatFileSet getDefault(File baseDir, String encoding, int indentSize) {
 
@@ -28,7 +29,7 @@ public class FormatFileSet extends FileSet {
         result.setEncoding(encoding);
         result.setIndentSize(indentSize);
 
-        List<String> includes = new ArrayList<String>(DEFAULT_INCLUDED_EXTENSIONS.size() * 2);
+        List<String> includes = new ArrayList<>(DEFAULT_INCLUDED_EXTENSIONS.size() * 2);
         for (String ext : DEFAULT_INCLUDED_EXTENSIONS) {
             includes.add("*." + ext);
             includes.add("src/**/*." + ext);

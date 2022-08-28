@@ -32,14 +32,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.model.Resource;
@@ -79,35 +77,17 @@ public class TransformMojo extends AbstractXmlMojo {
     private boolean forceCreation;
 
     /**
-     * Transformer factory use. By default, the systems default transformer factory is used. <b>If you use this feature
-     * you must use at least jdk 1.6</b>
-     *
-     * @since 1.0
+     * Transformer factory use. By default, the systems default transformer factory is used.
      */
     @Parameter(property = "xml.transformerFactory")
     private String transformerFactory;
 
     private void setFeature(TransformerFactory pTransformerFactory, String name, Boolean value)
             throws MojoExecutionException {
-        // Try to use the method setFeature, which isn't available until JAXP 1.3
-        Method m;
         try {
-            m = pTransformerFactory.getClass().getMethod("setFeature", new Class[] {String.class, boolean.class});
-        } catch (NoSuchMethodException e) {
-            m = null;
-        }
-        if (m == null) {
-            // Not available, try to use setAttribute
-            pTransformerFactory.setAttribute(name, value);
-        } else {
-            try {
-                m.invoke(pTransformerFactory, new Object[] {name, value});
-            } catch (IllegalAccessException e) {
-                throw new MojoExecutionException(e.getMessage(), e);
-            } catch (InvocationTargetException e) {
-                Throwable t = e.getTargetException();
-                throw new MojoExecutionException(t.getMessage(), t);
-            }
+            pTransformerFactory.setFeature(name, value);
+        } catch (TransformerConfigurationException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
         }
     }
 
@@ -120,8 +100,8 @@ public class TransformMojo extends AbstractXmlMojo {
         }
         NameValuePair[] features = transformationSet.getFeatures();
         if (features != null) {
-            for (int i = 0; i < features.length; i++) {
-                final NameValuePair feature = features[i];
+
+            for (final NameValuePair feature : features) {
                 final String name = feature.getName();
                 if (name == null || name.length() == 0) {
                     throw new MojoFailureException("A features name is missing or empty.");
@@ -135,8 +115,8 @@ public class TransformMojo extends AbstractXmlMojo {
         }
         NameValuePair[] attributes = transformationSet.getAttributes();
         if (attributes != null) {
-            for (int i = 0; i < attributes.length; i++) {
-                final NameValuePair attribute = attributes[i];
+
+            for (final NameValuePair attribute : attributes) {
                 final String name = attribute.getName();
                 if (name == null || name.length() == 0) {
                     throw new MojoFailureException("An attributes name is missing or empty.");
@@ -158,35 +138,12 @@ public class TransformMojo extends AbstractXmlMojo {
     /**
      * Creates a new instance of {@link TransformerFactory}.
      */
-    private TransformerFactory getTransformerFactory() throws MojoFailureException, MojoExecutionException {
+    private TransformerFactory getTransformerFactory() {
         if (transformerFactory == null) {
             return TransformerFactory.newInstance();
         }
-
-        try {
-            return newTransformerFactory(
-                    transformerFactory, Thread.currentThread().getContextClassLoader());
-        } catch (NoSuchMethodException exception) {
-            throw new MojoFailureException("JDK6 required when using transformerFactory parameter");
-        } catch (IllegalAccessException exception) {
-            throw new MojoExecutionException("Cannot instantiate transformer factory", exception);
-        } catch (InvocationTargetException exception) {
-            throw new MojoExecutionException("Cannot instantiate transformer factory", exception);
-        }
-    }
-
-    // public for use by unit test
-    public static TransformerFactory newTransformerFactory(String factoryClassName, ClassLoader classLoader)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        // use reflection to avoid JAXP 1.4 (and hence JDK6) requirement
-
-        Class<?>[] methodTypes = new Class[] {String.class, ClassLoader.class};
-
-        Method method = TransformerFactory.class.getDeclaredMethod("newInstance", methodTypes);
-
-        Object[] methodArgs = new Object[] {factoryClassName, classLoader};
-
-        return (TransformerFactory) method.invoke(null, methodArgs);
+        return TransformerFactory.newInstance(
+                transformerFactory, Thread.currentThread().getContextClassLoader());
     }
 
     private File getFile(File pDir, String pFile) {
@@ -205,8 +162,7 @@ public class TransformMojo extends AbstractXmlMojo {
 
     private void addToClasspath(File pOutputDir) {
         MavenProject project = getProject();
-        for (Iterator<Resource> iter = project.getResources().iterator(); iter.hasNext(); ) {
-            Resource resource = iter.next();
+        for (Resource resource : project.getResources()) {
             if (resource.getDirectory().equals(pOutputDir)) {
                 return;
             }
@@ -232,9 +188,9 @@ public class TransformMojo extends AbstractXmlMojo {
     }
 
     private static String getAllExMsgs(Throwable ex, boolean includeExName) {
-        StringBuffer sb = new StringBuffer((includeExName ? ex.toString() : ex.getLocalizedMessage()));
+        StringBuilder sb = new StringBuilder((includeExName ? ex.toString() : ex.getLocalizedMessage()));
         while ((ex = ex.getCause()) != null) {
-            sb.append("\nCaused by: " + ex.toString());
+            sb.append("\nCaused by: ").append(ex);
         }
 
         return sb.toString();
@@ -246,10 +202,9 @@ public class TransformMojo extends AbstractXmlMojo {
      * @return the older or younger last modification timestamp of all files.
      */
     protected long findLastModified(List<?> files, boolean oldest) {
-        long timeStamp = (oldest ? Long.MIN_VALUE : Long.MAX_VALUE);
-        for (Iterator<?> it = files.iterator(); it.hasNext(); ) {
-            Object no = it.next();
 
+        long timeStamp = (oldest ? Long.MIN_VALUE : Long.MAX_VALUE);
+        for (Object no : files) {
             if (no != null) {
                 long fileModifTime;
                 if (no instanceof File) {
@@ -362,8 +317,8 @@ public class TransformMojo extends AbstractXmlMojo {
     private File getOutputFile(File targetDir, String pName, FileMapper[] pFileMappers) {
         String name = pName;
         if (pFileMappers != null) {
-            for (int i = 0; i < pFileMappers.length; i++) {
-                name = pFileMappers[i].getMappedFileName(name);
+            for (FileMapper pFileMapper : pFileMappers) {
+                name = pFileMapper.getMappedFileName(name);
             }
         }
         return getFile(targetDir, name);
@@ -405,32 +360,30 @@ public class TransformMojo extends AbstractXmlMojo {
         int filesTransformed = 0;
         File inputDir = getDir(pTransformationSet.getDir());
         File outputDir = getOutputDir(pTransformationSet.getOutputDir());
-        for (int i = 0; i < fileNames.length; i++) {
+        for (String fileName : fileNames) {
             final Transformer t;
 
-            File input = getFile(inputDir, fileNames[i]);
-            File output = getOutputFile(outputDir, fileNames[i], pTransformationSet.getFileMappers());
+            File input = getFile(inputDir, fileName);
+            File output = getOutputFile(outputDir, fileName, pTransformationSet.getFileMappers());
 
             // Perform up-to-date-check.
             boolean needsTransform = forceCreation;
             if (!needsTransform) {
-                List<File> dependsFiles = new ArrayList<File>();
-                List<File> producesFiles = new ArrayList<File>();
+                List<File> dependsFiles = new ArrayList<>();
+                List<File> producesFiles = new ArrayList<>();
 
                 // Depends from pom.xml file for when project configuration changes.
                 dependsFiles.add(getProject().getFile());
                 if ("file".equals(stylesheetUrl.getProtocol())) {
                     dependsFiles.add(new File(stylesheetUrl.getFile()));
                 }
-                List<File> catalogFiles = new ArrayList<File>();
-                List<URL> catalogUrls = new ArrayList<URL>();
+                List<File> catalogFiles = new ArrayList<>();
+                List<URL> catalogUrls = new ArrayList<>();
                 setCatalogs(catalogFiles, catalogUrls);
                 dependsFiles.addAll(catalogFiles);
                 dependsFiles.add(input);
                 File[] files = asFiles(getBasedir(), pTransformationSet.getOtherDepends());
-                for (int j = 0; j < files.length; j++) {
-                    dependsFiles.add(files[j]);
-                }
+                dependsFiles.addAll(Arrays.asList(files));
 
                 producesFiles.add(output);
 
@@ -438,7 +391,7 @@ public class TransformMojo extends AbstractXmlMojo {
             }
 
             if (!needsTransform) {
-                getLog().debug("Skipping XSL transformation.  File " + fileNames[i] + " is up-to-date.");
+                getLog().debug("Skipping XSL transformation.  File " + fileName + " is up-to-date.");
             } else {
                 filesTransformed++;
 
@@ -449,8 +402,8 @@ public class TransformMojo extends AbstractXmlMojo {
 
                     NameValuePair[] parameters = pTransformationSet.getParameters();
                     if (parameters != null) {
-                        for (int j = 0; j < parameters.length; j++) {
-                            NameValuePair key = parameters[j];
+
+                        for (NameValuePair key : parameters) {
                             getLog().debug("Setting Parameter: " + key.getName() + "=" + key.getValue());
                             t.setParameter(key.getName(), key.getValue());
                         }
@@ -478,18 +431,19 @@ public class TransformMojo extends AbstractXmlMojo {
         Transformer t = template.newTransformer();
         NameValuePair[] properties = pTransformationSet.getOutputProperties();
         if (properties != null) {
-            for (int i = 0; i < properties.length; i++) {
-                final String name = properties[i].getName();
+            for (NameValuePair property : properties) {
+                final String name = property.getName();
                 if (name == null || "".equals(name)) {
                     throw new MojoFailureException("Missing or empty output property name");
                 }
-                final String value = properties[i].getValue();
+                final String value = property.getValue();
                 if (value == null) {
                     throw new MojoFailureException("Missing value for output property " + name);
                 }
                 try {
                     t.setOutputProperty(name, value);
                 } catch (IllegalArgumentException e) {
+
                     throw new MojoExecutionException(
                             "Unsupported property name or value: " + name + " => " + value + e.getMessage(), e);
                 }
@@ -514,8 +468,7 @@ public class TransformMojo extends AbstractXmlMojo {
         Object oldProxySettings = activateProxy();
         try {
             Resolver resolver = getResolver();
-            for (int i = 0; i < transformationSets.length; i++) {
-                TransformationSet transformationSet = transformationSets[i];
+            for (TransformationSet transformationSet : transformationSets) {
                 resolver.setXincludeAware(transformationSet.isXincludeAware());
                 resolver.setValidating(transformationSet.isValidating());
                 transform(resolver, transformationSet);

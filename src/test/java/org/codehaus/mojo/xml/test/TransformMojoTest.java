@@ -18,6 +18,7 @@ package org.codehaus.mojo.xml.test;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -26,13 +27,13 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
@@ -129,8 +130,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
     }
 
     private String read(File file) throws IOException {
-        final StringBuffer sb = new StringBuffer();
-        final Reader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
+        final StringBuilder sb = new StringBuilder();
+        final Reader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
         final char[] buffer = new char[4096];
         for (; ; ) {
             final int res = reader.read(buffer);
@@ -167,13 +168,12 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
         assertTrue(result.startsWith("<?xml"));
     }
 
-    private String eval(Node contextNode, String str)
-            throws TransformerException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private String eval(Node contextNode, String str) throws TransformerException {
         final String xsl = "<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>\n"
                 + "<xsl:template match='*'>\n" + "<xsl:value-of select='" + str + "'/>\n" + "</xsl:template>\n"
                 + "</xsl:stylesheet>\n";
         final StringWriter sw = new StringWriter();
-        final Transformer t = TransformMojo.newTransformerFactory(
+        final Transformer t = TransformerFactory.newInstance(
                         org.apache.xalan.processor.TransformerFactoryImpl.class.getName(),
                         getClass().getClassLoader())
                 .newTransformer(new StreamSource(new StringReader(xsl)));

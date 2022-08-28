@@ -29,7 +29,7 @@ import org.xml.sax.SAXParseException;
  * @author rlamont
  */
 public class ValidationErrorHandler implements ErrorHandler {
-    private final List<ErrorRecord> errors = new ArrayList<ErrorRecord>();
+    private final List<ErrorRecord> errors = new ArrayList<>();
     private final List<ErrorRecord> publicErrors = Collections.unmodifiableList(errors);
     private int warningCount = 0;
     private int errorCount = 0;
@@ -95,7 +95,7 @@ public class ValidationErrorHandler implements ErrorHandler {
         }
     }
 
-    public class ErrorRecord {
+    public static class ErrorRecord {
         final ErrorType type;
         final SAXParseException exception;
         final File context;

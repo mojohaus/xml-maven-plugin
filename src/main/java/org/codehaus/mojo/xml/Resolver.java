@@ -88,8 +88,8 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
             manager.setVerbosity(Integer.MAX_VALUE);
         }
         resolver = new CatalogResolver(manager);
-        for (int i = 0; i < pFiles.size(); i++) {
-            File file = (File) pFiles.get(i);
+        for (File pFile : pFiles) {
+            File file = pFile;
             try {
                 resolver.getCatalog().parseCatalog(file.getPath());
             } catch (IOException e) {
@@ -97,8 +97,8 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
                         "Failed to parse catalog file: " + file.getPath() + ": " + e.getMessage(), e);
             }
         }
-        for (int i = 0; i < pUrls.size(); i++) {
-            URL url = (URL) pUrls.get(i);
+        for (URL pUrl : pUrls) {
+            URL url = pUrl;
             try {
                 resolver.getCatalog().parseCatalog(url);
             } catch (IOException e) {
@@ -163,11 +163,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
         if (url != null) {
             try {
                 return asSaxSource(asInputSource(url));
-            } catch (IOException e) {
-                throw new TransformerException(e);
-            } catch (SAXException e) {
-                throw new TransformerException(e);
-            } catch (ParserConfigurationException e) {
+            } catch (IOException | ParserConfigurationException | SAXException e) {
                 throw new TransformerException(e);
             }
         }
@@ -184,7 +180,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
         return new SAXSource(xmlReader, isource);
     }
 
-    private final LSInput newLSInput(InputSource pSource) {
+    private LSInput newLSInput(InputSource pSource) {
         final LSInputImpl lsInput = new LSInputImpl();
         lsInput.setByteStream(pSource.getByteStream());
         lsInput.setCharacterStream(pSource.getCharacterStream());
@@ -298,9 +294,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
                 stream = null;
                 return url;
             }
-        } catch (URISyntaxException ex) {
-            // ignore
-        } catch (IOException e) {
+        } catch (URISyntaxException | IOException ex) {
             // ignore
         } finally {
             if (stream != null) {
@@ -349,9 +343,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
         }
         try {
             return locator.getResource(url.toExternalForm()).getURL();
-        } catch (ResourceNotFoundException e) {
-            return null;
-        } catch (IOException e) {
+        } catch (ResourceNotFoundException | IOException e) {
             return null;
         }
     }
