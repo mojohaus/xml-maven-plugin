@@ -44,7 +44,7 @@
             </validationSet>
           </validationSets>
           <catalogs>
-            <catalog>src/main/xml/catalog.xml</catalog>
+            <catalog>src/main/catalog.xml</catalog>
           </catalogs>
         </configuration>
       </plugin>
