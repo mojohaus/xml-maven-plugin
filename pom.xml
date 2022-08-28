@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -6,19 +7,22 @@
     <version>70</version>
   </parent>
   <artifactId>xml-maven-plugin</artifactId>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>XML Maven Plugin</name>
-  <version>1.0.3-SNAPSHOT</version>
-  <url>http://www.mojohaus.org/xml-maven-plugin/</url>
-  <prerequisites>
-    <maven>${mavenVersion}</maven>
-  </prerequisites>
   <description>A plugin for various XML related tasks like validation, transformation, and the like.</description>
   <inceptionYear>2006</inceptionYear>
   <organization>
     <name>The Apache Software Foundation</name>
-    <url>http://www.apache.org/</url>
+    <url>https://www.apache.org/</url>
   </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   <developers>
     <developer>
       <id>jochen</id>
@@ -85,19 +89,16 @@
       <email>rlamont@componentcorp.com</email>
     </contributor>
   </contributors>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+
+  <prerequisites>
+    <maven>${mavenVersion}</maven>
+  </prerequisites>
 
   <scm>
     <connection>scm:git:https://github.com/mojohaus/xml-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojohaus/xml-maven-plugin.git</developerConnection>
-    <url>https://github.com/mojohaus/xml-maven-plugin</url>
     <tag>HEAD</tag>
+    <url>https://github.com/mojohaus/xml-maven-plugin</url>
   </scm>
 
   <issueManagement>
@@ -105,16 +106,26 @@
     <url>https://github.com/mojohaus/xml-maven-plugin/issues</url>
   </issueManagement>
 
+  <properties>
+    <mavenVersion>3.0</mavenVersion>
+    <!-- Override version set in parent -->
+    <mojo.java.target>1.8</mojo.java.target>
+    <maven.compiler.source>${mojo.java.target}</maven.compiler.source>
+    <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -180,18 +191,6 @@
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <!--
-            ! Last version which uses Java 1.6
-          -->
-          <version>2.15</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -237,25 +236,14 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 
   <reporting>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <!--
-          ! Last version which uses Java 1.6
-          ! Repeated version here to circumvent WARNING in Maven 3.0.5
-        -->
-        <version>2.15</version>
-      </plugin>
-      <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>0.11</version>
         <configuration>
           <excludes>
             <exclude>src/main/checkstyle/maven-header.txt</exclude>
@@ -265,12 +253,4 @@
       </plugin>
     </plugins>
   </reporting>
-  <properties>
-    <mavenVersion>3.0</mavenVersion>
-
-    <!-- Override version set in parent -->
-    <mojo.java.target>1.8</mojo.java.target>
-    <maven.compiler.source>${mojo.java.target}</maven.compiler.source>
-    <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
-  </properties>
 </project>
