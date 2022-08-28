@@ -188,7 +188,7 @@
           <!--
             ! Last version which uses Java 1.6
           -->
-          <version>2.15</version>
+          <version>3.2.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -250,7 +250,7 @@
           ! Last version which uses Java 1.6
           ! Repeated version here to circumvent WARNING in Maven 3.0.5
         -->
-        <version>2.15</version>
+        <version>3.2.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.rat</groupId>
