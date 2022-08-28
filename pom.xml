@@ -268,8 +268,9 @@
   <properties>
     <mavenVersion>3.0</mavenVersion>
 
-    <!-- Override the 1.7 set in parent -->
-    <mojo.java.target>1.6</mojo.java.target>
+    <!-- Override version set in parent -->
+    <mojo.java.target>1.8</mojo.java.target>
+    <maven.compiler.source>${mojo.java.target}</maven.compiler.source>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
   </properties>
 </project>
