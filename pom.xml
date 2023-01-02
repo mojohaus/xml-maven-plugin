@@ -107,7 +107,7 @@
   </issueManagement>
 
   <properties>
-    <mavenVersion>3.0</mavenVersion>
+    <mavenVersion>3.8.7</mavenVersion>
     <!-- Override version set in parent -->
     <mojo.java.target>1.8</mojo.java.target>
     <maven.compiler.source>${mojo.java.target}</maven.compiler.source>
