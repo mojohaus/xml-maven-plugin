@@ -185,6 +185,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>serializer</artifactId>
+      <version>2.7.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.componentcorp.xml.validation</groupId>
       <artifactId>jxvc</artifactId>
       <version>0.9.4</version>
