@@ -6,16 +6,15 @@
     <artifactId>mojo-parent</artifactId>
     <version>75</version>
   </parent>
+
   <artifactId>xml-maven-plugin</artifactId>
   <version>1.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>XML Maven Plugin</name>
   <description>A plugin for various XML related tasks like validation, transformation, and the like.</description>
+  <url>https://www.mojohaus.org/xml-maven-plugin/</url>
   <inceptionYear>2006</inceptionYear>
-  <organization>
-    <name>The Apache Software Foundation</name>
-    <url>https://www.apache.org/</url>
-  </organization>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -23,6 +22,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <developers>
     <developer>
       <id>jochen</id>
@@ -98,7 +98,7 @@
     <connection>scm:git:https://github.com/mojohaus/xml-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojohaus/xml-maven-plugin.git</developerConnection>
     <tag>HEAD</tag>
-    <url>https://github.com/mojohaus/xml-maven-plugin</url>
+    <url>https://github.com/mojohaus/xml-maven-plugin/blob/master</url>
   </scm>
 
   <issueManagement>
@@ -106,12 +106,15 @@
     <url>https://github.com/mojohaus/xml-maven-plugin/issues</url>
   </issueManagement>
 
+  <ciManagement>
+    <system>github</system>
+    <url>https://github.com/mojohaus/xml-maven-plugin/actions</url>
+  </ciManagement>
+
   <properties>
     <mavenVersion>3.0</mavenVersion>
     <!-- Override version set in parent -->
     <mojo.java.target>8</mojo.java.target>
-    <maven.compiler.source>${mojo.java.target}</maven.compiler.source>
-    <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
   </properties>
 
   <dependencies>
@@ -190,67 +193,39 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-invoker-plugin</artifactId>
-        <configuration>
-          <streamLogs>true</streamLogs>
-          <projectsDirectory>src/it</projectsDirectory>
-          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-          <pomIncludes>
-            <pomInclude>*/pom.xml</pomInclude>
-          </pomIncludes>
-          <preBuildHookScript>setup</preBuildHookScript>
-          <postBuildHookScript>verify</postBuildHookScript>
-          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-          <settingsFile>src/it/settings.xml</settingsFile>
-          <!-- goals should be specified in the invoker.properties -->
-        </configuration>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <goals>
-              <goal>install</goal>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+  <profiles>
+    <profile>
+      <id>run-its</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <configuration>
+              <projectsDirectory>src/it</projectsDirectory>
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+              <pomIncludes>
+                <pomInclude>*/pom.xml</pomInclude>
+              </pomIncludes>
+              <preBuildHookScript>setup</preBuildHookScript>
+              <postBuildHookScript>verify</postBuildHookScript>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <settingsFile>src/it/settings.xml</settingsFile>
+              <!-- goals should be specified in the invoker.properties -->
+            </configuration>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <goals>
+                  <goal>install</goal>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-        <configuration>
-          <goalPrefix>xml</goalPrefix>
-        </configuration>
-        <executions>
-          <execution>
-            <id>default-descriptor</id>
-            <goals>
-              <goal>descriptor</goal>
-              <goal>helpmojo</goal>
-            </goals>
-            <phase>process-classes</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>src/main/checkstyle/maven-header.txt</exclude>
-            <exclude>src/test/it*/target/**/*</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>

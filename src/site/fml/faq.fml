@@ -31,14 +31,6 @@
       </answer>
     </faq>
 
-    <faq id="Snapshot Versions">
-      <question>How do I use snapshot versions of the plugin?</question>
-      <answer>
-        <p>The use of snapshot versions is described in the
-          <a href="usage.html">Usage</a> document.</p>
-      </answer>
-    </faq>
-
     <faq id="Proxy Settings">
       <question>How do I tell the plugin to use my proxy server?</question>
       <answer>
