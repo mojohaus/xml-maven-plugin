@@ -54,16 +54,6 @@ Usage
   {{{./transformation.html}Transformation}} and {{{./validation.html}Validation}}
   are described on separate pages.
 
-Using snapshot versions
-
-  Snapshot versions (development builds) are available from the
-  {{{http://snapshots.repository.codehaus.org}Codehaus Snapshot
-  Repository}}. This repository must be configured in your POM,
-  if you'd like to use a snapshot version. Configration of the
-  snapshot repository is described in the page on the
-  {{{http://mojo.codehaus.org/using-sandbox-plugins.html}Mojo
-  Sandbox}}.
-
 Using a proxy server
 
   It is not unusual, that an XML parser attempts to load documents

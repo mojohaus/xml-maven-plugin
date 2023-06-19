@@ -16,27 +16,15 @@
 
 -->
 <project name="Maven XML Plugin"
-  xmlns="http://maven.apache.org/DECORATION/1.0.0"
+  xmlns="http://maven.apache.org/DECORATION/1.8.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
-  <custom>
-    <fluidoSkin>
-      <googleSearch>
-        <sitesearch>www.mojohaus.org</sitesearch>
-      </googleSearch>
-      <ohloh>
-        <projectId>5211</projectId>
-        <widget>thin-badge</widget>
-      </ohloh>
-      <gitHub>
-        <projectId>mojohaus/${project.artifactId}</projectId>
-        <ribbonOrientation>right</ribbonOrientation>
-        <ribbonColor>gray</ribbonColor>
-      </gitHub>
-    </fluidoSkin>
-  </custom>
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 https://maven.apache.org/xsd/decoration-1.8.0.xsd">
   <body>
-    <menu ref="parent"/>
+
+    <breadcrumbs>
+      <item name="MojoHaus" href="https://www.mojohaus.org/"/>
+      <item name="${this.name}" href="${this.url}" />
+    </breadcrumbs>
 
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
@@ -57,6 +45,5 @@
       <item name="Catalog files" href="examples/catalog.html"/>
     </menu>
 
-    <menu ref="reports"/>
   </body>
 </project>
