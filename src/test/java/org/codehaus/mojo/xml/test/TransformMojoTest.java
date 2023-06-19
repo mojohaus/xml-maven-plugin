@@ -207,11 +207,6 @@ public class TransformMojoTest
     public void testIt8()
         throws Exception
     {
-        if ( !java1_6_Aware() )
-        {
-            System.out.println( " skip test due to non compliance jvm version need 1.6" );
-            return;
-        }
         final String dir = "src/test/it8";
         runTest( dir );
         Document doc1 = parse( new File( dir, "target/generated-resources/xml/xslt/doc1.xml" ) );
