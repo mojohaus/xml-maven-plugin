@@ -34,7 +34,13 @@
       <name>Olivier Lamy</name>
       <email>olamy@apache.org</email>
     </developer>
+    <developer>
+      <id>sjaranowski</id>
+      <name>Slawomir Jaranowski</name>
+      <email>sjaranowski@apache.org</email>
+    </developer>
   </developers>
+
   <contributors>
     <contributor>
       <name>Ramón Torres Bátiz</name>
