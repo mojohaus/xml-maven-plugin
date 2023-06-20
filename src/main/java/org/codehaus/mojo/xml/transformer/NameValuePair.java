@@ -22,16 +22,14 @@ package org.codehaus.mojo.xml.transformer;
 /**
  * An instance of this class is used to specify an output property.
  */
-public class NameValuePair
-{
+public class NameValuePair {
     private String name, value;
 
     /**
      * Returns the parameter name.
      * @return The parameter name-
      */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
@@ -39,8 +37,7 @@ public class NameValuePair
      * Sets the parameter name.
      * @param pName The parameter name-
      */
-    public void setName( String pName )
-    {
+    public void setName(String pName) {
         name = pName;
     }
 
@@ -48,8 +45,7 @@ public class NameValuePair
      * Returns the parameter value.
      * @return The parameter value.
      */
-    public String getValue()
-    {
+    public String getValue() {
         return this.value;
     }
 
@@ -57,8 +53,7 @@ public class NameValuePair
      * Sets the parameter value.
      * @param pValue The parameter name-
      */
-    public void setValue( String pValue )
-    {
+    public void setValue(String pValue) {
         value = pValue;
     }
 }

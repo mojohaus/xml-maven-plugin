@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -27,33 +28,33 @@ import org.xml.sax.SAXParseException;
  *
  * @author rlamont
  */
-public class ValidationErrorHandler implements ErrorHandler{
-    private final List<ErrorRecord> errors=new ArrayList<ErrorRecord>();
+public class ValidationErrorHandler implements ErrorHandler {
+    private final List<ErrorRecord> errors = new ArrayList<ErrorRecord>();
     private final List<ErrorRecord> publicErrors = Collections.unmodifiableList(errors);
-    private int warningCount=0;
-    private int errorCount=0;
-    private int fatalCount=0;
+    private int warningCount = 0;
+    private int errorCount = 0;
+    private int fatalCount = 0;
     private File context;
 
     @Override
     public void warning(SAXParseException exception) throws SAXException {
         warningCount++;
-        errors.add(new ErrorRecord(ErrorType.WARNING, exception,context));
+        errors.add(new ErrorRecord(ErrorType.WARNING, exception, context));
     }
 
     @Override
     public void error(SAXParseException exception) throws SAXException {
         errorCount++;
-        errors.add(new ErrorRecord(ErrorType.ERROR, exception,context));
+        errors.add(new ErrorRecord(ErrorType.ERROR, exception, context));
     }
 
     @Override
     public void fatalError(SAXParseException exception) throws SAXException {
         fatalCount++;
-        errors.add(new ErrorRecord(ErrorType.FATAL, exception,context));
+        errors.add(new ErrorRecord(ErrorType.FATAL, exception, context));
     }
-    
-    public List<ErrorRecord> getErrors(){
+
+    public List<ErrorRecord> getErrors() {
         return publicErrors;
     }
 
@@ -72,55 +73,52 @@ public class ValidationErrorHandler implements ErrorHandler{
     public void setContext(File context) {
         this.context = context;
     }
-    
-    public enum ErrorType{
-        WARNING{
+
+    public enum ErrorType {
+        WARNING {
             @Override
             public String toString() {
                 return "warning";
             }
-            
         },
-        ERROR{
+        ERROR {
             @Override
             public String toString() {
                 return "error";
             }
-            
         },
-        FATAL{
+        FATAL {
             @Override
             public String toString() {
                 return "fatal error";
             }
-            
         }
     }
-    
-    public class ErrorRecord{
+
+    public class ErrorRecord {
         final ErrorType type;
         final SAXParseException exception;
         final File context;
 
-        public ErrorRecord(ErrorType type, SAXParseException exception,File context) {
+        public ErrorRecord(ErrorType type, SAXParseException exception, File context) {
             this.type = type;
             this.exception = exception;
-            this.context=context;
+            this.context = context;
         }
 
         public boolean isError() {
-            return type==ErrorType.ERROR;
+            return type == ErrorType.ERROR;
         }
 
         public boolean isWarning() {
-            return type==ErrorType.WARNING;
+            return type == ErrorType.WARNING;
         }
 
         public boolean isFatal() {
-            return type==ErrorType.ERROR;
+            return type == ErrorType.ERROR;
         }
-        
-        public ErrorType getType(){
+
+        public ErrorType getType() {
             return type;
         }
 

@@ -27,9 +27,7 @@ import org.w3c.dom.ls.LSInput;
 /**
  * Implementation of {@link LSInput}, for use by the {@link Resolver}.
  */
-class LSInputImpl
-    implements LSInput
-{
+class LSInputImpl implements LSInput {
     private String baseURI, encoding, systemId, publicId, stringData;
 
     private InputStream byteStream;
@@ -38,83 +36,67 @@ class LSInputImpl
 
     private boolean certifiedText;
 
-    public String getBaseURI()
-    {
+    public String getBaseURI() {
         return baseURI;
     }
 
-    public InputStream getByteStream()
-    {
+    public InputStream getByteStream() {
         return byteStream;
     }
 
-    public boolean getCertifiedText()
-    {
+    public boolean getCertifiedText() {
         return certifiedText;
     }
 
-    public Reader getCharacterStream()
-    {
+    public Reader getCharacterStream() {
         return characterStream;
     }
 
-    public String getEncoding()
-    {
+    public String getEncoding() {
         return encoding;
     }
 
-    public String getPublicId()
-    {
+    public String getPublicId() {
         return publicId;
     }
 
-    public String getStringData()
-    {
+    public String getStringData() {
         return stringData;
     }
 
-    public String getSystemId()
-    {
+    public String getSystemId() {
         return systemId;
     }
 
-    public void setBaseURI( String pBaseURI )
-    {
+    public void setBaseURI(String pBaseURI) {
         baseURI = pBaseURI;
     }
 
-    public void setByteStream( InputStream pByteStream )
-    {
+    public void setByteStream(InputStream pByteStream) {
         byteStream = pByteStream;
     }
 
-    public void setCertifiedText( boolean pCertifiedText )
-    {
+    public void setCertifiedText(boolean pCertifiedText) {
         certifiedText = pCertifiedText;
     }
 
-    public void setCharacterStream( Reader pCharacterStream )
-    {
+    public void setCharacterStream(Reader pCharacterStream) {
         characterStream = pCharacterStream;
     }
 
-    public void setEncoding( String pEncoding )
-    {
+    public void setEncoding(String pEncoding) {
         encoding = pEncoding;
     }
 
-    public void setPublicId( String pPublicId )
-    {
+    public void setPublicId(String pPublicId) {
         publicId = pPublicId;
     }
 
-    public void setStringData( String pStringData )
-    {
+    public void setStringData(String pStringData) {
         stringData = pStringData;
     }
 
-    public void setSystemId( String pSystemId )
-    {
+    public void setSystemId(String pSystemId) {
         systemId = pSystemId;
     }
 }

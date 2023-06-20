@@ -7,8 +7,7 @@ import java.io.File;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public class XmlFormatViolation
-{
+public class XmlFormatViolation {
     private final int column;
 
     private final File file;
@@ -17,8 +16,7 @@ public class XmlFormatViolation
 
     private final String message;
 
-    public XmlFormatViolation( File file, int lineNumber, int column, String message )
-    {
+    public XmlFormatViolation(File file, int lineNumber, int column, String message) {
         super();
         this.file = file;
         this.lineNumber = lineNumber;
@@ -29,38 +27,33 @@ public class XmlFormatViolation
     /**
      * @return the column where the violation was detected. The first column number is 1
      */
-    public int getColumn()
-    {
+    public int getColumn() {
         return column;
     }
 
     /**
      * @return the file in which the violation was detected.
      */
-    public File getFile()
-    {
+    public File getFile() {
         return file;
     }
 
     /**
      * @return the line number where the violation was detected. The first line number is 1
      */
-    public int getLineNumber()
-    {
+    public int getLineNumber() {
         return lineNumber;
     }
 
     /**
      * @return the message describing the violation
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return file.getAbsolutePath() + ":" + lineNumber + "," + column + ": " + message;
     }
 }

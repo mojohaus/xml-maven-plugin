@@ -13,32 +13,28 @@ import org.apache.maven.model.FileSet;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public class FormatFileSet
-    extends FileSet
-{
+public class FormatFileSet extends FileSet {
     private static final long serialVersionUID = 2128636607981252229L;
 
     private static final List<String> DEFAULT_INCLUDED_EXTENSIONS =
-        Collections.unmodifiableList( Arrays.asList( "xml", "xsl" ) );
+            Collections.unmodifiableList(Arrays.asList("xml", "xsl"));
 
-    public static final List<String> DEFAULT_EXCLUDES = Collections.unmodifiableList( Arrays.asList( "**/.*" ) );
+    public static final List<String> DEFAULT_EXCLUDES = Collections.unmodifiableList(Arrays.asList("**/.*"));
 
-    public static FormatFileSet getDefault( File baseDir, String encoding, int indentSize )
-    {
+    public static FormatFileSet getDefault(File baseDir, String encoding, int indentSize) {
 
         FormatFileSet result = new FormatFileSet();
-        result.setDirectory( baseDir.getAbsolutePath() );
-        result.setEncoding( encoding );
-        result.setIndentSize( indentSize );
+        result.setDirectory(baseDir.getAbsolutePath());
+        result.setEncoding(encoding);
+        result.setIndentSize(indentSize);
 
-        List<String> includes = new ArrayList<String>( DEFAULT_INCLUDED_EXTENSIONS.size() * 2 );
-        for ( String ext : DEFAULT_INCLUDED_EXTENSIONS )
-        {
-            includes.add( "*." + ext );
-            includes.add( "src/**/*." + ext );
+        List<String> includes = new ArrayList<String>(DEFAULT_INCLUDED_EXTENSIONS.size() * 2);
+        for (String ext : DEFAULT_INCLUDED_EXTENSIONS) {
+            includes.add("*." + ext);
+            includes.add("src/**/*." + ext);
         }
-        result.setIncludes( includes );
-        result.setExcludes( DEFAULT_EXCLUDES );
+        result.setIncludes(includes);
+        result.setExcludes(DEFAULT_EXCLUDES);
 
         return result;
     }
@@ -52,27 +48,22 @@ public class FormatFileSet
     /**
      * @return the number of spaces for indentation
      */
-    public int getIndentSize()
-    {
+    public int getIndentSize() {
         return indentSize;
     }
 
     /**
      * @return the encoding used to read the XML files
      */
-    public String getEncoding()
-    {
+    public String getEncoding() {
         return encoding;
     }
 
-    public void setEncoding( String encoding )
-    {
+    public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
 
-    public void setIndentSize( int indentSize )
-    {
+    public void setIndentSize(int indentSize) {
         this.indentSize = indentSize;
     }
-
 }

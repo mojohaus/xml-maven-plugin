@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 package org.codehaus.mojo.xml.test;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,16 +36,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.codehaus.mojo.xml.TransformMojo;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileExtensionMapper;
@@ -47,11 +47,8 @@ import org.w3c.dom.Node;
 /**
  * Test case for the {@link TransformMojo}.
  */
-public class TransformMojoTest
-    extends AbstractXmlMojoTestCase
-{
-    protected String getGoal()
-    {
+public class TransformMojoTest extends AbstractXmlMojoTestCase {
+    protected String getGoal() {
         return "transform";
     }
 
@@ -61,100 +58,87 @@ public class TransformMojoTest
      * @param pTargetFile Name (not path) of the transformations output file.
      * @throws Exception The test failed.
      */
-    public void runTestIt4( String pDir, String pTargetFile )
-        throws Exception
-    {
-        TransformMojo mojo = (TransformMojo) newMojo( pDir );
+    public void runTestIt4(String pDir, String pTargetFile) throws Exception {
+        TransformMojo mojo = (TransformMojo) newMojo(pDir);
         mojo.execute();
-        Document doc1 = parse( new File( pDir, "xml/doc1.xml" ) );
+        Document doc1 = parse(new File(pDir, "xml/doc1.xml"));
         doc1.normalize();
-        Document doc2 = parse( new File( pDir, "target/generated-resources/xml/xslt/" + pTargetFile ) );
+        Document doc2 = parse(new File(pDir, "target/generated-resources/xml/xslt/" + pTargetFile));
         doc2.normalize();
         Element doc1Element = doc1.getDocumentElement();
-        assertEquals( "doc1", doc1Element.getLocalName() );
-        assertNull( doc1Element.getNamespaceURI() );
+        assertEquals("doc1", doc1Element.getLocalName());
+        assertNull(doc1Element.getNamespaceURI());
         Element doc2Element = doc2.getDocumentElement();
-        assertEquals( "doc2", doc2Element.getLocalName() );
-        assertNull( doc2Element.getNamespaceURI() );
+        assertEquals("doc2", doc2Element.getLocalName());
+        assertNull(doc2Element.getNamespaceURI());
         Node text1 = doc1Element.getFirstChild();
-        assertNotNull( text1 );
-        assertNull( text1.getNextSibling() );
-        assertEquals( Node.TEXT_NODE, text1.getNodeType() );
+        assertNotNull(text1);
+        assertNull(text1.getNextSibling());
+        assertEquals(Node.TEXT_NODE, text1.getNodeType());
         Node text2 = doc2Element.getFirstChild();
-        assertNotNull( text2 );
-        assertNull( text2.getNextSibling() );
-        assertEquals( Node.TEXT_NODE, text2.getNodeType() );
-        assertEquals( text1.getNodeValue(), text2.getNodeValue() );
+        assertNotNull(text2);
+        assertNull(text2.getNextSibling());
+        assertEquals(Node.TEXT_NODE, text2.getNodeType());
+        assertEquals(text1.getNodeValue(), text2.getNodeValue());
     }
 
     /**
      * Builds the it4 test project.
      * @throws Exception The test failed.
      */
-    public void testIt4()
-        throws Exception
-    {
-        runTestIt4( "src/test/it4", "doc1.xml" );
+    public void testIt4() throws Exception {
+        runTestIt4("src/test/it4", "doc1.xml");
     }
 
     /**
      * Builds the it5 test project.
      * @throws Exception The test failed.
      */
-    public void testIt5()
-        throws Exception
-    {
+    public void testIt5() throws Exception {
         final String dir = "src/test/it5";
-        runTest( dir );
-        Document doc1 = parse( new File( dir, "xml/doc1.xml" ) );
+        runTest(dir);
+        Document doc1 = parse(new File(dir, "xml/doc1.xml"));
         doc1.normalize();
-        Document doc2 = parse( new File( dir, "target/generated-resources/xml/xslt/doc1.xml" ) );
+        Document doc2 = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
         doc2.normalize();
         Element doc1Element = doc1.getDocumentElement();
-        assertEquals( "doc1", doc1Element.getLocalName() );
-        assertNull( doc1Element.getNamespaceURI() );
+        assertEquals("doc1", doc1Element.getLocalName());
+        assertNull(doc1Element.getNamespaceURI());
         Element doc2Element = doc2.getDocumentElement();
-        assertEquals( "doc2", doc2Element.getLocalName() );
-        assertNull( doc2Element.getNamespaceURI() );
+        assertEquals("doc2", doc2Element.getLocalName());
+        assertNull(doc2Element.getNamespaceURI());
         Node text1 = doc1Element.getFirstChild();
-        assertNotNull( text1 );
-        assertNull( text1.getNextSibling() );
-        assertEquals( Node.TEXT_NODE, text1.getNodeType() );
+        assertNotNull(text1);
+        assertNull(text1.getNextSibling());
+        assertEquals(Node.TEXT_NODE, text1.getNodeType());
         Node text2 = doc2Element.getFirstChild();
-        assertNotNull( text2 );
-        assertNull( text2.getNextSibling() );
-        assertEquals( Node.TEXT_NODE, text2.getNodeType() );
-        assertEquals( text2.getNodeValue(), "parameter passed in" );
+        assertNotNull(text2);
+        assertNull(text2.getNextSibling());
+        assertEquals(Node.TEXT_NODE, text2.getNodeType());
+        assertEquals(text2.getNodeValue(), "parameter passed in");
     }
 
     /**
      * Builds the it6 test project.
      * @throws Exception The test failed.
      */
-    public void testIt6()
-        throws Exception
-    {
+    public void testIt6() throws Exception {
         FileExtensionMapper fileExtensionMapper = new FileExtensionMapper();
-        fileExtensionMapper.setTargetExtension( ".fo" );
-        runTestIt4( "src/test/it6", "doc1.fo" );
+        fileExtensionMapper.setTargetExtension(".fo");
+        runTestIt4("src/test/it6", "doc1.fo");
     }
 
-    private String read( File file )
-        throws IOException
-    {
+    private String read(File file) throws IOException {
         final StringBuffer sb = new StringBuffer();
-        final Reader reader = new InputStreamReader( new FileInputStream( file ), "UTF-8" );
+        final Reader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
         final char[] buffer = new char[4096];
-        for ( ;; )
-        {
-            final int res = reader.read( buffer );
-            if ( res == -1 )
-            {
+        for (; ; ) {
+            final int res = reader.read(buffer);
+            if (res == -1) {
                 break;
             }
-            if ( res > 0 )
-            {
-                sb.append( buffer, 0, res );
+            if (res > 0) {
+                sb.append(buffer, 0, res);
             }
         }
         reader.close();
@@ -165,38 +149,36 @@ public class TransformMojoTest
      * Builds the it7 test project.
      * @throws Exception The test failed.
      */
-    public void testIt7()
-        throws Exception
-    {
-        final File dir = new File( "src/test/it7" );
-        final File target = new File( dir, "target/generated-resources/xml/xslt/doc1.xml" );
-        TransformMojo mojo = (TransformMojo) newMojo( dir.getPath() );
-        FileUtils.fileDelete( target.getPath() );
+    public void testIt7() throws Exception {
+        final File dir = new File("src/test/it7");
+        final File target = new File(dir, "target/generated-resources/xml/xslt/doc1.xml");
+        TransformMojo mojo = (TransformMojo) newMojo(dir.getPath());
+        FileUtils.fileDelete(target.getPath());
         mojo.execute();
-        String result = read( target );
-        assertFalse( result.startsWith( "<?xml" ) );
-        mojo = (TransformMojo) newMojo( "src/test/it7" );
+        String result = read(target);
+        assertFalse(result.startsWith("<?xml"));
+        mojo = (TransformMojo) newMojo("src/test/it7");
         TransformationSet[] transformationSets =
-            (TransformationSet[]) getVariableValueFromObject( mojo, "transformationSets" );
-        transformationSets[0].getOutputProperties()[0].setValue( "no" );
-        FileUtils.fileDelete( target.getPath() );
+                (TransformationSet[]) getVariableValueFromObject(mojo, "transformationSets");
+        transformationSets[0].getOutputProperties()[0].setValue("no");
+        FileUtils.fileDelete(target.getPath());
         mojo.execute();
-        result = read( target );
-        assertTrue( result.startsWith( "<?xml" ) );
+        result = read(target);
+        assertTrue(result.startsWith("<?xml"));
     }
 
-    private String eval( Node contextNode, String str )
-        throws TransformerException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
-    {
+    private String eval(Node contextNode, String str)
+            throws TransformerException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         final String xsl = "<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>\n"
-            + "<xsl:template match='*'>\n" + "<xsl:value-of select='" + str + "'/>\n" + "</xsl:template>\n"
-            + "</xsl:stylesheet>\n";
+                + "<xsl:template match='*'>\n" + "<xsl:value-of select='" + str + "'/>\n" + "</xsl:template>\n"
+                + "</xsl:stylesheet>\n";
         final StringWriter sw = new StringWriter();
-        final Transformer t =
-            TransformMojo.newTransformerFactory( org.apache.xalan.processor.TransformerFactoryImpl.class.getName(),
-                                                 getClass().getClassLoader() ).newTransformer( new StreamSource( new StringReader( xsl ) ) );
-        t.setOutputProperty( OutputKeys.OMIT_XML_DECLARATION, "yes" );
-        t.transform( new DOMSource( contextNode ), new StreamResult( sw ) );
+        final Transformer t = TransformMojo.newTransformerFactory(
+                        org.apache.xalan.processor.TransformerFactoryImpl.class.getName(),
+                        getClass().getClassLoader())
+                .newTransformer(new StreamSource(new StringReader(xsl)));
+        t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        t.transform(new DOMSource(contextNode), new StreamResult(sw));
         return sw.toString();
     }
 
@@ -204,145 +186,125 @@ public class TransformMojoTest
      * Builds the it8 test project.
      * @throws Exception The test failed.
      */
-    public void testIt8()
-        throws Exception
-    {
+    public void testIt8() throws Exception {
         final String dir = "src/test/it8";
-        runTest( dir );
-        Document doc1 = parse( new File( dir, "target/generated-resources/xml/xslt/doc1.xml" ) );
+        runTest(dir);
+        Document doc1 = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
 
-        assertEquals( "SAXON 8.7 from Saxonica", eval( doc1, "/root/vendor" ) );
-        assertEquals( "http://www.saxonica.com/", eval( doc1, "/root/vendor-url" ) );
-        assertEquals( "2.0", eval( doc1, "/root/version" ) );
+        assertEquals("SAXON 8.7 from Saxonica", eval(doc1, "/root/vendor"));
+        assertEquals("http://www.saxonica.com/", eval(doc1, "/root/vendor-url"));
+        assertEquals("2.0", eval(doc1, "/root/version"));
     }
 
     /**
      * Builds the it10 test project.
      * @throws Exception The test failed.
      */
-    public void testIt10()
-        throws Exception
-    {
-        runTestIt4( "src/test/it10", "doc1.xml" );
+    public void testIt10() throws Exception {
+        runTestIt4("src/test/it10", "doc1.xml");
     }
 
     /**
      * Builds the it11 test project, tests in-place modification.
      * @throws Exception The test failed.
      */
-    public void testIt11()
-        throws Exception
-    {
+    public void testIt11() throws Exception {
         String projectPath = "src/test/it11";
-        File projectDirectory = new File( getBasedir(), projectPath );
-        File targetDirectory = new File( projectPath, "target" );
-        if ( targetDirectory.exists() )
-        {
-            FileUtils.cleanDirectory( targetDirectory );
+        File projectDirectory = new File(getBasedir(), projectPath);
+        File targetDirectory = new File(projectPath, "target");
+        if (targetDirectory.exists()) {
+            FileUtils.cleanDirectory(targetDirectory);
         }
-        File xmlInputDirectory = new File( projectDirectory, "xml" );
-        File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
+        File xmlInputDirectory = new File(projectDirectory, "xml");
+        File xmlOutputDirectory = new File(targetDirectory, "generated-resources/xml/xslt");
         /* copy to target since that is in an SCM-ignored directory */
-        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml", null );
+        FileUtils.copyDirectory(xmlInputDirectory, xmlOutputDirectory, "*.xml", null);
 
-        TransformMojo mojo = (TransformMojo) newMojo( projectPath );
+        TransformMojo mojo = (TransformMojo) newMojo(projectPath);
         mojo.execute();
 
         String fileToTransform = "doc1.xml";
-        Document doc1 = parse( new File( xmlInputDirectory, fileToTransform ) );
+        Document doc1 = parse(new File(xmlInputDirectory, fileToTransform));
         doc1.normalize();
-        Document doc2 = parse( new File( xmlOutputDirectory, fileToTransform ) );
+        Document doc2 = parse(new File(xmlOutputDirectory, fileToTransform));
         doc2.normalize();
         Element doc1Element = doc1.getDocumentElement();
-        assertEquals( "doc1", doc1Element.getLocalName() );
-        assertNull( doc1Element.getNamespaceURI() );
+        assertEquals("doc1", doc1Element.getLocalName());
+        assertNull(doc1Element.getNamespaceURI());
         Element doc2Element = doc2.getDocumentElement();
-        assertEquals( "doc2", doc2Element.getLocalName() );
-        assertNull( doc2Element.getNamespaceURI() );
+        assertEquals("doc2", doc2Element.getLocalName());
+        assertNull(doc2Element.getNamespaceURI());
         Node text1 = doc1Element.getFirstChild();
-        assertNotNull( text1 );
-        assertNull( text1.getNextSibling() );
-        assertEquals( Node.TEXT_NODE, text1.getNodeType() );
+        assertNotNull(text1);
+        assertNull(text1.getNextSibling());
+        assertEquals(Node.TEXT_NODE, text1.getNodeType());
         Node text2 = doc2Element.getFirstChild();
-        assertNotNull( text2 );
-        assertNull( text2.getNextSibling() );
-        assertEquals( Node.TEXT_NODE, text2.getNodeType() );
-        assertEquals( text1.getNodeValue(), text2.getNodeValue() );
+        assertNotNull(text2);
+        assertNull(text2.getNextSibling());
+        assertEquals(Node.TEXT_NODE, text2.getNodeType());
+        assertEquals(text1.getNodeValue(), text2.getNodeValue());
     }
-    
+
     /**
      * Builds the xinclude test project, tests xinclude enabled transformation
      * @throws Exception The test failed.
      */
-    public void testItXIncludeEnabled()
-        throws Exception
-    {
+    public void testItXIncludeEnabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
-        File projectDirectory = new File( getBasedir(), projectPath );
-        File targetDirectory = new File( projectPath, "target" );
-        if ( targetDirectory.exists() )
-        {
-            FileUtils.cleanDirectory( targetDirectory );
+        File projectDirectory = new File(getBasedir(), projectPath);
+        File targetDirectory = new File(projectPath, "target");
+        if (targetDirectory.exists()) {
+            FileUtils.cleanDirectory(targetDirectory);
         }
-        File xmlInputDirectory = new File( projectDirectory, "xml" );
-        File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
+        File xmlInputDirectory = new File(projectDirectory, "xml");
+        File xmlOutputDirectory = new File(targetDirectory, "generated-resources/xml/xslt");
         /* copy to target since that is in an SCM-ignored directory */
-        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml", null );
+        FileUtils.copyDirectory(xmlInputDirectory, xmlOutputDirectory, "*.xml", null);
 
-        TransformMojo mojo = (TransformMojo) newMojo( projectPath );
+        TransformMojo mojo = (TransformMojo) newMojo(projectPath);
         mojo.execute();
-        
-        
-        Document doc = parse( new File( xmlOutputDirectory, "book.xml" ) );
+
+        Document doc = parse(new File(xmlOutputDirectory, "book.xml"));
 
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         // Make simple assertions
-        List<String> xPathNodes = Arrays.asList(
-            "//book",
-            "//book/chapter",
-            "//book/chapter/section"
-            );
-        
+        List<String> xPathNodes = Arrays.asList("//book", "//book/chapter", "//book/chapter/section");
+
         for (String xpath : xPathNodes) {
             assertNotNull("Missing :" + xpath, xPath.evaluate(xpath, doc, XPathConstants.NODE));
         }
     }
-    
+
     /**
      * Builds the xinclude test project, tests xinclude disabled transformation
      * @throws Exception The test failed.
      */
-    public void testItXIncludeDisabled()
-        throws Exception
-    {
+    public void testItXIncludeDisabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
-        File projectDirectory = new File( getBasedir(), projectPath );
-        File targetDirectory = new File( projectPath, "target" );
-        if ( targetDirectory.exists() )
-        {
-            FileUtils.cleanDirectory( targetDirectory );
+        File projectDirectory = new File(getBasedir(), projectPath);
+        File targetDirectory = new File(projectPath, "target");
+        if (targetDirectory.exists()) {
+            FileUtils.cleanDirectory(targetDirectory);
         }
-        File xmlInputDirectory = new File( projectDirectory, "xml" );
-        File xmlOutputDirectory = new File( targetDirectory, "generated-resources/xml/xslt" );
+        File xmlInputDirectory = new File(projectDirectory, "xml");
+        File xmlOutputDirectory = new File(targetDirectory, "generated-resources/xml/xslt");
         /* copy to target since that is in an SCM-ignored directory */
-        FileUtils.copyDirectory( xmlInputDirectory, xmlOutputDirectory, "*.xml", null );
+        FileUtils.copyDirectory(xmlInputDirectory, xmlOutputDirectory, "*.xml", null);
 
-        TransformMojo mojo = (TransformMojo) newMojo( projectPath );
+        TransformMojo mojo = (TransformMojo) newMojo(projectPath);
         mojo.execute();
-        
-        
-        Document doc = parse( new File( xmlOutputDirectory, "chapter.xml" ) );
+
+        Document doc = parse(new File(xmlOutputDirectory, "chapter.xml"));
 
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         // Make simple assertions
         List<String> xPathNodes = Arrays.asList(
-            "//chapter",
-            "//chapter/*[local-name()='include']",
-            "//chapter/*[local-name()='include']/*[local-name()='fallback']/fallbackSection"
-            );
-        
+                "//chapter",
+                "//chapter/*[local-name()='include']",
+                "//chapter/*[local-name()='include']/*[local-name()='fallback']/fallbackSection");
+
         for (String xpath : xPathNodes) {
             assertNotNull("Missing :" + xpath, xPath.evaluate(xpath, doc, XPathConstants.NODE));
         }
