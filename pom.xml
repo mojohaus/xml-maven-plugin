@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>xml-maven-plugin</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>XML Maven Plugin</name>
   <description>A plugin for various XML related tasks like validation, transformation, and the like.</description>
@@ -103,7 +103,7 @@
   <scm>
     <connection>scm:git:https://github.com/mojohaus/xml-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojohaus/xml-maven-plugin.git</developerConnection>
-    <tag>1.1.0</tag>
+    <tag>HEAD</tag>
     <url>https://github.com/mojohaus/xml-maven-plugin/blob/master</url>
   </scm>
 
