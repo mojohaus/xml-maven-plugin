@@ -55,6 +55,8 @@ public class ValidateMojo extends AbstractXmlMojo {
     /**
      * Specifies a set of document types, which are being validated.  See
      * <a href="validation.html">Validating XML Files</a>
+     *
+     * @since 1.0
      */
     @Parameter
     private ValidationSet[] validationSets;
@@ -62,7 +64,7 @@ public class ValidateMojo extends AbstractXmlMojo {
     /**
      * Reads a validation sets schema.
      *
-     * @param pResolver The resolver to use for loading external entities.
+     * @param pResolver      The resolver to use for loading external entities.
      * @param pValidationSet The validation set to configure.
      * @return The validation sets schema, if any, or null.
      * @throws MojoExecutionException Loading the schema failed.
@@ -121,10 +123,10 @@ public class ValidateMojo extends AbstractXmlMojo {
     /**
      * Called for parsing or validating a single file.
      *
-     * @param pResolver The resolver to use for loading external entities.
+     * @param pResolver      The resolver to use for loading external entities.
      * @param pValidationSet The parsers or validators configuration.
-     * @param pSchema The schema to use.
-     * @param pFile The file to parse or validate.
+     * @param pSchema        The schema to use.
+     * @param pFile          The file to parse or validate.
      * @throws MojoExecutionException Parsing or validating the file failed.
      */
     private void validate(
@@ -205,11 +207,11 @@ public class ValidateMojo extends AbstractXmlMojo {
     /**
      * Called for validating a single file.
      *
-     * @param pResolver The resolver to use for loading external entities.
+     * @param pResolver      The resolver to use for loading external entities.
      * @param pValidationSet The validators configuration.
-     * @param pFile The file to validate.
-     * @throws IOException An I/O error occurred.
-     * @throws SAXException Parsing the file failed.
+     * @param pFile          The file to validate.
+     * @throws IOException                  An I/O error occurred.
+     * @throws SAXException                 Parsing the file failed.
      * @throws ParserConfigurationException Creating an XML parser failed.
      */
     private void parse(Resolver pResolver, ValidationSet pValidationSet, File pFile, ErrorHandler errorHandler)
@@ -225,10 +227,10 @@ public class ValidateMojo extends AbstractXmlMojo {
     /**
      * Called for validating a set of XML files against a common schema.
      *
-     * @param pResolver The resolver to use for loading external entities.
+     * @param pResolver      The resolver to use for loading external entities.
      * @param pValidationSet The set of XML files to validate.
      * @throws MojoExecutionException Validating the set of files failed.
-     * @throws MojoFailureException A configuration error was detected.
+     * @throws MojoFailureException   A configuration error was detected.
      */
     private void validate(Resolver pResolver, ValidationSet pValidationSet, ValidationErrorHandler errorHandler)
             throws MojoExecutionException, MojoFailureException {
@@ -250,7 +252,7 @@ public class ValidateMojo extends AbstractXmlMojo {
      * Called by Maven for executing the Mojo.
      *
      * @throws MojoExecutionException Running the Mojo failed.
-     * @throws MojoFailureException A configuration error was detected.
+     * @throws MojoFailureException   A configuration error was detected.
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (isSkipping()) {

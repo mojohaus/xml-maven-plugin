@@ -64,12 +64,16 @@ public class TransformMojo extends AbstractXmlMojo {
     /**
      * Specifies one or more sets of files, which are being transformed.   See
      * <a href="transformation.html">Transforming XML Files</a>
+     *
+     * @since 1.0
      */
     @Parameter
     private TransformationSet[] transformationSets;
 
     /**
      * Whether creating the transformed files should be forced.
+     *
+     * @since 1.0
      */
     @Parameter(property = "xml.forceCreation", defaultValue = "false")
     private boolean forceCreation;
@@ -77,6 +81,8 @@ public class TransformMojo extends AbstractXmlMojo {
     /**
      * Transformer factory use. By default, the systems default transformer factory is used. <b>If you use this feature
      * you must use at least jdk 1.6</b>
+     *
+     * @since 1.0
      */
     @Parameter(property = "xml.transformerFactory")
     private String transformerFactory;
@@ -235,7 +241,7 @@ public class TransformMojo extends AbstractXmlMojo {
     }
 
     /**
-     * @param files the fileNames or URLs to scan their lastModified timestamp.
+     * @param files  the fileNames or URLs to scan their lastModified timestamp.
      * @param oldest if true, returns the latest modificationDate of all files, otherwise returns the earliest.
      * @return the older or younger last modification timestamp of all files.
      */
