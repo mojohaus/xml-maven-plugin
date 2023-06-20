@@ -85,6 +85,8 @@ public class CheckFormatMojo extends AbstractXmlMojo {
     /**
      * The encoding of files included in {@link #formatFileSets}. Note that the
      * {@code encoding can be set also per FormatFileSet}.
+     *
+     * @since 1.0.1
      */
     @Parameter(property = "xml.encoding", defaultValue = "${project.build.sourceEncoding}")
     private String encoding;
@@ -93,12 +95,16 @@ public class CheckFormatMojo extends AbstractXmlMojo {
      * Tells the mojo what to do in case XML formatting violations are found. if {@code true}, all violations will be
      * reported on the console as ERRORs and the build will fail. if {@code false}, all violations will be reported on
      * the console as WARNs and the build will proceed further.
+     *
+     * @since 1.0.1
      */
     @Parameter(property = "xml.failOnFormatViolation", defaultValue = "true")
     private boolean failOnFormatViolation;
 
     /**
      * File patterns to include. The patterns are relative to the current project's {@code baseDir}.
+     *
+     * @since 1.0.1
      */
     @Parameter
     private List<FormatFileSet> formatFileSets = new ArrayList<FormatFileSet>();
@@ -106,6 +112,8 @@ public class CheckFormatMojo extends AbstractXmlMojo {
     /**
      * The number of spaces expected for indentation. Note that {@code indentSize} can be configuread also per
      * {@link FormatFileSet}.
+     *
+     * @since 1.0.1
      */
     @Parameter(property = "xml.indentSize", defaultValue = "2")
     private int indentSize;
@@ -116,6 +124,8 @@ public class CheckFormatMojo extends AbstractXmlMojo {
     /**
      * If set to {@code true}, the result of {@link FormatFileSet#getDefault(String, int)} will be appended to
      * {@link #formatFileSets} before the processing.
+     *
+     * @since 1.0.1
      */
     @Parameter(property = "xml.useDefaultFormatFileSet", defaultValue = "true")
     private boolean useDefaultFormatFileSet;
@@ -133,8 +143,8 @@ public class CheckFormatMojo extends AbstractXmlMojo {
      * Checks the formatting of the given {@code file}. The file is read using the given {@code encoding} and the
      * violations are reported to the given {@code violationHandler}.
      *
-     * @param file the file to check
-     * @param encoding the encoding to use for reading the {@code file}
+     * @param file             the file to check
+     * @param encoding         the encoding to use for reading the {@code file}
      * @param violationHandler the {@link XmlFormatViolationHandler} to report violations
      * @throws MojoExecutionException if there is any lover level exception reading or parsing the file.
      */
@@ -164,7 +174,7 @@ public class CheckFormatMojo extends AbstractXmlMojo {
      * Called by Maven for executing the Mojo.
      *
      * @throws MojoExecutionException Running the Mojo failed.
-     * @throws MojoFailureException A configuration error was detected.
+     * @throws MojoFailureException   A configuration error was detected.
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (isSkipping()) {

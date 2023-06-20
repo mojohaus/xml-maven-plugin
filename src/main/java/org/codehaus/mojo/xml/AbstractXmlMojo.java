@@ -65,6 +65,8 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
 
     /**
      * Whether to skip execution.
+     *
+     * @since 1.0.1
      */
     @Parameter(property = "xml.skip", defaultValue = "false")
     private boolean skip;
@@ -72,6 +74,8 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     /**
      * An XML catalog file, or URL, which is being used to resolve entities.  See
      * <a href="examples/catalog.html">Catalog files</a>.
+     *
+     * @since 1.0
      */
     @Parameter
     private String[] catalogs;
@@ -94,6 +98,8 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     /**
      * How to handle entities which cannot be found in any catalog. See
      * <a href="common-properties.html">Common Goal Properties</a>.
+     *
+     * @since 1.0.2
      */
     @Parameter(property = "xml.catalogHandling", defaultValue = "passThrough")
     private CatalogHandling catalogHandling;
