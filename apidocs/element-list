@@ -1,0 +1,5 @@
+org.codehaus.mojo.xml
+org.codehaus.mojo.xml_maven_plugin
+org.codehaus.mojo.xml.format
+org.codehaus.mojo.xml.transformer
+org.codehaus.mojo.xml.validation
