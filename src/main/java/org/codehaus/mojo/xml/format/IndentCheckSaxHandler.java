@@ -1,11 +1,11 @@
 package org.codehaus.mojo.xml.format;
 
+import javax.xml.parsers.SAXParser;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Deque;
-
-import javax.xml.parsers.SAXParser;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -19,32 +19,29 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public class IndentCheckSaxHandler
-    extends DefaultHandler
-{
+public class IndentCheckSaxHandler extends DefaultHandler {
 
     /**
      * An entry that can be stored on a stack
      */
-    private static class ElementEntry
-    {
+    private static class ElementEntry {
         private final String elementName;
 
         private final IndentCheckSaxHandler.Indent expectedIndent;
 
         private final IndentCheckSaxHandler.Indent foundIndent;
 
-        public ElementEntry( String elementName, IndentCheckSaxHandler.Indent foundIndent )
-        {
+        public ElementEntry(String elementName, IndentCheckSaxHandler.Indent foundIndent) {
             super();
             this.elementName = elementName;
             this.foundIndent = foundIndent;
             this.expectedIndent = foundIndent;
         }
 
-        public ElementEntry( String elementName, IndentCheckSaxHandler.Indent foundIndent,
-                             IndentCheckSaxHandler.Indent expectedIndent )
-        {
+        public ElementEntry(
+                String elementName,
+                IndentCheckSaxHandler.Indent foundIndent,
+                IndentCheckSaxHandler.Indent expectedIndent) {
             super();
             this.elementName = elementName;
             this.foundIndent = foundIndent;
@@ -52,8 +49,7 @@ public class IndentCheckSaxHandler
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "<" + elementName + "> " + foundIndent;
         }
     }
@@ -61,13 +57,12 @@ public class IndentCheckSaxHandler
     /**
      * An indent occurrence within a file characterized by {@link #lineNumber} and {@link #size}.
      */
-    private static class Indent
-    {
+    private static class Indent {
 
         /**
          * An {@link Indent} usable at the beginning of a typical XML file.
          */
-        public static final IndentCheckSaxHandler.Indent START = new Indent( 1, 0 );
+        public static final IndentCheckSaxHandler.Indent START = new Indent(1, 0);
 
         /**
          * The line number where this {@link Indent} occurs. The first line number in a file is {@code 1}.
@@ -77,16 +72,14 @@ public class IndentCheckSaxHandler
         /** The number of spaces in this {@link Indent}. */
         private final int size;
 
-        public Indent( int lineNumber, int size )
-        {
+        public Indent(int lineNumber, int size) {
             super();
             this.lineNumber = lineNumber;
             this.size = size;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "Indent [size=" + size + ", lineNumber=" + lineNumber + "]";
         }
     }
@@ -108,13 +101,12 @@ public class IndentCheckSaxHandler
 
     /** The element stack */
     private Deque<IndentCheckSaxHandler.ElementEntry> stack =
-        new java.util.ArrayDeque<IndentCheckSaxHandler.ElementEntry>();
+            new java.util.ArrayDeque<IndentCheckSaxHandler.ElementEntry>();
 
     /** The {@link XmlFormatViolationHandler} for reporting found violations */
     private final XmlFormatViolationHandler violationHandler;
 
-    public IndentCheckSaxHandler( File file, int indentSize, XmlFormatViolationHandler violationHandler )
-    {
+    public IndentCheckSaxHandler(File file, int indentSize, XmlFormatViolationHandler violationHandler) {
         super();
         this.file = file;
         this.indentSize = indentSize;
@@ -127,10 +119,8 @@ public class IndentCheckSaxHandler
      * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
      */
     @Override
-    public void characters( char[] ch, int start, int length )
-        throws SAXException
-    {
-        charBuffer.append( ch, start, length );
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        charBuffer.append(ch, start, length);
         charLineNumber = locator.getLineNumber();
     }
 
@@ -141,53 +131,46 @@ public class IndentCheckSaxHandler
      *      org.xml.sax.Attributes)
      */
     @Override
-    public void endElement( String uri, String localName, String qName )
-        throws SAXException
-    {
+    public void endElement(String uri, String localName, String qName) throws SAXException {
         flushCharacters();
-        if ( stack.isEmpty() )
-        {
-            throw new IllegalStateException( "Stack must not be empty when closing the element " + qName
-                + " around line " + locator.getLineNumber() + " and column " + locator.getColumnNumber() );
+        if (stack.isEmpty()) {
+            throw new IllegalStateException("Stack must not be empty when closing the element " + qName
+                    + " around line " + locator.getLineNumber() + " and column " + locator.getColumnNumber());
         }
         IndentCheckSaxHandler.ElementEntry startEntry = stack.pop();
         int indentDiff = lastIndent.size - startEntry.expectedIndent.size;
         int expectedIndent = startEntry.expectedIndent.size;
-        if ( lastIndent.lineNumber != startEntry.foundIndent.lineNumber && indentDiff != 0 )
-        {
+        if (lastIndent.lineNumber != startEntry.foundIndent.lineNumber && indentDiff != 0) {
             /*
              * diff should be zero unless we are on the same line as start element
              */
             int opValue = expectedIndent - lastIndent.size;
             String op = opValue > 0 ? "Insert" : "Delete";
             String units = opValue == 1 ? "space" : "spaces";
-            String message = op + " " + Math.abs( opValue ) + " " + units + ". Expected " + expectedIndent + " found "
-                + lastIndent.size + " spaces before end element </" + qName + ">";
+            String message = op + " " + Math.abs(opValue) + " " + units + ". Expected " + expectedIndent + " found "
+                    + lastIndent.size + " spaces before end element </" + qName + ">";
             XmlFormatViolation violation =
-                new XmlFormatViolation( file, locator.getLineNumber(), locator.getColumnNumber(), message );
-            violationHandler.handle( violation );
+                    new XmlFormatViolation(file, locator.getLineNumber(), locator.getColumnNumber(), message);
+            violationHandler.handle(violation);
         }
     }
 
     /**
      * Sets {@link lastIndent} based on {@link #charBuffer} and resets {@link #charBuffer}.
      */
-    private void flushCharacters()
-    {
+    private void flushCharacters() {
         int indentLength = 0;
         int len = charBuffer.length();
         /*
          * Count characters from end of ignorable whitespace to first end of line we hit
          */
-        for ( int i = len - 1; i >= 0; i-- )
-        {
-            char ch = charBuffer.charAt( i );
-            switch ( ch )
-            {
+        for (int i = len - 1; i >= 0; i--) {
+            char ch = charBuffer.charAt(i);
+            switch (ch) {
                 case '\n':
                 case '\r':
-                    lastIndent = new Indent( charLineNumber, indentLength );
-                    charBuffer.setLength( 0 );
+                    lastIndent = new Indent(charLineNumber, indentLength);
+                    charBuffer.setLength(0);
                     return;
                 case ' ':
                 case '\t':
@@ -198,7 +181,7 @@ public class IndentCheckSaxHandler
                      * No end of line foundIndent in the trailing whitespace. Leave the foundIndent from previous
                      * ignorable whitespace unchanged
                      */
-                    charBuffer.setLength( 0 );
+                    charBuffer.setLength(0);
                     return;
             }
         }
@@ -211,10 +194,8 @@ public class IndentCheckSaxHandler
      * @see org.xml.sax.helpers.DefaultHandler#ignorableWhitespace(char[], int, int)
      */
     @Override
-    public void ignorableWhitespace( char[] chars, int start, int length )
-        throws SAXException
-    {
-        characters( chars, start, length );
+    public void ignorableWhitespace(char[] chars, int start, int length) throws SAXException {
+        characters(chars, start, length);
     }
 
     /**
@@ -223,16 +204,13 @@ public class IndentCheckSaxHandler
      * @see org.xml.sax.helpers.DefaultHandler#resolveEntity(java.lang.String, java.lang.String)
      */
     @Override
-    public InputSource resolveEntity( String publicId, String systemId )
-        throws SAXException, IOException
-    {
-        return new InputSource( new StringReader( "" ) );
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+        return new InputSource(new StringReader(""));
     }
 
     /** @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator) */
     @Override
-    public void setDocumentLocator( Locator locator )
-    {
+    public void setDocumentLocator(Locator locator) {
         this.locator = locator;
     }
 
@@ -243,13 +221,10 @@ public class IndentCheckSaxHandler
      *      org.xml.sax.Attributes)
      */
     @Override
-    public void startElement( String uri, String localName, String qName, Attributes attributes )
-        throws SAXException
-    {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         flushCharacters();
-        IndentCheckSaxHandler.ElementEntry currentEntry = new ElementEntry( qName, lastIndent );
-        if ( !stack.isEmpty() )
-        {
+        IndentCheckSaxHandler.ElementEntry currentEntry = new ElementEntry(qName, lastIndent);
+        if (!stack.isEmpty()) {
             IndentCheckSaxHandler.ElementEntry parentEntry = stack.peek();
             /*
              * note that we use parentEntry.expectedIndent rather than parentEntry.foundIndent this is to make the
@@ -257,31 +232,27 @@ public class IndentCheckSaxHandler
              */
             int indentDiff = currentEntry.foundIndent.size - parentEntry.expectedIndent.size;
             int expectedIndent = parentEntry.expectedIndent.size + indentSize;
-            if ( indentDiff == 0 && currentEntry.foundIndent.lineNumber == parentEntry.foundIndent.lineNumber )
-            {
+            if (indentDiff == 0 && currentEntry.foundIndent.lineNumber == parentEntry.foundIndent.lineNumber) {
                 /*
                  * Zero foundIndent acceptable only if current is on the same line as parent This is OK, therefore do
                  * nothing
                  */
-            }
-            else if ( indentDiff != indentSize )
-            {
+            } else if (indentDiff != indentSize) {
                 /* generally unexpected foundIndent */
                 int opValue = expectedIndent - currentEntry.foundIndent.size;
                 String op = opValue > 0 ? "Insert" : "Delete";
-                String message = op + " " + Math.abs( opValue ) + " spaces. Expected " + expectedIndent + " found "
-                    + currentEntry.foundIndent.size + " spaces before start element <" + currentEntry.elementName + ">";
+                String message = op + " " + Math.abs(opValue) + " spaces. Expected " + expectedIndent + " found "
+                        + currentEntry.foundIndent.size + " spaces before start element <" + currentEntry.elementName
+                        + ">";
 
                 XmlFormatViolation violation =
-                    new XmlFormatViolation( file, locator.getLineNumber(), locator.getColumnNumber(), message );
-                violationHandler.handle( violation );
+                        new XmlFormatViolation(file, locator.getLineNumber(), locator.getColumnNumber(), message);
+                violationHandler.handle(violation);
 
                 /* reset the expected indent in the entry we'll push */
-                currentEntry =
-                    new ElementEntry( qName, lastIndent, new Indent( lastIndent.lineNumber, expectedIndent ) );
+                currentEntry = new ElementEntry(qName, lastIndent, new Indent(lastIndent.lineNumber, expectedIndent));
             }
         }
-        stack.push( currentEntry );
+        stack.push(currentEntry);
     }
-
 }

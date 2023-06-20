@@ -5,13 +5,12 @@ package org.codehaus.mojo.xml.format;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public interface XmlFormatViolationHandler
-{
+public interface XmlFormatViolationHandler {
 
     /**
      * Called when an {@link XmlFormatViolation} is found.
      *
      * @param violation the reported violation
      */
-    void handle( XmlFormatViolation violation );
+    void handle(XmlFormatViolation violation);
 }
