@@ -23,10 +23,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -45,6 +47,7 @@ import org.codehaus.plexus.util.FileUtils;
  * Abstract base class for the plugins Mojo's.
  */
 public abstract class AbstractXmlMojo extends AbstractMojo {
+
     /**
      * The Maven Project.
      */
@@ -71,6 +74,9 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     @Parameter(property = "xml.skip", defaultValue = "false")
     private boolean skip;
 
+    @Parameter(readonly = true, defaultValue = "${plugin.artifacts}")
+    private List<Artifact> pluginDependencies;
+
     /**
      * An XML catalog file, or URL, which is being used to resolve entities.  See
      * <a href="examples/catalog.html">Catalog files</a>.
@@ -79,6 +85,11 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
      */
     @Parameter
     private String[] catalogs;
+
+    /**
+     * Class loader which wraps resources available to the plugin.
+     */
+    private ClassLoader classLoader;
 
     public enum CatalogHandling {
         /**
@@ -139,6 +150,18 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     }
 
     /**
+     * Attempt to convert given uri into a classpath resource.
+     *
+     * Resources are looked up using plugin classpath.
+     *
+     * @param catalog Catalog location.
+     * @return URL of resource or null if not found.
+     */
+    private URL asClasspath(String catalog) {
+        return getClassLoader().getResource(catalog);
+    }
+
+    /**
      * Returns the plugins catalog files.
      */
     protected void setCatalogs(List<File> pCatalogFiles, List<URL> pCatalogUrls) throws MojoExecutionException {
@@ -151,6 +174,11 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
                 URL url = new URL(catalogs[i]);
                 pCatalogUrls.add(url);
             } catch (MalformedURLException e) {
+                URL classpath = asClasspath(catalogs[i]);
+                if (classpath != null) {
+                    pCatalogUrls.add(classpath);
+                    continue;
+                }
                 File absoluteCatalog = asAbsoluteFile(new File(catalogs[i]));
                 if (!absoluteCatalog.exists() || !absoluteCatalog.isFile()) {
                     throw new MojoExecutionException("That catalog does not exist:" + absoluteCatalog.getPath(), e);
@@ -346,5 +374,20 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
 
     protected CatalogHandling getCatalogHandling() {
         return catalogHandling;
+    }
+
+    private ClassLoader getClassLoader() {
+        if (classLoader == null) {
+            List<URL> urls = new ArrayList<>();
+            for (Artifact artifact : pluginDependencies) {
+                try {
+                    urls.add(artifact.getFile().toURI().toURL());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            classLoader = new URLClassLoader(urls.toArray(new URL[0]));
+        }
+        return classLoader;
     }
 }
