@@ -178,8 +178,8 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     protected String[] getFileNames(File pDir, String[] pIncludes, String[] pExcludes)
             throws MojoFailureException, MojoExecutionException {
         if (pDir == null) {
-            throw new MojoFailureException(
-                    "A ValidationSet or TransformationSet" + " requires a nonempty 'dir' child element.");
+            // Return empty array - this allows for initial template mode where no input files are needed
+            return new String[0];
         }
         final File dir = asAbsoluteFile(pDir);
         if (!dir.isDirectory()) {
