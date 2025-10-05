@@ -147,11 +147,24 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
         }
 
         for (int i = 0; i < catalogs.length; i++) {
+            String catalog = catalogs[i];
+
+            // Handle resource: prefix
+            if (catalog.startsWith("resource:")) {
+                try {
+                    URL url = getResource(catalog.substring("resource:".length()));
+                    pCatalogUrls.add(url);
+                    continue;
+                } catch (MojoFailureException e) {
+                    throw new MojoExecutionException("Could not find catalog resource: " + catalog, e);
+                }
+            }
+
             try {
-                URL url = new URL(catalogs[i]);
+                URL url = new URL(catalog);
                 pCatalogUrls.add(url);
             } catch (MalformedURLException e) {
-                File absoluteCatalog = asAbsoluteFile(new File(catalogs[i]));
+                File absoluteCatalog = asAbsoluteFile(new File(catalog));
                 if (!absoluteCatalog.exists() || !absoluteCatalog.isFile()) {
                     throw new MojoExecutionException("That catalog does not exist:" + absoluteCatalog.getPath(), e);
                 }
