@@ -125,9 +125,58 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     }
 
     private InputSource asInputSource(URL url) throws IOException {
-        InputSource isource = new InputSource(url.openStream());
+        InputSource isource = new InputSource(openStreamWithRedirects(url));
         isource.setSystemId(url.toExternalForm());
         return isource;
+    }
+
+    /**
+     * Opens an input stream for the given URL, following HTTP redirects including cross-protocol redirects
+     * (e.g., HTTP to HTTPS).
+     *
+     * @param url The URL to open
+     * @return An InputStream for reading from the URL
+     * @throws IOException if an I/O error occurs
+     */
+    private InputStream openStreamWithRedirects(URL url) throws IOException {
+        java.net.URLConnection connection = url.openConnection();
+        if (connection instanceof java.net.HttpURLConnection) {
+            java.net.HttpURLConnection httpConnection = (java.net.HttpURLConnection) connection;
+            httpConnection.setInstanceFollowRedirects(true);
+
+            int responseCode = httpConnection.getResponseCode();
+            // Handle redirects manually to support cross-protocol redirects (HTTP to HTTPS)
+            int redirectCount = 0;
+            while ((responseCode == java.net.HttpURLConnection.HTTP_MOVED_PERM
+                            || responseCode == java.net.HttpURLConnection.HTTP_MOVED_TEMP
+                            || responseCode == java.net.HttpURLConnection.HTTP_SEE_OTHER
+                            || responseCode == 307 // Temporary Redirect
+                            || responseCode == 308) // Permanent Redirect
+                    && redirectCount < 5) {
+                String location = httpConnection.getHeaderField("Location");
+                if (location == null) {
+                    throw new IOException("Redirect without Location header");
+                }
+                httpConnection.disconnect();
+
+                // Follow the redirect
+                URL redirectUrl = new URL(url, location);
+                connection = redirectUrl.openConnection();
+                if (connection instanceof java.net.HttpURLConnection) {
+                    httpConnection = (java.net.HttpURLConnection) connection;
+                    httpConnection.setInstanceFollowRedirects(true);
+                    responseCode = httpConnection.getResponseCode();
+                } else {
+                    break;
+                }
+                redirectCount++;
+            }
+
+            if (redirectCount >= 5) {
+                throw new IOException("Too many redirects (>5) for URL: " + url);
+            }
+        }
+        return connection.getInputStream();
     }
 
     /**
@@ -273,7 +322,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
         InputStream stream = null;
         try {
             final URL url = new URL(pResource);
-            stream = url.openStream();
+            stream = openStreamWithRedirects(url);
             stream.close();
             stream = null;
             return url;
@@ -293,7 +342,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
             if (pBaseURI != null && !resourceASURI.isAbsolute() && pBaseURI.isAbsolute()) {
                 resourceASURI = pBaseURI.resolve(resourceASURI);
                 final URL url = resourceASURI.toURL();
-                stream = url.openStream();
+                stream = openStreamWithRedirects(url);
                 stream.close();
                 stream = null;
                 return url;
