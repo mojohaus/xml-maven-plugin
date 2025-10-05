@@ -147,16 +147,34 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
         }
 
         for (int i = 0; i < catalogs.length; i++) {
+            String catalog = catalogs[i];
+            
+            // Try to parse as URL first (e.g., http://, https://, file://)
             try {
-                URL url = new URL(catalogs[i]);
+                URL url = new URL(catalog);
                 pCatalogUrls.add(url);
+                continue;
             } catch (MalformedURLException e) {
-                File absoluteCatalog = asAbsoluteFile(new File(catalogs[i]));
-                if (!absoluteCatalog.exists() || !absoluteCatalog.isFile()) {
-                    throw new MojoExecutionException("That catalog does not exist:" + absoluteCatalog.getPath(), e);
-                }
-                pCatalogFiles.add(absoluteCatalog);
+                // Not a valid URL, continue to next resolution attempt
             }
+            
+            // Try to load from classpath
+            URL classpathUrl = Thread.currentThread().getContextClassLoader().getResource(catalog);
+            if (classpathUrl != null) {
+                pCatalogUrls.add(classpathUrl);
+                continue;
+            }
+            
+            // Try to load from file system
+            File absoluteCatalog = asAbsoluteFile(new File(catalog));
+            if (absoluteCatalog.exists() && absoluteCatalog.isFile()) {
+                pCatalogFiles.add(absoluteCatalog);
+                continue;
+            }
+            
+            // None of the resolution methods worked
+            throw new MojoExecutionException("Catalog not found: " + catalog 
+                + " (tried as URL, classpath resource, and file system path)");
         }
     }
 
