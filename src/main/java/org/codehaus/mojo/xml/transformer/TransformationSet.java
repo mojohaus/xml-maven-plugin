@@ -33,6 +33,10 @@ public class TransformationSet {
 
     private File outputDir;
 
+    private File outputFile;
+
+    private String initialTemplate;
+
     private boolean addedToClasspath;
 
     private String[] includes;
@@ -306,5 +310,37 @@ public class TransformationSet {
      */
     public void setXincludeAware(boolean pXIncludeAware) {
         xincludeAware = pXIncludeAware;
+    }
+
+    /**
+     * Returns the output file for single file transformations (alternative to outputDir).
+     * @return The output file, or null if outputDir should be used instead.
+     */
+    public File getOutputFile() {
+        return outputFile;
+    }
+
+    /**
+     * Sets the output file for single file transformations (alternative to outputDir).
+     * @param pOutputFile The output file.
+     */
+    public void setOutputFile(File pOutputFile) {
+        outputFile = pOutputFile;
+    }
+
+    /**
+     * Returns the name of the initial template to invoke (for transformations without input files).
+     * @return The initial template name, or null if not specified.
+     */
+    public String getInitialTemplate() {
+        return initialTemplate;
+    }
+
+    /**
+     * Sets the name of the initial template to invoke (for transformations without input files).
+     * @param pInitialTemplate The initial template name.
+     */
+    public void setInitialTemplate(String pInitialTemplate) {
+        initialTemplate = pInitialTemplate;
     }
 }
