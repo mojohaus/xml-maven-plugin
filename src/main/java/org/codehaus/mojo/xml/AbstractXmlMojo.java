@@ -379,11 +379,18 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     private ClassLoader getClassLoader() {
         if (classLoader == null) {
             List<URL> urls = new ArrayList<>();
-            for (Artifact artifact : pluginDependencies) {
-                try {
-                    urls.add(artifact.getFile().toURI().toURL());
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
+            if (pluginDependencies != null) {
+                for (Artifact artifact : pluginDependencies) {
+                    try {
+                        File file = artifact.getFile();
+                        if (file != null) {
+                            urls.add(file.toURI().toURL());
+                        } else {
+                            getLog().warn("Could not resolve file for " + artifact + ", it will be skipped.");
+                        }
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             classLoader = new URLClassLoader(urls.toArray(new URL[0]));
