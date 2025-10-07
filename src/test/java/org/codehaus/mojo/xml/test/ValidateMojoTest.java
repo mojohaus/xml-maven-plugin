@@ -16,7 +16,13 @@ package org.codehaus.mojo.xml.test;
  * limitations under the License.
  */
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.testing.stubs.ArtifactStub;
 import org.codehaus.mojo.xml.ValidateMojo;
 
 /**
@@ -155,6 +161,34 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
             //            SAXParseException ex = (SAXParseException) t;
             //            assertEquals( 20, ex.getLineNumber() );
         }
+    }
+
+    /**
+     * Builds the multimodule/xsd-import test project.
+     * @throws Exception The test failed.
+     */
+    public void testMultimoduleXsdImport() throws Exception {
+        List<Artifact> artifacts = Arrays.asList(createStubArtifact(
+                "src/test/multimodule/xsd-import/validation/xsd-classpath-catalog-0.1.jar",
+                "org.codehaus.mojo.xml",
+                "xsd-classpath-catalog",
+                "0.1",
+                "jar"));
+        newMojoWithArtifacts("src/test/multimodule/xsd-import/validation", artifacts)
+                .execute();
+    }
+
+    private static Artifact createStubArtifact(
+            String path, String groupId, String artifactId, String version, String packaging) {
+        File artifactFile = new File(getBasedir(), path);
+
+        ArtifactStub stub = new ArtifactStub();
+        stub.setGroupId(groupId);
+        stub.setArtifactId(artifactId);
+        stub.setVersion(version);
+        stub.setType(packaging);
+        stub.setFile(artifactFile);
+        return stub;
     }
 
     /**

@@ -20,7 +20,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
@@ -47,6 +49,12 @@ public abstract class AbstractXmlMojoTestCase extends AbstractMojoTestCase {
         project.getBuild().setDirectory("target");
         AbstractXmlMojo vm = (AbstractXmlMojo) lookupConfiguredMojo(project, getGoal());
         setVariableValueToObject(vm, "basedir", new File(getBasedir(), pDir));
+        return vm;
+    }
+
+    protected AbstractXmlMojo newMojoWithArtifacts(String pDir, List<Artifact> artifacts) throws Exception {
+        AbstractXmlMojo vm = newMojo(pDir);
+        setVariableValueToObject(vm, "pluginDependencies", artifacts);
         return vm;
     }
 
