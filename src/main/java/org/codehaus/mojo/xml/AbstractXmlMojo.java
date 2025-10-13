@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -37,6 +38,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
+import org.apache.maven.shared.utils.io.IOUtil;
 import org.codehaus.plexus.resource.ResourceManager;
 import org.codehaus.plexus.resource.loader.FileResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
@@ -89,7 +91,7 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     /**
      * Class loader which wraps resources available to the plugin.
      */
-    private ClassLoader classLoader;
+    private URLClassLoader classLoader;
 
     public enum CatalogHandling {
         /**
@@ -184,6 +186,14 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
                     throw new MojoExecutionException("That catalog does not exist:" + absoluteCatalog.getPath(), e);
                 }
                 pCatalogFiles.add(absoluteCatalog);
+            } finally {
+              if (classLoader != null) {
+                try {
+                  classLoader.close();
+                } catch (IOException e) {
+                  getLog().debug("Failed to close class loader", e);
+                }
+              }
             }
         }
     }
