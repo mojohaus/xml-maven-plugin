@@ -105,6 +105,16 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     private CatalogHandling catalogHandling;
 
     /**
+     * Whether to enable caching of retrieved DTD or XSD schemas. When enabled, schemas retrieved from URLs
+     * are cached in memory for the duration of the plugin execution, avoiding redundant network requests
+     * when the same schema is referenced multiple times.
+     *
+     * @since 1.1.1
+     */
+    @Parameter(property = "xml.enableSchemaCaching", defaultValue = "false")
+    private boolean enableSchemaCaching;
+
+    /**
      * Plexus resource manager used to obtain XSL.
      */
     @Component
@@ -169,7 +179,13 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
         setCatalogs(catalogFiles, catalogUrls);
 
         return new Resolver(
-                getBasedir(), catalogFiles, catalogUrls, getLocator(), catalogHandling, getLog().isDebugEnabled());
+                getBasedir(),
+                catalogFiles,
+                catalogUrls,
+                getLocator(),
+                catalogHandling,
+                getLog().isDebugEnabled(),
+                enableSchemaCaching);
     }
 
     /**

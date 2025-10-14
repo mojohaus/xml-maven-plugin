@@ -26,6 +26,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.sax.SAXSource;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +36,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.xml.resolver.CatalogManager;
@@ -65,6 +69,14 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
 
     private final AbstractXmlMojo.CatalogHandling catalogHandling;
 
+    private final boolean enableSchemaCaching;
+
+    /**
+     * Cache for storing retrieved schema content by URL.
+     * Key: URL as string, Value: byte array of schema content
+     */
+    private final Map<String, byte[]> schemaCache;
+
     /**
      * Creates a new instance.
      *
@@ -77,10 +89,13 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
             List<URL> pUrls,
             ResourceManager pLocator,
             AbstractXmlMojo.CatalogHandling catalogHandling,
-            boolean pLogging)
+            boolean pLogging,
+            boolean enableSchemaCaching)
             throws MojoExecutionException {
         baseDir = pBaseDir;
         locator = pLocator;
+        this.enableSchemaCaching = enableSchemaCaching;
+        this.schemaCache = enableSchemaCaching ? new HashMap<String, byte[]>() : null;
         CatalogManager manager = new CatalogManager();
         manager.setIgnoreMissingProperties(true);
         if (pLogging) {
@@ -125,9 +140,41 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     }
 
     private InputSource asInputSource(URL url) throws IOException {
-        InputSource isource = new InputSource(url.openStream());
-        isource.setSystemId(url.toExternalForm());
+        InputStream stream;
+        String urlString = url.toExternalForm();
+
+        if (enableSchemaCaching && schemaCache.containsKey(urlString)) {
+            // Use cached content
+            stream = new ByteArrayInputStream(schemaCache.get(urlString));
+        } else {
+            // Fetch from URL
+            stream = url.openStream();
+
+            // Cache if caching is enabled
+            if (enableSchemaCaching) {
+                byte[] content = readStreamToByteArray(stream);
+                schemaCache.put(urlString, content);
+                stream = new ByteArrayInputStream(content);
+            }
+        }
+
+        InputSource isource = new InputSource(stream);
+        isource.setSystemId(urlString);
         return isource;
+    }
+
+    /**
+     * Reads an InputStream into a byte array for caching purposes.
+     */
+    private byte[] readStreamToByteArray(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        byte[] data = new byte[8192];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, bytesRead);
+        }
+        inputStream.close();
+        return buffer.toByteArray();
     }
 
     /**
