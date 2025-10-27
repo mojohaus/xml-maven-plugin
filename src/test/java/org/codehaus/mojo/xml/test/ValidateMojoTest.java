@@ -38,7 +38,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt1() throws Exception {
-        runTest("src/test/it1");
+        runTest(getTestResourcePath("it1"));
     }
 
     /**
@@ -47,7 +47,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      */
     public void testIt2() throws Exception {
         try {
-            runTest("src/test/it2");
+            runTest(getTestResourcePath("it2"));
             fail("Expected exception");
         } catch (MojoExecutionException e) {
             e.printStackTrace();
@@ -65,7 +65,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt3() throws Exception {
-        runTest("src/test/it3");
+        runTest(getTestResourcePath("it3"));
     }
 
     /**
@@ -73,7 +73,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt9() throws Exception {
-        runTest("src/test/it9");
+        runTest(getTestResourcePath("it9"));
     }
 
     /**
@@ -81,7 +81,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt12() throws Exception {
-        runTest("src/test/it12");
+        runTest(getTestResourcePath("it12"));
     }
 
     /**
@@ -90,7 +90,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      */
     public void testIt13() throws Exception {
         try {
-            runTest("src/test/it13");
+            runTest(getTestResourcePath("it13"));
             fail("Catalog file does not exist - an exception should have been thrown");
         } catch (MojoExecutionException e) {
             e.printStackTrace();
@@ -103,7 +103,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      */
     public void testIt14() throws Exception {
         try {
-            runTest("src/test/it14");
+            runTest(getTestResourcePath("it14"));
             fail("Errorneous Directory name in config should have thrown an exception");
         } catch (MojoExecutionException e) {
             e.printStackTrace();
@@ -116,7 +116,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      */
     public void testIt15() throws Exception {
         try {
-            runTest("src/test/it15");
+            runTest(getTestResourcePath("it15"));
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -129,7 +129,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      */
     public void testIt18() throws Exception {
         try {
-            runTest("src/test/it18");
+            runTest(getTestResourcePath("it18"));
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -141,7 +141,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt19() throws Exception {
-        runTest("src/test/it19");
+        runTest(getTestResourcePath("it19"));
     }
 
     /**
@@ -150,7 +150,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      */
     public void testIt20() throws Exception {
         try {
-            runTest("src/test/it20");
+            runTest(getTestResourcePath("it20"));
             fail("Expected exception");
         } catch (MojoExecutionException e) {
             e.printStackTrace();
@@ -196,6 +196,6 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testXIncludeEnabled() throws Exception {
-        runTest("src/test/xinclude-xsd");
+        runTest(getTestResourcePath("xinclude-xsd"));
     }
 }

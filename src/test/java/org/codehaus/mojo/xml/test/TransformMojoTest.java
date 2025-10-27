@@ -87,7 +87,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt4() throws Exception {
-        runTestIt4("src/test/it4", "doc1.xml");
+        runTestIt4(getTestResourcePath("it4"), "doc1.xml");
     }
 
     /**
@@ -95,7 +95,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt5() throws Exception {
-        final String dir = "src/test/it5";
+        final String dir = getTestResourcePath("it5");
         runTest(dir);
         Document doc1 = parse(new File(dir, "xml/doc1.xml"));
         doc1.normalize();
@@ -125,7 +125,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
     public void testIt6() throws Exception {
         FileExtensionMapper fileExtensionMapper = new FileExtensionMapper();
         fileExtensionMapper.setTargetExtension(".fo");
-        runTestIt4("src/test/it6", "doc1.fo");
+        runTestIt4(getTestResourcePath("it6"), "doc1.fo");
     }
 
     private String read(File file) throws IOException {
@@ -150,14 +150,14 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt7() throws Exception {
-        final File dir = new File("src/test/it7");
+        final File dir = new File(getTestResourcePath("it7"));
         final File target = new File(dir, "target/generated-resources/xml/xslt/doc1.xml");
         TransformMojo mojo = (TransformMojo) newMojo(dir.getPath());
         FileUtils.fileDelete(target.getPath());
         mojo.execute();
         String result = read(target);
         assertFalse(result.startsWith("<?xml"));
-        mojo = (TransformMojo) newMojo("src/test/it7");
+        mojo = (TransformMojo) newMojo(getTestResourcePath("it7"));
         TransformationSet[] transformationSets =
                 (TransformationSet[]) getVariableValueFromObject(mojo, "transformationSets");
         transformationSets[0].getOutputProperties()[0].setValue("no");
@@ -187,7 +187,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt8() throws Exception {
-        final String dir = "src/test/it8";
+        final String dir = getTestResourcePath("it8");
         runTest(dir);
         Document doc1 = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
 
@@ -201,7 +201,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt10() throws Exception {
-        runTestIt4("src/test/it10", "doc1.xml");
+        runTestIt4(getTestResourcePath("it10"), "doc1.xml");
     }
 
     /**
@@ -209,7 +209,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testIt11() throws Exception {
-        String projectPath = "src/test/it11";
+        String projectPath = getTestResourcePath("it11");
         File projectDirectory = new File(getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
         if (targetDirectory.exists()) {
@@ -250,7 +250,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testItXIncludeEnabled() throws Exception {
-        String projectPath = "src/test/xinclude-xsl";
+        String projectPath = getTestResourcePath("xinclude-xsl");
         File projectDirectory = new File(getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
         if (targetDirectory.exists()) {
@@ -281,7 +281,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     public void testItXIncludeDisabled() throws Exception {
-        String projectPath = "src/test/xinclude-xsl";
+        String projectPath = getTestResourcePath("xinclude-xsl");
         File projectDirectory = new File(getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
         if (targetDirectory.exists()) {

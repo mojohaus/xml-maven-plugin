@@ -38,6 +38,15 @@ public abstract class AbstractXmlMojoTestCase extends AbstractMojoTestCase {
 
     protected abstract String getGoal();
 
+    /**
+     * Get the path to a test resource directory in target/test-classes.
+     * @param resourceName The name of the resource directory (e.g., "it1", "xinclude-xsd")
+     * @return The path to the resource directory
+     */
+    protected String getTestResourcePath(String resourceName) {
+        return "target/test-classes/" + resourceName;
+    }
+
     protected AbstractXmlMojo newMojo(String pDir) throws Exception {
         File testPom = new File(new File(getBasedir(), pDir), "pom.xml");
 

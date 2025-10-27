@@ -1,2 +1,0 @@
-# Exclude integration test build artifacts from source releases
-src/test/*/target export-ignore
