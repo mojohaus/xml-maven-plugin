@@ -24,11 +24,14 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.ArtifactStub;
 import org.codehaus.mojo.xml.ValidateMojo;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test case for the {@link ValidateMojo}.
  */
-public class ValidateMojoTest extends AbstractXmlMojoTestCase {
+class ValidateMojoTest extends AbstractXmlMojoTestCase {
     protected String getGoal() {
         return "validate";
     }
@@ -37,7 +40,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it1 test project.
      * @throws Exception The test failed.
      */
-    public void testIt1() throws Exception {
+    @Test
+    void it1() throws Exception {
         runTest("src/test/it1");
     }
 
@@ -45,7 +49,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it2 test project.
      * @throws Exception The test failed.
      */
-    public void testIt2() throws Exception {
+    @Test
+    void it2() throws Exception {
         try {
             runTest("src/test/it2");
             fail("Expected exception");
@@ -64,7 +69,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it3 test project.
      * @throws Exception The test failed.
      */
-    public void testIt3() throws Exception {
+    @Test
+    void it3() throws Exception {
         runTest("src/test/it3");
     }
 
@@ -72,7 +78,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it9 test project.
      * @throws Exception The test failed.
      */
-    public void testIt9() throws Exception {
+    @Test
+    void it9() throws Exception {
         runTest("src/test/it9");
     }
 
@@ -80,7 +87,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds and runs the it12 test project (MOJO-1648)
      * @throws Exception The test failed.
      */
-    public void testIt12() throws Exception {
+    @Test
+    void it12() throws Exception {
         runTest("src/test/it12");
     }
 
@@ -88,7 +96,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds and runs the it13 test project (Issue #16)
      * @throws Exception The test failed.
      */
-    public void testIt13() throws Exception {
+    @Test
+    void it13() throws Exception {
         try {
             runTest("src/test/it13");
             fail("Catalog file does not exist - an exception should have been thrown");
@@ -101,7 +110,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds and runs the it13 test project (Issue #16)
      * @throws Exception The test failed.
      */
-    public void testIt14() throws Exception {
+    @Test
+    void it14() throws Exception {
         try {
             runTest("src/test/it14");
             fail("Errorneous Directory name in config should have thrown an exception");
@@ -114,7 +124,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds, and runs the it15 project.
      * @throws Exception The test failed.
      */
-    public void testIt15() throws Exception {
+    @Test
+    void it15() throws Exception {
         try {
             runTest("src/test/it15");
         } catch (Exception e) {
@@ -127,7 +138,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds, and runs the it18 project.
      * @throws Exception The test failed.
      */
-    public void testIt18() throws Exception {
+    @Test
+    void it18() throws Exception {
         try {
             runTest("src/test/it18");
         } catch (Exception e) {
@@ -140,7 +152,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it19 test project.
      * @throws Exception The test failed.
      */
-    public void testIt19() throws Exception {
+    @Test
+    void it19() throws Exception {
         runTest("src/test/it19");
     }
 
@@ -148,7 +161,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it19 test project.
      * @throws Exception The test failed.
      */
-    public void testIt20() throws Exception {
+    @Test
+    void it20() throws Exception {
         try {
             runTest("src/test/it20");
             fail("Expected exception");
@@ -167,7 +181,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the multimodule/xsd-import test project.
      * @throws Exception The test failed.
      */
-    public void testMultimoduleXsdImport() throws Exception {
+    @Test
+    void multimoduleXsdImport() throws Exception {
         List<Artifact> artifacts = Arrays.asList(createStubArtifact(
                 "src/test/multimodule/xsd-import/validation/xsd-classpath-catalog-0.1.jar",
                 "org.codehaus.mojo.xml",
@@ -195,7 +210,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds and runs the xinclude test project
      * @throws Exception The test failed.
      */
-    public void testXIncludeEnabled() throws Exception {
+    @Test
+    void xIncludeEnabled() throws Exception {
         runTest("src/test/xinclude-xsd");
     }
 }

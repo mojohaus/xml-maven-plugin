@@ -1,12 +1,12 @@
 package org.codehaus.mojo.xml;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ResolverTest {
+class ResolverTest {
     @Test
-    public void testWindowsDriveLetterEscapementUpperCase() {
+    void windowsDriveLetterEscapementUpperCase() {
         String given = "file:D:/a/share/folder";
         String expected = "file:/D:/a/share/folder";
 
@@ -16,7 +16,7 @@ public class ResolverTest {
     }
 
     @Test
-    public void testWindowsDriveLetterEscapementLowerCase() {
+    void windowsDriveLetterEscapementLowerCase() {
         String given = "file:z:/a/share/folder";
         String expected = "file:/z:/a/share/folder";
 
@@ -26,7 +26,7 @@ public class ResolverTest {
     }
 
     @Test
-    public void testWindowsDriveLetterEscapementForNull() {
+    void windowsDriveLetterEscapementForNull() {
         String given = null;
         String expected = null;
 

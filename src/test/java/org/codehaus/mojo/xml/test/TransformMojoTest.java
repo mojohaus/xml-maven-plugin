@@ -40,9 +40,16 @@ import org.codehaus.mojo.xml.TransformMojo;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileExtensionMapper;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for the {@link TransformMojo}.
@@ -86,7 +93,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it4 test project.
      * @throws Exception The test failed.
      */
-    public void testIt4() throws Exception {
+    @Test
+    void it4() throws Exception {
         runTestIt4("src/test/it4", "doc1.xml");
     }
 
@@ -94,7 +102,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it5 test project.
      * @throws Exception The test failed.
      */
-    public void testIt5() throws Exception {
+    @Test
+    void it5() throws Exception {
         final String dir = "src/test/it5";
         runTest(dir);
         Document doc1 = parse(new File(dir, "xml/doc1.xml"));
@@ -115,14 +124,15 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
         assertNotNull(text2);
         assertNull(text2.getNextSibling());
         assertEquals(Node.TEXT_NODE, text2.getNodeType());
-        assertEquals(text2.getNodeValue(), "parameter passed in");
+        assertEquals("parameter passed in", text2.getNodeValue());
     }
 
     /**
      * Builds the it6 test project.
      * @throws Exception The test failed.
      */
-    public void testIt6() throws Exception {
+    @Test
+    void it6() throws Exception {
         FileExtensionMapper fileExtensionMapper = new FileExtensionMapper();
         fileExtensionMapper.setTargetExtension(".fo");
         runTestIt4("src/test/it6", "doc1.fo");
@@ -149,7 +159,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it7 test project.
      * @throws Exception The test failed.
      */
-    public void testIt7() throws Exception {
+    @Test
+    void it7() throws Exception {
         final File dir = new File("src/test/it7");
         final File target = new File(dir, "target/generated-resources/xml/xslt/doc1.xml");
         TransformMojo mojo = (TransformMojo) newMojo(dir.getPath());
@@ -186,7 +197,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it8 test project.
      * @throws Exception The test failed.
      */
-    public void testIt8() throws Exception {
+    @Test
+    void it8() throws Exception {
         final String dir = "src/test/it8";
         runTest(dir);
         Document doc1 = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
@@ -200,7 +212,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it10 test project.
      * @throws Exception The test failed.
      */
-    public void testIt10() throws Exception {
+    @Test
+    void it10() throws Exception {
         runTestIt4("src/test/it10", "doc1.xml");
     }
 
@@ -208,7 +221,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it11 test project, tests in-place modification.
      * @throws Exception The test failed.
      */
-    public void testIt11() throws Exception {
+    @Test
+    void it11() throws Exception {
         String projectPath = "src/test/it11";
         File projectDirectory = new File(getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
@@ -249,7 +263,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the xinclude test project, tests xinclude enabled transformation
      * @throws Exception The test failed.
      */
-    public void testItXIncludeEnabled() throws Exception {
+    @Test
+    void itXIncludeEnabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
         File projectDirectory = new File(getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
@@ -272,7 +287,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
         List<String> xPathNodes = Arrays.asList("//book", "//book/chapter", "//book/chapter/section");
 
         for (String xpath : xPathNodes) {
-            assertNotNull("Missing :" + xpath, xPath.evaluate(xpath, doc, XPathConstants.NODE));
+            assertNotNull(xPath.evaluate(xpath, doc, XPathConstants.NODE), "Missing :" + xpath);
         }
     }
 
@@ -280,7 +295,8 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
      * Builds the xinclude test project, tests xinclude disabled transformation
      * @throws Exception The test failed.
      */
-    public void testItXIncludeDisabled() throws Exception {
+    @Test
+    void itXIncludeDisabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
         File projectDirectory = new File(getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
@@ -306,7 +322,7 @@ public class TransformMojoTest extends AbstractXmlMojoTestCase {
                 "//chapter/*[local-name()='include']/*[local-name()='fallback']/fallbackSection");
 
         for (String xpath : xPathNodes) {
-            assertNotNull("Missing :" + xpath, xPath.evaluate(xpath, doc, XPathConstants.NODE));
+            assertNotNull(xPath.evaluate(xpath, doc, XPathConstants.NODE), "Missing :" + xpath);
         }
     }
 }
