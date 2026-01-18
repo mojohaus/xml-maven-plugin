@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>xml-maven-plugin</artifactId>
-  <version>1.2.1</version>
+  <version>1.3.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>XML Maven Plugin</name>
   <description>A plugin for various XML related tasks like validation, transformation, and the like.</description>
@@ -103,7 +103,7 @@
   <scm>
     <connection>scm:git:https://github.com/mojohaus/xml-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojohaus/xml-maven-plugin.git</developerConnection>
-    <tag>xml-maven-plugin-1.2.1</tag>
+    <tag>HEAD</tag>
     <url>https://github.com/mojohaus/xml-maven-plugin/blob/master</url>
   </scm>
 
@@ -120,7 +120,7 @@
   <properties>
     <mavenVersion>3.9.11</mavenVersion>
     <minimalMavenBuildVersion>3.6.3</minimalMavenBuildVersion>
-    <project.build.outputTimestamp>2026-01-18T21:19:52Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-01-18T21:20:04Z</project.build.outputTimestamp>
   </properties>
 
   <dependencyManagement>
