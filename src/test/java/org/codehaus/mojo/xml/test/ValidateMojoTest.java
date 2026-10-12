@@ -20,15 +20,20 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.maven.api.plugin.testing.MojoExtension;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.ArtifactStub;
 import org.codehaus.mojo.xml.ValidateMojo;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test case for the {@link ValidateMojo}.
  */
-public class ValidateMojoTest extends AbstractXmlMojoTestCase {
+class ValidateMojoTest extends AbstractXmlMojoTestCase {
+    @Override
     protected String getGoal() {
         return "validate";
     }
@@ -37,7 +42,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it1 test project.
      * @throws Exception The test failed.
      */
-    public void testIt1() throws Exception {
+    @Test
+    void testIt1() throws Exception {
         runTest("src/test/it1");
     }
 
@@ -45,26 +51,23 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it2 test project.
      * @throws Exception The test failed.
      */
-    public void testIt2() throws Exception {
-        try {
-            runTest("src/test/it2");
-            fail("Expected exception");
-        } catch (MojoExecutionException e) {
-            e.printStackTrace();
-            // validation exceptions no longer have an attached cause.
-            //            Throwable t = e.getCause();
-            //            assertNotNull( t );
-            //            assertTrue( t instanceof SAXParseException );
-            //            SAXParseException ex = (SAXParseException) t;
-            //            assertEquals( 20, ex.getLineNumber() );
-        }
+    @Test
+    void testIt2() throws Exception {
+        assertThrows(MojoExecutionException.class, () -> runTest("src/test/it2"));
+        // validation exceptions no longer have an attached cause.
+        //            Throwable t = e.getCause();
+        //            assertNotNull( t );
+        //            assertTrue( t instanceof SAXParseException );
+        //            SAXParseException ex = (SAXParseException) t;
+        //            assertEquals( 20, ex.getLineNumber() );
     }
 
     /**
      * Builds the it3 test project.
      * @throws Exception The test failed.
      */
-    public void testIt3() throws Exception {
+    @Test
+    void testIt3() throws Exception {
         runTest("src/test/it3");
     }
 
@@ -72,7 +75,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it9 test project.
      * @throws Exception The test failed.
      */
-    public void testIt9() throws Exception {
+    @Test
+    void testIt9() throws Exception {
         runTest("src/test/it9");
     }
 
@@ -80,7 +84,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds and runs the it12 test project (MOJO-1648)
      * @throws Exception The test failed.
      */
-    public void testIt12() throws Exception {
+    @Test
+    void testIt12() throws Exception {
         runTest("src/test/it12");
     }
 
@@ -88,59 +93,50 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds and runs the it13 test project (Issue #16)
      * @throws Exception The test failed.
      */
-    public void testIt13() throws Exception {
-        try {
-            runTest("src/test/it13");
-            fail("Catalog file does not exist - an exception should have been thrown");
-        } catch (MojoExecutionException e) {
-            e.printStackTrace();
-        }
+    @Test
+    void testIt13() throws Exception {
+        assertThrows(
+                MojoExecutionException.class,
+                () -> runTest("src/test/it13"),
+                "Catalog file does not exist - an exception should have been thrown");
     }
 
     /**
      * Builds and runs the it13 test project (Issue #16)
      * @throws Exception The test failed.
      */
-    public void testIt14() throws Exception {
-        try {
-            runTest("src/test/it14");
-            fail("Errorneous Directory name in config should have thrown an exception");
-        } catch (MojoExecutionException e) {
-            e.printStackTrace();
-        }
+    @Test
+    void testIt14() throws Exception {
+        assertThrows(
+                MojoExecutionException.class,
+                () -> runTest("src/test/it14"),
+                "Errorneous Directory name in config should have thrown an exception");
     }
 
     /**
      * Builds, and runs the it15 project.
      * @throws Exception The test failed.
      */
-    public void testIt15() throws Exception {
-        try {
-            runTest("src/test/it15");
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
+    @Test
+    void testIt15() throws Exception {
+        runTest("src/test/it15");
     }
 
     /**
      * Builds, and runs the it18 project.
      * @throws Exception The test failed.
      */
-    public void testIt18() throws Exception {
-        try {
-            runTest("src/test/it18");
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
+    @Test
+    void testIt18() throws Exception {
+        runTest("src/test/it18");
     }
 
     /**
      * Builds the it19 test project.
      * @throws Exception The test failed.
      */
-    public void testIt19() throws Exception {
+    @Test
+    void testIt19() throws Exception {
         runTest("src/test/it19");
     }
 
@@ -148,26 +144,23 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds the it19 test project.
      * @throws Exception The test failed.
      */
-    public void testIt20() throws Exception {
-        try {
-            runTest("src/test/it20");
-            fail("Expected exception");
-        } catch (MojoExecutionException e) {
-            e.printStackTrace();
-            // validation exceptions no longer have an attached cause.
-            //            Throwable t = e.getCause();
-            //            assertNotNull( t );
-            //            assertTrue( t instanceof SAXParseException );
-            //            SAXParseException ex = (SAXParseException) t;
-            //            assertEquals( 20, ex.getLineNumber() );
-        }
+    @Test
+    void testIt20() throws Exception {
+        assertThrows(MojoExecutionException.class, () -> runTest("src/test/it20"));
+        // validation exceptions no longer have an attached cause.
+        //            Throwable t = e.getCause();
+        //            assertNotNull( t );
+        //            assertTrue( t instanceof SAXParseException );
+        //            SAXParseException ex = (SAXParseException) t;
+        //            assertEquals( 20, ex.getLineNumber() );
     }
 
     /**
      * Builds the multimodule/xsd-import test project.
      * @throws Exception The test failed.
      */
-    public void testMultimoduleXsdImport() throws Exception {
+    @Test
+    void testMultimoduleXsdImport() throws Exception {
         List<Artifact> artifacts = Arrays.asList(createStubArtifact(
                 "src/test/multimodule/xsd-import/validation/xsd-classpath-catalog-0.1.jar",
                 "org.codehaus.mojo.xml",
@@ -180,7 +173,7 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
 
     private static Artifact createStubArtifact(
             String path, String groupId, String artifactId, String version, String packaging) {
-        File artifactFile = new File(getBasedir(), path);
+        File artifactFile = new File(MojoExtension.getBasedir(), path);
 
         ArtifactStub stub = new ArtifactStub();
         stub.setGroupId(groupId);
@@ -195,7 +188,8 @@ public class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * Builds and runs the xinclude test project
      * @throws Exception The test failed.
      */
-    public void testXIncludeEnabled() throws Exception {
+    @Test
+    void testXIncludeEnabled() throws Exception {
         runTest("src/test/xinclude-xsd");
     }
 }
