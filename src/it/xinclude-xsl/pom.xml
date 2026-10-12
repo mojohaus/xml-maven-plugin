@@ -19,10 +19,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.mojo.xml</groupId>
-  <artifactId>xinclude</artifactId>
+  <artifactId>xinclude-xsl</artifactId>
   <version>0.1</version>
-  <name>Maven XML Plugin IT xinclude - transform</name>
-  <description>Integration Test to check xinclude awarenes for the Maven XML Plugin</description>
+  <name>Maven XML Plugin IT xinclude-xsl - transform</name>
+  <description>Integration Test to check XInclude XSL awareness for the Maven XML Plugin</description>
   <build>
 	<plugins>
 		<plugin>

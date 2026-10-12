@@ -19,10 +19,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.mojo.xml</groupId>
-  <artifactId>it10</artifactId>
+  <artifactId>mojo-1438-transform</artifactId>
   <version>0.1</version>
-  <name>Maven XML Plugin IT 10</name>
-  <description>Integration Test 10 for the Maven XML Plugin</description>
+  <name>Maven XML Plugin mojo-1438-transform Mojo Test</name>
+  <description>Integration Test mojo-1438-transform for the Maven XML Plugin</description>
   <build>
     <plugins>
       <plugin>
