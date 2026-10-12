@@ -43,7 +43,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt1() throws Exception {
+    void it1() throws Exception {
         runTest("src/test/it1");
     }
 
@@ -52,7 +52,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt2() throws Exception {
+    void it2() throws Exception {
         assertThrows(MojoExecutionException.class, () -> runTest("src/test/it2"));
         // validation exceptions no longer have an attached cause.
         //            Throwable t = e.getCause();
@@ -67,7 +67,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt3() throws Exception {
+    void it3() throws Exception {
         runTest("src/test/it3");
     }
 
@@ -76,7 +76,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt9() throws Exception {
+    void it9() throws Exception {
         runTest("src/test/it9");
     }
 
@@ -85,7 +85,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt12() throws Exception {
+    void it12() throws Exception {
         runTest("src/test/it12");
     }
 
@@ -94,7 +94,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt13() throws Exception {
+    void it13() throws Exception {
         assertThrows(
                 MojoExecutionException.class,
                 () -> runTest("src/test/it13"),
@@ -106,7 +106,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt14() throws Exception {
+    void it14() throws Exception {
         assertThrows(
                 MojoExecutionException.class,
                 () -> runTest("src/test/it14"),
@@ -118,7 +118,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt15() throws Exception {
+    void it15() throws Exception {
         runTest("src/test/it15");
     }
 
@@ -127,7 +127,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt18() throws Exception {
+    void it18() throws Exception {
         runTest("src/test/it18");
     }
 
@@ -136,7 +136,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt19() throws Exception {
+    void it19() throws Exception {
         runTest("src/test/it19");
     }
 
@@ -145,7 +145,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt20() throws Exception {
+    void it20() throws Exception {
         assertThrows(MojoExecutionException.class, () -> runTest("src/test/it20"));
         // validation exceptions no longer have an attached cause.
         //            Throwable t = e.getCause();
@@ -160,7 +160,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testMultimoduleXsdImport() throws Exception {
+    void multimoduleXsdImport() throws Exception {
         List<Artifact> artifacts = Arrays.asList(createStubArtifact(
                 "src/test/multimodule/xsd-import/validation/xsd-classpath-catalog-0.1.jar",
                 "org.codehaus.mojo.xml",
@@ -189,7 +189,7 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testXIncludeEnabled() throws Exception {
+    void xIncludeEnabled() throws Exception {
         runTest("src/test/xinclude-xsd");
     }
 }

@@ -96,7 +96,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt4() throws Exception {
+    void it4() throws Exception {
         runTestIt4("src/test/it4", "doc1.xml");
     }
 
@@ -105,7 +105,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt5() throws Exception {
+    void it5() throws Exception {
         final String dir = "src/test/it5";
         runTest(dir);
         Document doc1 = parse(new File(dir, "xml/doc1.xml"));
@@ -126,7 +126,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
         assertNotNull(text2);
         assertNull(text2.getNextSibling());
         assertEquals(Node.TEXT_NODE, text2.getNodeType());
-        assertEquals(text2.getNodeValue(), "parameter passed in");
+        assertEquals("parameter passed in", text2.getNodeValue());
     }
 
     /**
@@ -134,7 +134,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt6() throws Exception {
+    void it6() throws Exception {
         FileExtensionMapper fileExtensionMapper = new FileExtensionMapper();
         fileExtensionMapper.setTargetExtension(".fo");
         runTestIt4("src/test/it6", "doc1.fo");
@@ -162,7 +162,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt7() throws Exception {
+    void it7() throws Exception {
         final File dir = new File("src/test/it7");
         final File target = new File(dir, "target/generated-resources/xml/xslt/doc1.xml");
         TransformMojo mojo = (TransformMojo) newMojo(dir.getPath());
@@ -200,7 +200,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt8() throws Exception {
+    void it8() throws Exception {
         final String dir = "src/test/it8";
         runTest(dir);
         Document doc1 = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
@@ -215,7 +215,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt10() throws Exception {
+    void it10() throws Exception {
         runTestIt4("src/test/it10", "doc1.xml");
     }
 
@@ -224,7 +224,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testIt11() throws Exception {
+    void it11() throws Exception {
         String projectPath = "src/test/it11";
         File projectDirectory = new File(MojoExtension.getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
@@ -266,7 +266,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testItXIncludeEnabled() throws Exception {
+    void itXIncludeEnabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
         File projectDirectory = new File(MojoExtension.getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
@@ -298,7 +298,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      * @throws Exception The test failed.
      */
     @Test
-    void testItXIncludeDisabled() throws Exception {
+    void itXIncludeDisabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
         File projectDirectory = new File(MojoExtension.getBasedir(), projectPath);
         File targetDirectory = new File(projectPath, "target");
