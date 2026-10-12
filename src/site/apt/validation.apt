@@ -100,6 +100,10 @@ Goal properties
 |                 | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
 |                 | article for details on catalog files and their formats.         |
 *-----------------+-----------------------------------------------------------------+
+| jaxpConfigFile  | The path to a JAXP Config file (e.g. jaxp.properties).          |
+|                 | Note: This only has an affect in Java 21 and newer.             |
+|                 | See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF |
+*-----------------+-----------------------------------------------------------------+
 | validationSets  | A validation set configures a set of XML files, which are       |
 |                 | validated against a common XML schema. If you want to validate  |
 |                 | against multiple schemata, use one validation set per schema.   |
