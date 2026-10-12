@@ -48,6 +48,8 @@ import org.codehaus.plexus.util.FileUtils;
  */
 public abstract class AbstractXmlMojo extends AbstractMojo {
 
+    private static final String PROP_JAXP_CONFIG_FILE = "java.xml.config.file";
+
     /**
      * The Maven Project.
      */
@@ -116,6 +118,18 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     private CatalogHandling catalogHandling;
 
     /**
+     * Path to a JAXP Configuration (jaxp.properties) File.
+     * See <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF">Configuration File</a>.
+     */
+    @Parameter(property = "xml.jaxpConfigFile", required = false)
+    private File jaxpConfigFile;
+
+    /**
+     * Holds the value of any previous `java.xml.config.file` system property.
+     */
+    private String prevJaxpConfigFile = null;
+
+    /**
      * Plexus resource manager used to obtain XSL.
      */
     @Component
@@ -132,7 +146,12 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
             return;
         }
 
-        executeXmlMojo();
+        setJaxpConfigurationFile();
+        try {
+            executeXmlMojo();
+        } finally {
+            unsetJaxpConfigurationFile();
+        }
     }
 
     /**
@@ -425,5 +444,31 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
             classLoader = new URLClassLoader(urls.toArray(new URL[0]));
         }
         return classLoader;
+    }
+
+    protected void setJaxpConfigurationFile() throws MojoFailureException {
+        if (jaxpConfigFile == null) {
+            return;
+        }
+
+        if (!jaxpConfigFile.exists() || jaxpConfigFile.isDirectory()) {
+            throw new MojoFailureException(
+                    "The file indicated by jaxpConfigFile parameter does not exist or is a directory");
+        }
+
+        this.prevJaxpConfigFile = System.getProperty(PROP_JAXP_CONFIG_FILE);
+        System.setProperty(PROP_JAXP_CONFIG_FILE, jaxpConfigFile.getAbsolutePath());
+    }
+
+    protected void unsetJaxpConfigurationFile() {
+        if (jaxpConfigFile == null) {
+            return;
+        }
+
+        if (this.prevJaxpConfigFile != null) {
+            System.setProperty(PROP_JAXP_CONFIG_FILE, prevJaxpConfigFile);
+        } else {
+            System.clearProperty(PROP_JAXP_CONFIG_FILE);
+        }
     }
 }

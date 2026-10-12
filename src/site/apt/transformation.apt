@@ -99,10 +99,14 @@ Goal properties
 |                    | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
 |                    | article for details on catalog files and their formats.         |
 *--------------------+-----------------------------------------------------------------+
-| forceCreation       | If 'true', no up-to-date check is performed and                |
-|                     | the transformation is always performed.                        |
-|                     | Defaults to "${xml.forceCreation}" or 'false'.                 |
-*---------------------+----------------------------------------------------------------+
+| forceCreation      | If 'true', no up-to-date check is performed and                 |
+|                    | the transformation is always performed.                         |
+|                    | Defaults to "${xml.forceCreation}" or 'false'.                  |
+*--------------------+-----------------------------------------------------------------+
+| jaxpConfigFile     | The path to a JAXP Config file (e.g. jaxp.properties).          |
+|                    | Note: This only has an affect in Java 21 and newer.             |
+|                    | See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF |
+*--------------------+-----------------------------------------------------------------+
 | transformationSets | A transformation set configures a set of XML files, which are   |
 |                    | transformed by applying a common XSLT stylesheet. If you want   |
 |                    | apply multiple stylesheets, use multiple transformation sets.   |
