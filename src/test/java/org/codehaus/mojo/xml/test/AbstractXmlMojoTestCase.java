@@ -22,39 +22,32 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.maven.api.plugin.testing.MojoExtension;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.execution.DefaultMavenExecutionRequest;
-import org.apache.maven.execution.MavenExecutionRequest;
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.apache.maven.project.ProjectBuildingRequest;
 import org.codehaus.mojo.xml.AbstractXmlMojo;
-import org.eclipse.aether.DefaultRepositorySystemSession;
+import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public abstract class AbstractXmlMojoTestCase extends AbstractMojoTestCase {
+@ProjectMojoTest
+abstract class AbstractXmlMojoTestCase {
+
+    private ProjectMojos mojos;
+
+    @BeforeEach
+    void setUpMojos(ProjectMojos mojos) {
+        this.mojos = mojos;
+    }
 
     protected abstract String getGoal();
 
     protected AbstractXmlMojo newMojo(String pDir) throws Exception {
-        File testPom = new File(new File(getBasedir(), pDir), "pom.xml");
-
-        MavenExecutionRequest executionRequest = new DefaultMavenExecutionRequest();
-        ProjectBuildingRequest buildingRequest = executionRequest.getProjectBuildingRequest();
-        buildingRequest.setRepositorySession(new DefaultRepositorySystemSession());
-        ProjectBuilder projectBuilder = this.lookup(ProjectBuilder.class);
-        MavenProject project = projectBuilder.build(testPom, buildingRequest).getProject();
-        project.getBuild().setDirectory("target");
-        AbstractXmlMojo vm = (AbstractXmlMojo) lookupConfiguredMojo(project, getGoal());
-        setVariableValueToObject(vm, "basedir", new File(getBasedir(), pDir));
-        return vm;
+        return mojos.lookup(getGoal(), new File(new File(MojoExtension.getBasedir(), pDir), "pom.xml"));
     }
 
     protected AbstractXmlMojo newMojoWithArtifacts(String pDir, List<Artifact> artifacts) throws Exception {
         AbstractXmlMojo vm = newMojo(pDir);
-        setVariableValueToObject(vm, "pluginDependencies", artifacts);
+        MojoExtension.setVariableValueToObject(vm, "pluginDependencies", artifacts);
         return vm;
     }
 
