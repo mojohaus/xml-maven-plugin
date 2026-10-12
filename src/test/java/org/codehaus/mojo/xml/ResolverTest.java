@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ResolverTest {
     @Test
-    void testWindowsDriveLetterEscapementUpperCase() {
+    void windowsDriveLetterEscapementUpperCase() {
         String given = "file:D:/a/share/folder";
         String expected = "file:/D:/a/share/folder";
 
@@ -16,7 +16,7 @@ class ResolverTest {
     }
 
     @Test
-    void testWindowsDriveLetterEscapementLowerCase() {
+    void windowsDriveLetterEscapementLowerCase() {
         String given = "file:z:/a/share/folder";
         String expected = "file:/z:/a/share/folder";
 
@@ -26,7 +26,7 @@ class ResolverTest {
     }
 
     @Test
-    void testWindowsDriveLetterEscapementForNull() {
+    void windowsDriveLetterEscapementForNull() {
         String given = null;
         String expected = null;
 
