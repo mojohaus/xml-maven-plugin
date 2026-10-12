@@ -19,3 +19,4 @@ mvn site
 mvn scm-publish:publish-scm
 ```
 
+See [AGENTS.md](AGENTS.md) for build, test and pull request conventions.
