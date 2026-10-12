@@ -21,8 +21,8 @@
   <groupId>org.codehaus.mojo.xml</groupId>
   <artifactId>check-format-pass</artifactId>
   <version>0.1</version>
-  <name>Maven XML Plugin check-format Mojo test</name>
-  <description>Maven XML Plugin check-format Mojo test</description>
+  <name>Maven XML Plugin check-format-pass Mojo test</name>
+  <description>Maven XML Plugin check-format-pass Mojo test</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

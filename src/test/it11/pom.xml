@@ -19,10 +19,10 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.mojo.xml</groupId>
-  <artifactId>it10</artifactId>
+  <artifactId>it11</artifactId>
   <version>0.1</version>
-  <name>Maven XML Plugin IT 10</name>
-  <description>Integration Test 10 for the Maven XML Plugin</description>
+  <name>Maven XML Plugin IT 11</name>
+  <description>Integration Test 11 for the Maven XML Plugin</description>
   <build>
     <plugins>
       <plugin>
