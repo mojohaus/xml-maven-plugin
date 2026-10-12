@@ -254,12 +254,7 @@ public class ValidateMojo extends AbstractXmlMojo {
      * @throws MojoExecutionException Running the Mojo failed.
      * @throws MojoFailureException   A configuration error was detected.
      */
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if (isSkipping()) {
-            getLog().debug("Skipping execution, as demanded by user.");
-            return;
-        }
-
+    public void executeXmlMojo() throws MojoExecutionException, MojoFailureException {
         final ValidationErrorHandler errorHandler = new ValidationErrorHandler();
         if (validationSets == null || validationSets.length == 0) {
             throw new MojoFailureException("No ValidationSets configured.");
