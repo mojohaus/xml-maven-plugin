@@ -16,6 +16,9 @@ package org.codehaus.mojo.xml.test;
  * limitations under the License.
  */
 
+import javax.xml.XMLConstants;
+import javax.xml.validation.SchemaFactory;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +30,9 @@ import org.apache.maven.plugin.testing.stubs.ArtifactStub;
 import org.codehaus.mojo.xml.ValidateMojo;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for the {@link ValidateMojo}.
@@ -191,5 +196,33 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
     @Test
     void xIncludeEnabled() throws Exception {
         runTest("src/test/xinclude-xsd");
+    }
+
+    @Test
+    void newXsdSchemaFactoryImplicit() {
+        final String schemaLanguage = XMLConstants.W3C_XML_SCHEMA_NS_URI;
+        final SchemaFactory schemaFactory = ValidateMojo.newSchemaFactory(schemaLanguage, null, null);
+        assertNotNull(schemaFactory);
+        assertTrue(schemaFactory.isSchemaLanguageSupported(schemaLanguage));
+    }
+
+    @Test
+    void newXsdSchemaFactoryExplicitWithoutClassloader() {
+        final String schemaLanguage = XMLConstants.W3C_XML_SCHEMA_NS_URI;
+        final SchemaFactory schemaFactory = ValidateMojo.newSchemaFactory(
+                schemaLanguage, "org.apache.xerces.jaxp.validation.XMLSchemaFactory", null);
+        assertNotNull(schemaFactory);
+        assertTrue(schemaFactory.isSchemaLanguageSupported(schemaLanguage));
+    }
+
+    @Test
+    void newXsdSchemaFactoryExplicitWithClassloader() {
+        final String schemaLanguage = XMLConstants.W3C_XML_SCHEMA_NS_URI;
+        final SchemaFactory schemaFactory = ValidateMojo.newSchemaFactory(
+                schemaLanguage,
+                "org.apache.xerces.jaxp.validation.XMLSchemaFactory",
+                Thread.currentThread().getContextClassLoader());
+        assertNotNull(schemaFactory);
+        assertTrue(schemaFactory.isSchemaLanguageSupported(schemaLanguage));
     }
 }

@@ -53,6 +53,15 @@ public class ValidateMojo extends AbstractXmlMojo {
     private static final String INTRINSIC_NS_URI = "http://componentcorp.com/xml/ns/xml-model/1.0";
 
     /**
+     * Schema factory use. By default, the systems default schema factory is used. <b>If you use this feature
+     * you must use at least jdk 1.6</b>
+     *
+     * @since 1.3
+     */
+    @Parameter(property = "xml.schemaFactory", required = false)
+    private String schemaFactory;
+
+    /**
      * Specifies a set of document types, which are being validated.  See
      * <a href="validation.html">Validating XML Files</a>
      *
@@ -107,16 +116,27 @@ public class ValidateMojo extends AbstractXmlMojo {
             saxSource = new SAXSource(inputSource);
         }
         try {
-            SchemaFactory schemaFactory = SchemaFactory.newInstance(schemaLanguage);
+            SchemaFactory sf = newSchemaFactory(
+                    schemaLanguage, schemaFactory, Thread.currentThread().getContextClassLoader());
             if (pResolver != null) {
-                schemaFactory.setResourceResolver(pResolver);
+                sf.setResourceResolver(pResolver);
             }
-            return saxSource == null ? schemaFactory.newSchema() : schemaFactory.newSchema(saxSource);
+            return saxSource == null ? sf.newSchema() : sf.newSchema(saxSource);
         } catch (SAXException e) {
             throw new MojoExecutionException(
                     "Failed to load schema with public ID " + publicId + ", system ID " + systemId + ": "
                             + getExceptionMessage(e),
                     e);
+        }
+    }
+
+    // public for use by unit test
+    public static SchemaFactory newSchemaFactory(
+            final String schemaLanguage, final String schemaFactoryClassName, final ClassLoader classLoader) {
+        if (schemaFactoryClassName != null) {
+            return SchemaFactory.newInstance(schemaLanguage, schemaFactoryClassName, classLoader);
+        } else {
+            return SchemaFactory.newInstance(schemaLanguage);
         }
     }
 

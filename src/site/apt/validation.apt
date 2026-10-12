@@ -104,6 +104,9 @@ Goal properties
 |                 | Note: This only has an affect in Java 21 and newer.             |
 |                 | See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF |
 *-----------------+-----------------------------------------------------------------+
+| schemaFactory   | The name of a class implementing javax.xml.validation.SchemaFactory to use. |
+|                 | Otherwise, defaults to the systems default Schema Factory       |
+*-----------------+-----------------------------------------------------------------+
 | validationSets  | A validation set configures a set of XML files, which are       |
 |                 | validated against a common XML schema. If you want to validate  |
 |                 | against multiple schemata, use one validation set per schema.   |
