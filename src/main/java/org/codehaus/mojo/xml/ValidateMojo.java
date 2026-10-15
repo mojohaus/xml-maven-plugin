@@ -102,7 +102,7 @@ public class ValidateMojo extends AbstractXmlMojo {
                 try {
                     inputSource = pResolver.resolveEntity(publicId, systemId);
                 } catch (SAXException e) {
-                    throw new MojoExecutionException(e.getMessage(), e);
+                    throw new MojoExecutionException(getExceptionMessage(e), e);
                 } catch (IOException e) {
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
@@ -123,8 +123,18 @@ public class ValidateMojo extends AbstractXmlMojo {
         } catch (SAXException e) {
             throw new MojoExecutionException(
                     "Failed to load schema with public ID " + publicId + ", system ID " + systemId + ": "
-                            + e.getMessage(),
+                            + getExceptionMessage(e),
                     e);
+        }
+    }
+
+    private static String getExceptionMessage(final Throwable throwable) {
+        if (throwable instanceof SAXParseException) {
+            // For a SAXParseException we can get a richer message (e.g. includes location info) by calling #toString()
+            // instead of #getMessage().
+            return throwable.toString();
+        } else {
+            return throwable.getMessage();
         }
     }
 
@@ -175,7 +185,7 @@ public class ValidateMojo extends AbstractXmlMojo {
             try {
                 errorHandler.fatalError(e);
             } catch (SAXException se) {
-                throw new MojoExecutionException("While parsing " + pFile + ": " + e.getMessage(), se);
+                throw new MojoExecutionException("While parsing " + pFile + ": " + getExceptionMessage(e), se);
             }
         } catch (Exception e) {
             throw new MojoExecutionException("While parsing " + pFile + ": " + e.getMessage(), e);
