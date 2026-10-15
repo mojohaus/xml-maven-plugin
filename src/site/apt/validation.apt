@@ -95,6 +95,7 @@ Goal properties
 |                 | \ \ \ \ <<< \<catalog\>mycatalog.xml\</catalog\>>>>\            |
 |                 | \ \ <<<\</catalogs\>>>>\                                        |
 |                 | \                                                               |
+|                 | You can use an optional 'resource:' prefix to load the catalog from the classpath. |
 |                 | The interpretation of catalog files is done by the Apache XML   |
 |                 | resolver. See                                                   |
 |                 | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |

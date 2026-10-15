@@ -198,6 +198,9 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
      * @return URL of resource or null if not found.
      */
     private URL asClasspath(String catalog) {
+        if (catalog.startsWith("resource:")) {
+            catalog = catalog.substring("resource:".length());
+        }
         return getClassLoader().getResource(catalog);
     }
 
