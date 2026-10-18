@@ -142,6 +142,9 @@ Validation Set Configuration
 |                     | Due to limitations in the JAXP Validation API this cannot at    |
 |                     | present refer to a DTD, but any other validation language should|
 |                     | work.                                                           |
+*-----------------+---------------------------------------------------------------------+
+| schemaFactory       | The name of a class implementing javax.xml.validation.SchemaFactory to use. |
+|                     | Otherwise, defaults to the systems default Schema Factory       |
 *---------------------+-----------------------------------------------------------------+
 | schemaLanguage      | The schema language. Defaults to XML Schema, however if not set |
 |                     | and none of <<<publicId>>>, <<<systemID>>> and <<<validating>>>  |

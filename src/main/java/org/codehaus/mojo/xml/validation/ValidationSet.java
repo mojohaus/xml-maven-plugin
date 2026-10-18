@@ -29,6 +29,8 @@ public class ValidationSet {
 
     private String systemId;
 
+    private String schemaFactory;
+
     private String schemaLanguage;
 
     private boolean validating;
@@ -74,6 +76,15 @@ public class ValidationSet {
      */
     public String getPublicId() {
         return publicId;
+    }
+
+    /**
+     * Returns the schema factory. May be null, if the
+     * default schema factory is being used.
+     * @return The schema factory, if available, or null.
+     */
+    public String getSchemaFactory() {
+        return schemaFactory;
     }
 
     /**
@@ -145,6 +156,15 @@ public class ValidationSet {
      */
     public void setPublicId(String pPublicId) {
         publicId = pPublicId;
+    }
+
+    /**
+     * Sets the schema factory. May be null, if the
+     * default schema factory is being used.
+     * @param schemaFactory The schema factory, if available, or null.
+     */
+    public void setSchemaFactory(String schemaFactory) {
+        this.schemaFactory = schemaFactory;
     }
 
     /**

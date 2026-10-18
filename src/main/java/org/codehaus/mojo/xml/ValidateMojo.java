@@ -117,7 +117,9 @@ public class ValidateMojo extends AbstractXmlMojo {
         }
         try {
             SchemaFactory sf = newSchemaFactory(
-                    schemaLanguage, schemaFactory, Thread.currentThread().getContextClassLoader());
+                    schemaLanguage,
+                    pValidationSet.getSchemaFactory() != null ? pValidationSet.getSchemaFactory() : schemaFactory,
+                    Thread.currentThread().getContextClassLoader());
             if (pResolver != null) {
                 sf.setResourceResolver(pResolver);
             }
