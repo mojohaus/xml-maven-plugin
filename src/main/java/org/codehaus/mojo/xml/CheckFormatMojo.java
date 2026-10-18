@@ -170,18 +170,8 @@ public class CheckFormatMojo extends AbstractXmlMojo {
         }
     }
 
-    /**
-     * Called by Maven for executing the Mojo.
-     *
-     * @throws MojoExecutionException Running the Mojo failed.
-     * @throws MojoFailureException   A configuration error was detected.
-     */
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if (isSkipping()) {
-            getLog().debug("Skipping execution, as demanded by user.");
-            return;
-        }
-
+    @Override
+    protected void executeXmlMojo() throws MojoExecutionException, MojoFailureException {
         if (useDefaultFormatFileSet) {
             formatFileSets.add(FormatFileSet.getDefault(getBasedir(), encoding, indentSize));
         }

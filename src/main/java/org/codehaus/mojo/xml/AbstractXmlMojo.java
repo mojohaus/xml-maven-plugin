@@ -125,6 +125,27 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
 
     public AbstractXmlMojo() {}
 
+    @Override
+    public final void execute() throws MojoExecutionException, MojoFailureException {
+        if (isSkipping()) {
+            getLog().debug("Skipping execution, as demanded by user.");
+            return;
+        }
+
+        executeXmlMojo();
+    }
+
+    /**
+     * The equivalent of {@link #execute()} for any subclasses.
+     *
+     * @throws MojoExecutionException if an unexpected problem occurs. Throwing
+     *         this exception causes a "BUILD ERROR" message to be displayed.
+     * @throws MojoFailureException if an expected problem (such as a
+     *         compilation failure) occurs. Throwing this exception causes a
+     *         "BUILD FAILURE" message to be displayed.
+     */
+    protected abstract void executeXmlMojo() throws MojoExecutionException, MojoFailureException;
+
     /**
      * Returns the maven project.
      */
