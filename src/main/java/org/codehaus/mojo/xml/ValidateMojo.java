@@ -53,6 +53,15 @@ public class ValidateMojo extends AbstractXmlMojo {
     private static final String INTRINSIC_NS_URI = "http://componentcorp.com/xml/ns/xml-model/1.0";
 
     /**
+     * Schema factory use. By default, the systems default schema factory is used. <b>If you use this feature
+     * you must use at least jdk 1.6</b>
+     *
+     * @since 1.3
+     */
+    @Parameter(property = "xml.schemaFactory", required = false)
+    private String schemaFactory;
+
+    /**
      * Specifies a set of document types, which are being validated.  See
      * <a href="validation.html">Validating XML Files</a>
      *
@@ -94,7 +103,7 @@ public class ValidateMojo extends AbstractXmlMojo {
                 try {
                     inputSource = pResolver.resolveEntity(publicId, systemId);
                 } catch (SAXException e) {
-                    throw new MojoExecutionException(e.getMessage(), e);
+                    throw new MojoExecutionException(getExceptionMessage(e), e);
                 } catch (IOException e) {
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
@@ -107,16 +116,39 @@ public class ValidateMojo extends AbstractXmlMojo {
             saxSource = new SAXSource(inputSource);
         }
         try {
-            SchemaFactory schemaFactory = SchemaFactory.newInstance(schemaLanguage);
+            SchemaFactory sf = newSchemaFactory(
+                    schemaLanguage,
+                    pValidationSet.getSchemaFactory() != null ? pValidationSet.getSchemaFactory() : schemaFactory,
+                    Thread.currentThread().getContextClassLoader());
             if (pResolver != null) {
-                schemaFactory.setResourceResolver(pResolver);
+                sf.setResourceResolver(pResolver);
             }
-            return saxSource == null ? schemaFactory.newSchema() : schemaFactory.newSchema(saxSource);
+            return saxSource == null ? sf.newSchema() : sf.newSchema(saxSource);
         } catch (SAXException e) {
             throw new MojoExecutionException(
                     "Failed to load schema with public ID " + publicId + ", system ID " + systemId + ": "
-                            + e.getMessage(),
+                            + getExceptionMessage(e),
                     e);
+        }
+    }
+
+    // public for use by unit test
+    public static SchemaFactory newSchemaFactory(
+            final String schemaLanguage, final String schemaFactoryClassName, final ClassLoader classLoader) {
+        if (schemaFactoryClassName != null) {
+            return SchemaFactory.newInstance(schemaLanguage, schemaFactoryClassName, classLoader);
+        } else {
+            return SchemaFactory.newInstance(schemaLanguage);
+        }
+    }
+
+    private static String getExceptionMessage(final Throwable throwable) {
+        if (throwable instanceof SAXParseException) {
+            // For a SAXParseException we can get a richer message (e.g. includes location info) by calling #toString()
+            // instead of #getMessage().
+            return throwable.toString();
+        } else {
+            return throwable.getMessage();
         }
     }
 
@@ -167,7 +199,7 @@ public class ValidateMojo extends AbstractXmlMojo {
             try {
                 errorHandler.fatalError(e);
             } catch (SAXException se) {
-                throw new MojoExecutionException("While parsing " + pFile + ": " + e.getMessage(), se);
+                throw new MojoExecutionException("While parsing " + pFile + ": " + getExceptionMessage(e), se);
             }
         } catch (Exception e) {
             throw new MojoExecutionException("While parsing " + pFile + ": " + e.getMessage(), e);
@@ -248,18 +280,8 @@ public class ValidateMojo extends AbstractXmlMojo {
         }
     }
 
-    /**
-     * Called by Maven for executing the Mojo.
-     *
-     * @throws MojoExecutionException Running the Mojo failed.
-     * @throws MojoFailureException   A configuration error was detected.
-     */
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if (isSkipping()) {
-            getLog().debug("Skipping execution, as demanded by user.");
-            return;
-        }
-
+    @Override
+    protected void executeXmlMojo() throws MojoExecutionException, MojoFailureException {
         final ValidationErrorHandler errorHandler = new ValidationErrorHandler();
         if (validationSets == null || validationSets.length == 0) {
             throw new MojoFailureException("No ValidationSets configured.");

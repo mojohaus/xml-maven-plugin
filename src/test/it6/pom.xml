@@ -21,14 +21,14 @@
   <groupId>org.codehaus.mojo.xml</groupId>
   <artifactId>it6</artifactId>
   <version>0.1</version>
-  <name>Maven XML Plugin IT 1</name>
-  <description>Integration Test 1 for the Maven XML Plugin</description>
+  <name>Maven XML Plugin IT 6</name>
+  <description>Integration Test 6 for the Maven XML Plugin</description>
   <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>xml-maven-plugin</artifactId>
-        <version>1.0-beta-2-SNAPSHOT</version>
+        <version>@project.version@</version>
         <executions>
           <execution>
             <goals>

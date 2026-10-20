@@ -19,7 +19,7 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.mojo.xml</groupId>
-  <artifactId>it3</artifactId>
+  <artifactId>it20</artifactId>
   <version>0.1</version>
   <name>Maven XML Plugin IT 20</name>
   <description>Integration Test 20 for the Maven XML Plugin. Tests the situation
@@ -32,7 +32,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>xml-maven-plugin</artifactId>
-        <version>0.2</version>
+        <version>@project.version@</version>
         <executions>
           <execution>
             <goals>

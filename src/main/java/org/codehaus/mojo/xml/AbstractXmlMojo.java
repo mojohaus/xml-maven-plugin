@@ -48,6 +48,8 @@ import org.codehaus.plexus.util.FileUtils;
  */
 public abstract class AbstractXmlMojo extends AbstractMojo {
 
+    private static final String PROP_JAXP_CONFIG_FILE = "java.xml.config.file";
+
     /**
      * The Maven Project.
      */
@@ -116,6 +118,18 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     private CatalogHandling catalogHandling;
 
     /**
+     * Path to a JAXP Configuration (jaxp.properties) File.
+     * See <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF">Configuration File</a>.
+     */
+    @Parameter(property = "xml.jaxpConfigFile", required = false)
+    private File jaxpConfigFile;
+
+    /**
+     * Holds the value of any previous `java.xml.config.file` system property.
+     */
+    private String prevJaxpConfigFile = null;
+
+    /**
      * Plexus resource manager used to obtain XSL.
      */
     @Component
@@ -124,6 +138,32 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     private boolean locatorInitialized;
 
     public AbstractXmlMojo() {}
+
+    @Override
+    public final void execute() throws MojoExecutionException, MojoFailureException {
+        if (isSkipping()) {
+            getLog().debug("Skipping execution, as demanded by user.");
+            return;
+        }
+
+        setJaxpConfigurationFile();
+        try {
+            executeXmlMojo();
+        } finally {
+            unsetJaxpConfigurationFile();
+        }
+    }
+
+    /**
+     * The equivalent of {@link #execute()} for any subclasses.
+     *
+     * @throws MojoExecutionException if an unexpected problem occurs. Throwing
+     *         this exception causes a "BUILD ERROR" message to be displayed.
+     * @throws MojoFailureException if an expected problem (such as a
+     *         compilation failure) occurs. Throwing this exception causes a
+     *         "BUILD FAILURE" message to be displayed.
+     */
+    protected abstract void executeXmlMojo() throws MojoExecutionException, MojoFailureException;
 
     /**
      * Returns the maven project.
@@ -154,11 +194,14 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
      *
      * Resources are looked up using plugin classpath.
      *
-     * @param catalog Catalog location.
+     * @param resource resource location
      * @return URL of resource or null if not found.
      */
-    private URL asClasspath(String catalog) {
-        return getClassLoader().getResource(catalog);
+    private URL asClasspath(String resource) {
+        if (resource.startsWith("resource:")) {
+            resource = resource.substring("resource:".length());
+        }
+        return getClassLoader().getResource(resource);
     }
 
     /**
@@ -353,13 +396,22 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     }
 
     protected URL getResource(String pResource) throws MojoFailureException {
-        try {
-            return getLocator().getResource(pResource).getURL();
-        } catch (ResourceNotFoundException exception) {
-            throw new MojoFailureException("Could not find stylesheet: " + pResource);
-        } catch (IOException e) {
-            throw new MojoFailureException("Error while locating resource: " + pResource);
+        URL url = null;
+        if (pResource.startsWith("resource:")) {
+            url = asClasspath(pResource);
         }
+
+        if (url == null) {
+            try {
+                url = getLocator().getResource(pResource).getURL();
+            } catch (ResourceNotFoundException exception) {
+                throw new MojoFailureException("Could not find stylesheet: " + pResource);
+            } catch (IOException e) {
+                throw new MojoFailureException("Error while locating resource: " + pResource);
+            }
+        }
+
+        return url;
     }
 
     protected ResourceManager getLocator() {
@@ -404,5 +456,31 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
             classLoader = new URLClassLoader(urls.toArray(new URL[0]));
         }
         return classLoader;
+    }
+
+    protected void setJaxpConfigurationFile() throws MojoFailureException {
+        if (jaxpConfigFile == null) {
+            return;
+        }
+
+        if (!jaxpConfigFile.exists() || jaxpConfigFile.isDirectory()) {
+            throw new MojoFailureException(
+                    "The file indicated by jaxpConfigFile parameter does not exist or is a directory");
+        }
+
+        this.prevJaxpConfigFile = System.getProperty(PROP_JAXP_CONFIG_FILE);
+        System.setProperty(PROP_JAXP_CONFIG_FILE, jaxpConfigFile.getAbsolutePath());
+    }
+
+    protected void unsetJaxpConfigurationFile() {
+        if (jaxpConfigFile == null) {
+            return;
+        }
+
+        if (this.prevJaxpConfigFile != null) {
+            System.setProperty(PROP_JAXP_CONFIG_FILE, prevJaxpConfigFile);
+        } else {
+            System.clearProperty(PROP_JAXP_CONFIG_FILE);
+        }
     }
 }

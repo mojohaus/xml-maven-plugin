@@ -291,7 +291,17 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
         try {
             URI resourceASURI = new URI(pResource);
             if (pBaseURI != null && !resourceASURI.isAbsolute() && pBaseURI.isAbsolute()) {
-                resourceASURI = pBaseURI.resolve(resourceASURI);
+                if (pBaseURI.isOpaque() && "jar".equals(pBaseURI.getScheme())) {
+                    String ssp = pBaseURI.getSchemeSpecificPart();
+                    final int idx = ssp.lastIndexOf('/');
+                    if (idx > -1) {
+                        ssp = ssp.substring(0, idx + 1);
+                    }
+                    ssp += resourceASURI;
+                    resourceASURI = new URI(pBaseURI.getScheme(), ssp, resourceASURI.getFragment());
+                } else {
+                    resourceASURI = pBaseURI.resolve(resourceASURI);
+                }
                 final URL url = resourceASURI.toURL();
                 stream = url.openStream();
                 stream.close();

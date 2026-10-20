@@ -498,14 +498,8 @@ public class TransformMojo extends AbstractXmlMojo {
         return t;
     }
 
-    /**
-     * Called by Maven to run the plugin.
-     */
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if (isSkipping()) {
-            getLog().debug("Skipping execution, as demanded by user.");
-            return;
-        }
+    @Override
+    protected void executeXmlMojo() throws MojoExecutionException, MojoFailureException {
         if (transformationSets == null || transformationSets.length == 0) {
             throw new MojoFailureException("No TransformationSets configured.");
         }

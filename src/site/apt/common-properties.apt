@@ -51,8 +51,13 @@ Common Goal Properties
 |                 | \ \ \ \ <<< \<catalog\>mycatalog.xml\</catalog\>>>>\            |
 |                 | \ \ <<<\</catalogs\>>>>\                                        |
 |                 | \                                                               |
+|                 | You can use an optional 'resource:' prefix to load the catalog from the classpath. |
 |                 | The interpretation of catalog files is done by the Apache XML   |
 |                 | resolver. See                                                   |
 |                 | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
 |                 | article for details on catalog files and their formats.         |
+*-----------------+-----------------------------------------------------------------+
+| jaxpConfigFile  | The path to a JAXP Config file (e.g. jaxp.properties).          |
+|                 | Note: This only has an affect in Java 21 and newer.             |
+|                 | See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF |
 *-----------------+-----------------------------------------------------------------+
