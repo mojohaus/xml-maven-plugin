@@ -194,14 +194,14 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
      *
      * Resources are looked up using plugin classpath.
      *
-     * @param catalog Catalog location.
+     * @param resource resource location
      * @return URL of resource or null if not found.
      */
-    private URL asClasspath(String catalog) {
-        if (catalog.startsWith("resource:")) {
-            catalog = catalog.substring("resource:".length());
+    private URL asClasspath(String resource) {
+        if (resource.startsWith("resource:")) {
+            resource = resource.substring("resource:".length());
         }
-        return getClassLoader().getResource(catalog);
+        return getClassLoader().getResource(resource);
     }
 
     /**
@@ -396,13 +396,22 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     }
 
     protected URL getResource(String pResource) throws MojoFailureException {
-        try {
-            return getLocator().getResource(pResource).getURL();
-        } catch (ResourceNotFoundException exception) {
-            throw new MojoFailureException("Could not find stylesheet: " + pResource);
-        } catch (IOException e) {
-            throw new MojoFailureException("Error while locating resource: " + pResource);
+        URL url = null;
+        if (pResource.startsWith("resource:")) {
+            url = asClasspath(pResource);
         }
+
+        if (url == null) {
+            try {
+                url = getLocator().getResource(pResource).getURL();
+            } catch (ResourceNotFoundException exception) {
+                throw new MojoFailureException("Could not find stylesheet: " + pResource);
+            } catch (IOException e) {
+                throw new MojoFailureException("Error while locating resource: " + pResource);
+            }
+        }
+
+        return url;
     }
 
     protected ResourceManager getLocator() {
