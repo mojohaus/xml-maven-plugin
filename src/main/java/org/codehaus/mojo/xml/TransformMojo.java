@@ -19,6 +19,7 @@ package org.codehaus.mojo.xml;
  * under the License.
  */
 
+import javax.inject.Inject;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -52,6 +53,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.xml.transformer.NameValuePair;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
+import org.codehaus.plexus.resource.ResourceManager;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.xml.sax.InputSource;
@@ -61,6 +63,12 @@ import org.xml.sax.InputSource;
  */
 @Mojo(defaultPhase = LifecyclePhase.GENERATE_RESOURCES, name = "transform", threadSafe = true)
 public class TransformMojo extends AbstractXmlMojo {
+
+    @Inject
+    public TransformMojo(ResourceManager locator) {
+        super(locator);
+    }
+
     /**
      * Specifies one or more sets of files, which are being transformed.   See
      * <a href="transformation.html">Transforming XML Files</a>

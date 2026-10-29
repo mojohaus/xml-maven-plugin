@@ -19,6 +19,7 @@ package org.codehaus.mojo.xml;
  * under the License.
  */
 
+import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -39,6 +40,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.mojo.xml.validation.ValidationErrorHandler;
 import org.codehaus.mojo.xml.validation.ValidationSet;
+import org.codehaus.plexus.resource.ResourceManager;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -50,6 +52,12 @@ import org.xml.sax.XMLReader;
  */
 @Mojo(name = "validate", defaultPhase = LifecyclePhase.TEST, threadSafe = true)
 public class ValidateMojo extends AbstractXmlMojo {
+
+    @Inject
+    public ValidateMojo(ResourceManager locator) {
+        super(locator);
+    }
+
     private static final String INTRINSIC_NS_URI = "http://componentcorp.com/xml/ns/xml-model/1.0";
 
     /**

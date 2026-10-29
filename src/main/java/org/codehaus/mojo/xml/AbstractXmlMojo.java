@@ -32,7 +32,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
@@ -118,12 +117,13 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     /**
      * Plexus resource manager used to obtain XSL.
      */
-    @Component
-    private ResourceManager locator;
+    private final ResourceManager locator;
 
     private boolean locatorInitialized;
 
-    public AbstractXmlMojo() {}
+    protected AbstractXmlMojo(ResourceManager locator) {
+        this.locator = locator;
+    }
 
     /**
      * Returns the maven project.

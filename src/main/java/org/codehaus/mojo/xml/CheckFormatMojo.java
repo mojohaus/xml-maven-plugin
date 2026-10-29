@@ -19,6 +19,7 @@ package org.codehaus.mojo.xml;
  * under the License.
  */
 
+import javax.inject.Inject;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -42,6 +43,7 @@ import org.codehaus.mojo.xml.format.FormatFileSet;
 import org.codehaus.mojo.xml.format.IndentCheckSaxHandler;
 import org.codehaus.mojo.xml.format.XmlFormatViolation;
 import org.codehaus.mojo.xml.format.XmlFormatViolationHandler;
+import org.codehaus.plexus.resource.ResourceManager;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.xml.sax.InputSource;
 
@@ -133,8 +135,9 @@ public class CheckFormatMojo extends AbstractXmlMojo {
     /**
      * Creates a new {@link CheckFormatMojo} instance.
      */
-    public CheckFormatMojo() {
-        super();
+    @Inject
+    public CheckFormatMojo(ResourceManager locator) {
+        super(locator);
         this.saxParserFactory = SAXParserFactory.newInstance();
         this.saxParserFactory.setValidating(false);
     }
