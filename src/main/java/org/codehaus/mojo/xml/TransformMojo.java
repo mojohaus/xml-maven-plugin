@@ -167,13 +167,16 @@ public class TransformMojo extends AbstractXmlMojo {
      * Creates a new instance of {@link TransformerFactory}.
      */
     private TransformerFactory getTransformerFactory() throws MojoFailureException, MojoExecutionException {
-        if (transformerFactory == null) {
+        String factoryClassName = transformerFactory != null
+                ? transformerFactory
+                : getJaxpConfigFactory(TransformerFactory.class.getName());
+        if (factoryClassName == null) {
             return TransformerFactory.newInstance();
         }
 
         try {
             return newTransformerFactory(
-                    transformerFactory, Thread.currentThread().getContextClassLoader());
+                    factoryClassName, Thread.currentThread().getContextClassLoader());
         } catch (NoSuchMethodException exception) {
             throw new MojoFailureException("JDK6 required when using transformerFactory parameter");
         } catch (IllegalAccessException exception) {

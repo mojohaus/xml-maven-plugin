@@ -124,10 +124,13 @@ public class ValidateMojo extends AbstractXmlMojo {
             saxSource = new SAXSource(inputSource);
         }
         try {
+            String factoryClassName = pValidationSet.getSchemaFactory() != null
+                    ? pValidationSet.getSchemaFactory()
+                    : schemaFactory != null
+                            ? schemaFactory
+                            : getJaxpConfigFactory(SchemaFactory.class.getName() + ":" + schemaLanguage);
             SchemaFactory sf = newSchemaFactory(
-                    schemaLanguage,
-                    pValidationSet.getSchemaFactory() != null ? pValidationSet.getSchemaFactory() : schemaFactory,
-                    Thread.currentThread().getContextClassLoader());
+                    schemaLanguage, factoryClassName, Thread.currentThread().getContextClassLoader());
             if (pResolver != null) {
                 sf.setResourceResolver(pResolver);
             }

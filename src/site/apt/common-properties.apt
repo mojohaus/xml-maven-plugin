@@ -60,4 +60,8 @@ Common Goal Properties
 | jaxpConfigFile  | The path to a JAXP Config file (e.g. jaxp.properties).          |
 |                 | Note: This only has an affect in Java 21 and newer.             |
 |                 | See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF |
+|                 | The JDK reads this file once per JVM, so the plugin applies the |
+|                 | SchemaFactory and TransformerFactory classes it names itself;   |
+|                 | its other settings only take effect if nothing in the build     |
+|                 | has used JAXP before.                                           |
 *-----------------+-----------------------------------------------------------------+

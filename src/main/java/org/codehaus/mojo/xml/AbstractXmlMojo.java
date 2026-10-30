@@ -21,12 +21,15 @@ package org.codehaus.mojo.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -127,6 +130,11 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
      * Holds the value of any previous `java.xml.config.file` system property.
      */
     private String prevJaxpConfigFile = null;
+
+    /**
+     * The entries of {@link #jaxpConfigFile}, or null if no file is configured.
+     */
+    private Properties jaxpConfig;
 
     /**
      * Plexus resource manager used to obtain XSL.
@@ -468,8 +476,32 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
                     "The file indicated by jaxpConfigFile parameter does not exist or is a directory");
         }
 
+        jaxpConfig = new Properties();
+        try (InputStream in = Files.newInputStream(jaxpConfigFile.toPath())) {
+            jaxpConfig.load(in);
+        } catch (IOException e) {
+            throw new MojoFailureException("Failed to read the JAXP configuration file " + jaxpConfigFile, e);
+        }
+
         this.prevJaxpConfigFile = System.getProperty(PROP_JAXP_CONFIG_FILE);
         System.setProperty(PROP_JAXP_CONFIG_FILE, jaxpConfigFile.getAbsolutePath());
+    }
+
+    /**
+     * Returns the factory class name that {@link #jaxpConfigFile} configures for the given key, such as
+     * {@code javax.xml.transform.TransformerFactory}. The JDK reads its configuration file only once per JVM, so a
+     * file set after anything in the build has used JAXP is ignored; the plugin therefore passes the factory
+     * classes from the file explicitly.
+     *
+     * @param key the factory lookup key
+     * @return the factory class name, or null if none is configured
+     */
+    protected String getJaxpConfigFactory(String key) {
+        if (jaxpConfig == null) {
+            return null;
+        }
+        String value = jaxpConfig.getProperty(key);
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 
     protected void unsetJaxpConfigurationFile() {
@@ -477,6 +509,7 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
             return;
         }
 
+        jaxpConfig = null;
         if (this.prevJaxpConfigFile != null) {
             System.setProperty(PROP_JAXP_CONFIG_FILE, prevJaxpConfigFile);
         } else {
