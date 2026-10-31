@@ -55,7 +55,7 @@
             <validationSet>
               <dir>xml</dir>
               <schemaLanguage>http://www.iana.org/assignments/media-types/application/relax-ng-compact-syntax</schemaLanguage>
-              <systemId>file://${project.basedir}/schema.rnc</systemId>
+              <systemId>${project.baseUri}schema.rnc</systemId>
             </validationSet>
           </validationSets>
         </configuration>
