@@ -1,65 +1,52 @@
-~~
-~~
-~~  Copyright 2005  The Apache Software Foundation
-~~
-~~  Licensed under the Apache License, Version 2.0 (the "License");
-~~  you may not use this file except in compliance with the License.
-~~  You may obtain a copy of the License at
-~~
-~~  http://www.apache.org/licenses/LICENSE-2.0
-~~
-~~  Unless required by applicable law or agreed to in writing, software
-~~  distributed under the License is distributed on an "AS IS" BASIS,
-~~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~~  See the License for the specific language governing permissions and
-~~  limitations under the License.
-~~
-~~
+title: Usage
 
-           -----
-           Usage
-           -----
+<!--
+Copyright 2005  The Apache Software Foundation
 
-Usage
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-  The plugin offers goals for validating and transforming XML
-  files. Basically, the plugin is used as follows:
+http://www.apache.org/licenses/LICENSE-2.0
 
-+----------------------------------------------------------------------------------
-  <build>
-    <plugins>
-      ...
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>...</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          ...
-        </configuration>
-      </plugin>
-      ...
-    </plugins>
-  </build>
-+----------------------------------------------------------------------------------
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 
-  In the above example, the goal would be either of <<<validate>>>,
-  or <<<transform>>>.
+# Usage
 
-  {{{./transformation.html}Transformation}} and {{{./validation.html}Validation}}
-  are described on separate pages.
+The plugin offers goals for validating and transforming XML files. Basically, the plugin is used as follows:
 
-Using a proxy server
+```xml
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>xml-maven-plugin</artifactId>
+      <executions>
+        <execution>
+          <goals>
+            <goal>...</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        ...
+      </configuration>
+    </plugin>
+    ...
+  </plugins>
+</build>
+```
 
-  It is not unusual, that an XML parser attempts to load documents
-  from external servers. In a corporate environment, this will likely
-  work only, if a proxy server is used. The plugin accepts the standard
-  Maven proxy configuration. See the
-  {{{http://maven.apache.org/guides/mini/guide-proxies.html}Mini guide
-  on proxy configuration}} for details.
-  
+In the above example, the goal would be either of `validate`, or `transform`.
+
+[Transformation](./transformation.html) and [Validation](./validation.html) are described on separate pages.
+
+# Using a proxy server
+
+It is not unusual, that an XML parser attempts to load documents from external servers. In a corporate environment, this will likely work only, if a proxy server is used. The plugin accepts the standard Maven proxy configuration. See the [Mini guide on proxy configuration](http://maven.apache.org/guides/mini/guide-proxies.html) for details.

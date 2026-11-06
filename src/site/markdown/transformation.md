@@ -1,188 +1,84 @@
-~~
-~~
-~~  Copyright 2005  The Apache Software Foundation
-~~
-~~  Licensed under the Apache License, Version 2.0 (the "License");
-~~  you may not use this file except in compliance with the License.
-~~  You may obtain a copy of the License at
-~~
-~~  http://www.apache.org/licenses/LICENSE-2.0
-~~
-~~  Unless required by applicable law or agreed to in writing, software
-~~  distributed under the License is distributed on an "AS IS" BASIS,
-~~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~~  See the License for the specific language governing permissions and
-~~  limitations under the License.
-~~
-~~
+title: Transforming XML files
 
-           ----------------------
-           Transforming XML files
-           ----------------------
+<!--
+Copyright 2005  The Apache Software Foundation
 
-Transforming XML files
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-  To transform XML files by applying XSLT stylesheets, use the "xml:transform"
-  goal is used. It is configured through a section like the following in your
-  POM:
+http://www.apache.org/licenses/LICENSE-2.0
 
-+----------------------------------------------------------------------------------
-  <build>
-    <plugins>
-      ...
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <transformationSets>
-            <transformationSet>
-              <dir>xml</dir>
-              <stylesheet>it4.xsl</stylesheet>
-            </transformationSet>
-          </transformationSets>
-        </configuration>
-      </plugin>
-      ...
-    </plugins>
-  </build>
-+----------------------------------------------------------------------------------
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 
-  The example would transform all files in the directory "xml" by applying
-  the stylesheet "it4.xml". The output would be written to the directory
-  "${project.build.directory}/generated-resources/xml/xslt" (usually
-  "target/generated-resources/xml/xslt").
+# Transforming XML files
 
-Goal properties
+To transform XML files by applying XSLT stylesheets, use the "xml:transform" goal is used. It is configured through a section like the following in your POM:
 
-  The "xml:transform" goal offers the following configurable properties:
+```xml
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>xml-maven-plugin</artifactId>
+      <executions>
+        <execution>
+          <goals>
+            <goal>transform</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <transformationSets>
+          <transformationSet>
+            <dir>xml</dir>
+            <stylesheet>it4.xsl</stylesheet>
+          </transformationSet>
+        </transformationSets>
+      </configuration>
+    </plugin>
+    ...
+  </plugins>
+</build>
+```
 
-*--------------------+-----------------------------------------------------------------+
-| Property Name      | Description                                                     |
-*--------------------+-----------------------------------------------------------------+
-| basedir            | The base directory, which is used for interpreting relative     |
-|                    | paths. Defaults to the project directory, in which the POM      |
-|                    | resides.                                                        |
-*--------------------+-----------------------------------------------------------------+
-| catalogHandling    | How to handle entities which cannot be resolved from the        |
-|                    | catalogs. There are 3 possible values: \                        |
-|                    |                                                                 |
-|                    | * '<<<passThrough>>>' indicates that the entity resolver should |
-|                    |   attempt to resolve system and public IDs through default      |
-|                    |   mechanisms, typically by resolving URI formatted system IDs.\ |
-|                    |                                                                 |
-|                    | * '<<<local>>>' indicates that the entity resolver should behave|
-|                    |   as for '<<<passThrough>>>' but only where URI's are 'file'    |
-|                    |   format URIs.\                                                 |
-|                    |                                                                 |
-|                    | * '<<<strict>>>' indicates that any entity which cannot be found|
-|                    |   in a catalog should generate an error.                        |
-*--------------------+-----------------------------------------------------------------+
-| catalogs           | A set of catalog files, which configure the entity resolver.    |
-|                    | For example, it allows to map public ID's or external URL's to  |
-|                    | local files. Multiple catalog files are supported. In other     |
-|                    | words, to configure a single catalog file, you would need a     |
-|                    | section like this:\                                             |
-|                    | \                                                               |
-|                    | \ \ <<<\<catalogs\>>>>\                                         |
-|                    | \ \ \ \ <<< \<catalog\>mycatalog.xml\</catalog\>>>>\            |
-|                    | \ \ <<<\</catalogs\>>>>\                                        |
-|                    | \                                                               |
-|                    | You can use an optional 'resource:' prefix to load the catalog from the classpath. |
-|                    | The interpretation of catalog files is done by the Apache XML   |
-|                    | resolver. See                                                   |
-|                    | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
-|                    | article for details on catalog files and their formats.         |
-*--------------------+-----------------------------------------------------------------+
-| forceCreation      | If 'true', no up-to-date check is performed and                 |
-|                    | the transformation is always performed.                         |
-|                    | Defaults to "${xml.forceCreation}" or 'false'.                  |
-*--------------------+-----------------------------------------------------------------+
-| jaxpConfigFile     | The path to a JAXP Config file (e.g. jaxp.properties).          |
-|                    | Note: This only has an affect in Java 21 and newer.             |
-|                    | See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF |
-|                    | The JDK reads this file once per JVM, so the plugin applies the |
-|                    | SchemaFactory and TransformerFactory classes it names itself;   |
-|                    | its other settings only take effect if nothing in the build     |
-|                    | has used JAXP before.                                           |
-*--------------------+-----------------------------------------------------------------+
-| transformationSets | A transformation set configures a set of XML files, which are   |
-|                    | transformed by applying a common XSLT stylesheet. If you want   |
-|                    | apply multiple stylesheets, use multiple transformation sets.   |
-|                    | See the above example, which specifies a single transformation  |
-|                    | The various child elements of a \<transformationSet\> section   |
-|                    | listed in the following section.                                |
-*--------------------+-----------------------------------------------------------------+
+The example would transform all files in the directory "xml" by applying the stylesheet "it4.xml". The output would be written to the directory "${project.build.directory}/generated-resources/xml/xslt" (usually "target/generated-resources/xml/xslt").
 
-Transformation Set Configuration
+# Goal properties
 
-  A transformation set is configured through several child elements:
+The "xml:transform" goal offers the following configurable properties:
 
-*---------------------+-----------------------------------------------------------------+
-| Element Name        | Description                                                     |
-*---------------------+-----------------------------------------------------------------+
-| attributes          | Specifies attributes, which are being set on the transformer    |
-|                     | factory by invoking the setAttribute(String, Object) method.    |
-*---------------------+-----------------------------------------------------------------+
-| addedToClasspath    | Specifies, whether the output directory is being added to the   |
-|                     | to the classpath. Defaults to true.                             |
-*---------------------+-----------------------------------------------------------------+
-| dir                 | Sets the name of a directory, which is scanned for the files,   |
-|                     | which are being validated.                                      |
-*---------------------+-----------------------------------------------------------------+
-|                     | the directory given by "dir". This element uses the normal maven|
-|                     | includes element convention to support multiple patterns:\      |
-|                     | \                                                               |
-|                     | \ \ <<<\<excludes\>>>>\                                         |
-|                     | \ \ \ \ <<<\<exclude\>[file pattern #1]\</exclude\>>>>\         |
-|                     | \ \ \ \ <<<\<exclude\>[file pattern #2]\</exclude\>>>>\         |
-|                     | \ \ \ \ <<<...>>>\                                              |
-|                     | \ \ <<<\</excludes\>>>>\                                        |
-*---------------------+-----------------------------------------------------------------+
-| features            | Specifies features, which are being set on the transformer      |
-|                     | factory by invoking the setFeature(String,boolean) method.      |
-*---------------------+-----------------------------------------------------------------+
-| includes            | Specifies a pattern of files, which are being included. By      |
-|                     | default, all files are included. The pattern is relative to     |
-|                     | the directory given by "dir". This element uses the normal maven|
-|                     | includes element convention to support multiple patterns:\      |
-|                     | \                                                               |
-|                     | \ \ <<<\<includes\>>>>\                                         |
-|                     | \ \ \ \ <<<\<include\>[file pattern #1]\</include\>>>>\         |
-|                     | \ \ \ \ <<<\<include\>[file pattern #2]\</include\>>>>\         |
-|                     | \ \ \ \ <<<...>>>\                                              |
-|                     | \ \ <<<\</includes\>>>>\                                        |
-*---------------------+-----------------------------------------------------------------+
-| otherDepends        | A list of of extra input files or URLs to consider during       |    
-|                     | the up-to-date check, useful for when resolving remote files.   |
-|                     | By default it always considers:                                 |
-|                     |   1. input files,                                               |
-|                     |   2. XSLT file,                                                 |
-|                     |   3. catalog files, and                                         |
-|                     |   4. the pom.xml file of the project executing this plugin.     | 
-*---------------------+-----------------------------------------------------------------+
-| outputDir           | Specifies the name of the output directory, where the generated |
-|                     | files are being placed. Defaults to                             |
-|                     | "${project.build.directory}/generated-resources/xml/xslt".      |
-|                     | Usually, this is equivalent to                                  |
-|                     | "target/generated-resources/xml/xslt".                          |
-*---------------------+-----------------------------------------------------------------+
-| outputProperties    | A list of name/value pairs, which are used to invoke the method |
-|                     | <<<setOutputProperty(...)>>> on the transformer. For details,   |
-|                     | see {{{./examples/transform-outputProperties.html}this example}}. |
-*---------------------+-----------------------------------------------------------------+
-| skipDefaultExcludes | Specifies whether the maven's default exludes should NOT        |
-|                     | be added to the excludes list.                                  |
-*---------------------+-----------------------------------------------------------------+
-| stylesheet          | Specifies the stylesheet, which is being used for transforming  |
-|                     | the fileset. A stylesheet must be specified, there is no        |
-|                     | default.                                                        |
-*---------------------+-----------------------------------------------------------------+
-| xincludeAware       | If 'true' enables XInclude support. Disabled by default.        |
-*---------------------+-----------------------------------------------------------------+
+|   Property Name    |                                                                                                                                                                                                                                                                                                                                                   Description                                                                                                                                                                                                                                                                                                                                                   |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| basedir            | The base directory, which is used for interpreting relative paths. Defaults to the project directory, in which the POM resides.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| catalogHandling    | How to handle entities which cannot be resolved from the catalogs. There are 3 possible values:<br>- `'passThrough'` indicates that the entity resolver should attempt to resolve system and public IDs through default mechanisms, typically by resolving URI formatted system IDs.<br>- `'local'` indicates that the entity resolver should behave as for `'passThrough'` but only where URI's are 'file' format URIs.<br>- `'strict'` indicates that any entity which cannot be found in a catalog should generate an error.                                                                                                                                                                                 |
+| catalogs           | A set of catalog files, which configure the entity resolver. For example, it allows to map public ID's or external URL's to local files. Multiple catalog files are supported. In other words, to configure a single catalog file, you would need a section like this:<br><br>&nbsp;&nbsp;`<catalogs>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`<catalog>mycatalog.xml</catalog>`<br>&nbsp;&nbsp;`</catalogs>`<br><br>You can use an optional 'resource:' prefix to load the catalog from the classpath. The interpretation of catalog files is done by the Apache XML resolver. See [this](http://xml.apache.org/commons/components/resolver/resolver-article.html) article for details on catalog files and their formats. |
+| forceCreation      | If 'true', no up-to-date check is performed and the transformation is always performed. Defaults to "${xml.forceCreation}" or 'false'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| jaxpConfigFile     | The path to a JAXP Config file (e.g. jaxp.properties). Note: This only has an affect in Java 21 and newer. See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF The JDK reads this file once per JVM, so the plugin applies the SchemaFactory and TransformerFactory classes it names itself; its other settings only take effect if nothing in the build has used JAXP before.                                                                                                                                                                                                                                                                                         |
+| transformationSets | A transformation set configures a set of XML files, which are transformed by applying a common XSLT stylesheet. If you want apply multiple stylesheets, use multiple transformation sets. See the above example, which specifies a single transformation The various child elements of a `<transformationSet>` section listed in the following section.                                                                                                                                                                                                                                                                                                                                                         |
+
+# Transformation Set Configuration
+
+A transformation set is configured through several child elements:
+
+|    Element Name     |                                                                                                                                                                                                                                     Description                                                                                                                                                                                                                                     |
+|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| attributes          | Specifies attributes, which are being set on the transformer factory by invoking the setAttribute(String, Object) method.                                                                                                                                                                                                                                                                                                                                                           |
+| addedToClasspath    | Specifies, whether the output directory is being added to the to the classpath. Defaults to true.                                                                                                                                                                                                                                                                                                                                                                                   |
+| dir                 | Sets the name of a directory, which is scanned for the files, which are being validated.                                                                                                                                                                                                                                                                                                                                                                                            |
+| excludes            | the directory given by "dir". This element uses the normal maven includes element convention to support multiple patterns:<br><br>&nbsp;&nbsp;`<excludes>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`<exclude>[file pattern #1]</exclude>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`<exclude>[file pattern #2]</exclude>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`...`<br>&nbsp;&nbsp;`</excludes>`                                                                                                                        |
+| features            | Specifies features, which are being set on the transformer factory by invoking the setFeature(String,boolean) method.                                                                                                                                                                                                                                                                                                                                                               |
+| includes            | Specifies a pattern of files, which are being included. By default, all files are included. The pattern is relative to the directory given by "dir". This element uses the normal maven includes element convention to support multiple patterns:<br><br>&nbsp;&nbsp;`<includes>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`<include>[file pattern #1]</include>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`<include>[file pattern #2]</include>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`...`<br>&nbsp;&nbsp;`</includes>` |
+| otherDepends        | A list of of extra input files or URLs to consider during the up-to-date check, useful for when resolving remote files. By default it always considers:<br>1. input files,<br>2. XSLT file,<br>3. catalog files, and<br>4. the pom.xml file of the project executing this plugin.                                                                                                                                                                                                   |
+| outputDir           | Specifies the name of the output directory, where the generated files are being placed. Defaults to "${project.build.directory}/generated-resources/xml/xslt". Usually, this is equivalent to "target/generated-resources/xml/xslt".                                                                                                                                                                                                                                                |
+| outputProperties    | A list of name/value pairs, which are used to invoke the method `setOutputProperty(...)` on the transformer. For details, see [this example](./examples/transform-outputProperties.html).                                                                                                                                                                                                                                                                                           |
+| skipDefaultExcludes | Specifies whether the maven's default exludes should NOT be added to the excludes list.                                                                                                                                                                                                                                                                                                                                                                                             |
+| stylesheet          | Specifies the stylesheet, which is being used for transforming the fileset. A stylesheet must be specified, there is no default.                                                                                                                                                                                                                                                                                                                                                    |
+| xincludeAware       | If 'true' enables XInclude support. Disabled by default.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+
