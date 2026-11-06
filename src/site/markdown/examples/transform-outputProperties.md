@@ -1,60 +1,56 @@
-~~
-~~
-~~  Copyright 2005  The Apache Software Foundation
-~~
-~~  Licensed under the Apache License, Version 2.0 (the "License");
-~~  you may not use this file except in compliance with the License.
-~~  You may obtain a copy of the License at
-~~
-~~  http://www.apache.org/licenses/LICENSE-2.0
-~~
-~~  Unless required by applicable law or agreed to in writing, software
-~~  distributed under the License is distributed on an "AS IS" BASIS,
-~~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~~  See the License for the specific language governing permissions and
-~~  limitations under the License.
-~~
-~~
+title: Setting a transformers output properties
 
-           ------------------------------------------
-           Setting a transformers output properties
-           ------------------------------------------
+<!--
+Copyright 2005  The Apache Software Foundation
 
-Setting a transformers output properties
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-  The following configuration snippet would set the output property
-  <<<omit-xml-declaration>>> to <<<yes>>>:
+http://www.apache.org/licenses/LICENSE-2.0
 
-+----------------------------------------------------------------------------------
-  <build>
-    <plugins>
-      ...
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <transformationSets>
-            <transformationSet>
-              <dir>src/main/xml</dir>
-              <stylesheet>src/main/stylesheet.xsl</stylesheet>
-              <outputProperties>
-                <outputProperty>
-                  <name>omit-xml-declaration</name>
-                  <value>yes</value>
-                </outputProperty>
-              </outputProperties>
-            </transformationSet>
-          </transformationSets>
-        </configuration>
-      </plugin>
-      ...
-    </plugins>
-  </build>
-+----------------------------------------------------------------------------------
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+# Setting a transformers output properties
+
+The following configuration snippet would set the output property `omit-xml-declaration` to `yes`:
+
+```xml
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>xml-maven-plugin</artifactId>
+      <executions>
+        <execution>
+          <goals>
+            <goal>transform</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <transformationSets>
+          <transformationSet>
+            <dir>src/main/xml</dir>
+            <stylesheet>src/main/stylesheet.xsl</stylesheet>
+            <outputProperties>
+              <outputProperty>
+                <name>omit-xml-declaration</name>
+                <value>yes</value>
+              </outputProperty>
+            </outputProperties>
+          </transformationSet>
+        </transformationSets>
+      </configuration>
+    </plugin>
+    ...
+  </plugins>
+</build>
+```
+

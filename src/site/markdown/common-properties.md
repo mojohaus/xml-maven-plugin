@@ -1,67 +1,28 @@
-~~
-~~
-~~  Copyright 2005  The Apache Software Foundation
-~~
-~~  Licensed under the Apache License, Version 2.0 (the "License");
-~~  you may not use this file except in compliance with the License.
-~~  You may obtain a copy of the License at
-~~
-~~  http://www.apache.org/licenses/LICENSE-2.0
-~~
-~~  Unless required by applicable law or agreed to in writing, software
-~~  distributed under the License is distributed on an "AS IS" BASIS,
-~~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~~  See the License for the specific language governing permissions and
-~~  limitations under the License.
-~~
-~~
+title: Common Goal Properties
 
-           --------------------
-           Common Goal Properties
-           --------------------
+<!--
+Copyright 2005  The Apache Software Foundation
 
-Common Goal Properties
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-  All goals share the following properties:
+http://www.apache.org/licenses/LICENSE-2.0
 
-*-----------------+-----------------------------------------------------------------+
-| Property Name   | Description                                                     |
-*-----------------+-----------------------------------------------------------------+
-| catalogHandling | How to handle entities which cannot be resolved from the        |
-|                 | catalogs. There are 3 possible values:\                         |
-|                 |                                                                 |
-|                 | * '<<<passThrough>>>' indicates that the entity resolver should |
-|                 |   attempt to resolve system and public IDs through default      |
-|                 |   mechanisms, typically by resolving URI formatted system IDs.\ |
-|                 |                                                                 |
-|                 | * '<<<local>>>' indicates that the entity resolver should behave|
-|                 |   as for '<<<passThrough>>>' but only where URI's are 'file'    |
-|                 |   format URIs.\                                                 |
-|                 |                                                                 |
-|                 | * '<<<strict>>>' indicates that any entity which cannot be found|
-|                 |   in a catalog should generate an error.                        |
-*-----------------+-----------------------------------------------------------------+
-| catalogs        | A set of catalog files, which configure the entity resolver.    |
-|                 | For example, it allows to map public ID's or external URL's to  |
-|                 | local files. Multiple catalog files are supported. In other     |
-|                 | words, to configure a single catalog file, you would need a     |
-|                 | section like this:\                                             |
-|                 | \                                                               |
-|                 | \ \ <<<\<catalogs\>>>>\                                         |
-|                 | \ \ \ \ <<< \<catalog\>mycatalog.xml\</catalog\>>>>\            |
-|                 | \ \ <<<\</catalogs\>>>>\                                        |
-|                 | \                                                               |
-|                 | You can use an optional 'resource:' prefix to load the catalog from the classpath. |
-|                 | The interpretation of catalog files is done by the Apache XML   |
-|                 | resolver. See                                                   |
-|                 | {{{http://xml.apache.org/commons/components/resolver/resolver-article.html}this}} |
-|                 | article for details on catalog files and their formats.         |
-*-----------------+-----------------------------------------------------------------+
-| jaxpConfigFile  | The path to a JAXP Config file (e.g. jaxp.properties).          |
-|                 | Note: This only has an affect in Java 21 and newer.             |
-|                 | See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF |
-|                 | The JDK reads this file once per JVM, so the plugin applies the |
-|                 | SchemaFactory and TransformerFactory classes it names itself;   |
-|                 | its other settings only take effect if nothing in the build     |
-|                 | has used JAXP before.                                           |
-*-----------------+-----------------------------------------------------------------+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+# Common Goal Properties
+
+All goals share the following properties:
+
+|  Property Name  |                                                                                                                                                                                                                                                                                                                                                   Description                                                                                                                                                                                                                                                                                                                                                   |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| catalogHandling | How to handle entities which cannot be resolved from the catalogs. There are 3 possible values:<br>- `'passThrough'` indicates that the entity resolver should attempt to resolve system and public IDs through default mechanisms, typically by resolving URI formatted system IDs.<br>- `'local'` indicates that the entity resolver should behave as for `'passThrough'` but only where URI's are 'file' format URIs.<br>- `'strict'` indicates that any entity which cannot be found in a catalog should generate an error.                                                                                                                                                                                 |
+| catalogs        | A set of catalog files, which configure the entity resolver. For example, it allows to map public ID's or external URL's to local files. Multiple catalog files are supported. In other words, to configure a single catalog file, you would need a section like this:<br><br>&nbsp;&nbsp;`<catalogs>`<br>&nbsp;&nbsp;&nbsp;&nbsp;`<catalog>mycatalog.xml</catalog>`<br>&nbsp;&nbsp;`</catalogs>`<br><br>You can use an optional 'resource:' prefix to load the catalog from the classpath. The interpretation of catalog files is done by the Apache XML resolver. See [this](http://xml.apache.org/commons/components/resolver/resolver-article.html) article for details on catalog files and their formats. |
+| jaxpConfigFile  | The path to a JAXP Config file (e.g. jaxp.properties). Note: This only has an affect in Java 21 and newer. See: https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF The JDK reads this file once per JVM, so the plugin applies the SchemaFactory and TransformerFactory classes it names itself; its other settings only take effect if nothing in the build has used JAXP before.                                                                                                                                                                                                                                                                                         |
+
