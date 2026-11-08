@@ -462,8 +462,10 @@ public class TransformMojo extends AbstractXmlMojo {
                     if (parameters != null) {
                         for (int j = 0; j < parameters.length; j++) {
                             NameValuePair key = parameters[j];
-                            getLog().debug("Setting Parameter: " + key.getName() + "=" + key.getValue());
-                            t.setParameter(key.getName(), key.getValue());
+                            // Maven injects an empty <value/> as null, which transformers reject
+                            String value = key.getValue() == null ? "" : key.getValue();
+                            getLog().debug("Setting Parameter: " + key.getName() + "=" + value);
+                            t.setParameter(key.getName(), value);
                         }
                     }
 
