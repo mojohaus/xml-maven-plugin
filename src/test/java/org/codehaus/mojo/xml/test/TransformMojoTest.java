@@ -166,6 +166,18 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     }
 
     /**
+     * An empty parameter value reaches the plugin as null and must be passed on as an empty string (#157).
+     * @throws Exception The test failed.
+     */
+    @Test
+    void emptyParameterValue() throws Exception {
+        final String dir = "src/test/empty-parameter";
+        runTest(dir);
+        Document doc = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
+        assertEquals("[]", doc.getDocumentElement().getTextContent());
+    }
+
+    /**
      * Builds the it6 test project.
      * @throws Exception The test failed.
      */
