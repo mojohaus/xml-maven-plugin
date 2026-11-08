@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ResolverTest {
     @Test
@@ -66,12 +67,17 @@ class ResolverTest {
                 AbstractXmlMojo.CatalogHandling.passThrough,
                 false);
 
-        assertEquals(
-                new File(dir.toFile(), "first/first.xsd").toURI().toString(),
-                resolver1.resolveEntity("-//TEST//SCHEMA", null).getSystemId());
-        assertEquals(
-                new File(dir.toFile(), "second/second.xsd").toURI().toString(),
-                resolver2.resolveEntity("-//TEST//SCHEMA", null).getSystemId());
+        assertResolvesTo("first/first.xsd", resolver1);
+        assertResolvesTo("second/second.xsd", resolver2);
+    }
+
+    /**
+     * Compares the tail of the system id only: on Windows the resolver may write a drive-letter path as
+     * {@code file:C:/...} instead of {@code file:/C:/...}.
+     */
+    private static void assertResolvesTo(String expectedTail, Resolver resolver) throws Exception {
+        String systemId = resolver.resolveEntity("-//TEST//SCHEMA", null).getSystemId();
+        assertTrue(systemId.endsWith("/" + expectedTail), () -> "expected ..." + expectedTail + " but was " + systemId);
     }
 
     private static File catalog(Path dir, String name, String schema) throws Exception {
