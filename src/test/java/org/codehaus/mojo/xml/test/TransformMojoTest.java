@@ -78,9 +78,9 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     void runTestIt4(String pDir, String pTargetFile) throws Exception {
         TransformMojo mojo = (TransformMojo) newMojo(pDir);
         mojo.execute();
-        Document doc1 = parse(new File(pDir, "xml/doc1.xml"));
+        Document doc1 = parse(new File(fixture(pDir), "xml/doc1.xml"));
         doc1.normalize();
-        Document doc2 = parse(new File(pDir, "target/generated-resources/xml/xslt/" + pTargetFile));
+        Document doc2 = parse(new File(fixture(pDir), "target/generated-resources/xml/xslt/" + pTargetFile));
         doc2.normalize();
         Element doc1Element = doc1.getDocumentElement();
         assertEquals("doc1", doc1Element.getLocalName());
@@ -137,6 +137,24 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     }
 
     /**
+     * The test projects run on a copy below {@code target}, so what they generate stays out of {@code src/test}, which
+     * the source release archives (#155).
+     * @throws Exception The test failed.
+     */
+    @Test
+    void runsOnCopyOutsideSourceTree() throws Exception {
+        TransformMojo mojo = (TransformMojo) newMojo("src/test/it4");
+        File basedir = (File) MojoExtension.getVariableValueFromObject(mojo, "basedir");
+        assertTrue(
+                basedir.getAbsoluteFile()
+                        .toPath()
+                        .startsWith(new File("target/test-fixtures")
+                                .getAbsoluteFile()
+                                .toPath()),
+                "Unexpected project directory: " + basedir);
+    }
+
+    /**
      * Builds the it5 test project.
      * @throws Exception The test failed.
      */
@@ -144,9 +162,9 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     void it5() throws Exception {
         final String dir = "src/test/it5";
         runTest(dir);
-        Document doc1 = parse(new File(dir, "xml/doc1.xml"));
+        Document doc1 = parse(new File(fixture(dir), "xml/doc1.xml"));
         doc1.normalize();
-        Document doc2 = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
+        Document doc2 = parse(new File(fixture(dir), "target/generated-resources/xml/xslt/doc1.xml"));
         doc2.normalize();
         Element doc1Element = doc1.getDocumentElement();
         assertEquals("doc1", doc1Element.getLocalName());
@@ -173,7 +191,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     void emptyParameterValue() throws Exception {
         final String dir = "src/test/empty-parameter";
         runTest(dir);
-        Document doc = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
+        Document doc = parse(new File(fixture(dir), "target/generated-resources/xml/xslt/doc1.xml"));
         assertEquals("[]", doc.getDocumentElement().getTextContent());
     }
 
@@ -211,9 +229,9 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
      */
     @Test
     void it7() throws Exception {
-        final File dir = new File("src/test/it7");
+        final File dir = fixture("src/test/it7");
         final File target = new File(dir, "target/generated-resources/xml/xslt/doc1.xml");
-        TransformMojo mojo = (TransformMojo) newMojo(dir.getPath());
+        TransformMojo mojo = (TransformMojo) newMojo("src/test/it7");
         FileUtils.fileDelete(target.getPath());
         mojo.execute();
         String result = read(target);
@@ -251,7 +269,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     void it8() throws Exception {
         final String dir = "src/test/it8";
         runTest(dir);
-        Document doc1 = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
+        Document doc1 = parse(new File(fixture(dir), "target/generated-resources/xml/xslt/doc1.xml"));
 
         assertEquals("SAXON 8.7 from Saxonica", eval(doc1, "/root/vendor"));
         assertEquals("http://www.saxonica.com/", eval(doc1, "/root/vendor-url"));
@@ -274,8 +292,8 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     @Test
     void it11() throws Exception {
         String projectPath = "src/test/it11";
-        File projectDirectory = new File(MojoExtension.getBasedir(), projectPath);
-        File targetDirectory = new File(projectPath, "target");
+        File projectDirectory = fixture(projectPath);
+        File targetDirectory = new File(projectDirectory, "target");
         if (targetDirectory.exists()) {
             FileUtils.cleanDirectory(targetDirectory);
         }
@@ -318,7 +336,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
         String dir = "src/test/mojo-1438-transform";
         newMojo(dir).execute();
 
-        Document doc = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
+        Document doc = parse(new File(fixture(dir), "target/generated-resources/xml/xslt/doc1.xml"));
         assertEquals("root", doc.getDocumentElement().getLocalName());
     }
 
@@ -329,8 +347,8 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     @Test
     void itXIncludeEnabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
-        File projectDirectory = new File(MojoExtension.getBasedir(), projectPath);
-        File targetDirectory = new File(projectPath, "target");
+        File projectDirectory = fixture(projectPath);
+        File targetDirectory = new File(projectDirectory, "target");
         if (targetDirectory.exists()) {
             FileUtils.cleanDirectory(targetDirectory);
         }
@@ -362,8 +380,8 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     @Test
     void itXIncludeDisabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
-        File projectDirectory = new File(MojoExtension.getBasedir(), projectPath);
-        File targetDirectory = new File(projectPath, "target");
+        File projectDirectory = fixture(projectPath);
+        File targetDirectory = new File(projectDirectory, "target");
         if (targetDirectory.exists()) {
             FileUtils.cleanDirectory(targetDirectory);
         }
