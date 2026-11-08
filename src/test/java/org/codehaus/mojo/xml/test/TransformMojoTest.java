@@ -37,6 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.maven.api.plugin.testing.MojoExtension;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 import org.codehaus.mojo.xml.TransformMojo;
 import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileExtensionMapper;
@@ -50,7 +52,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 /**
  * Test case for the {@link TransformMojo}.
@@ -98,6 +106,34 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     @Test
     void it4() throws Exception {
         runTestIt4("src/test/it4", "doc1.xml");
+    }
+
+    /**
+     * A transformation set whose directory is missing is skipped on request, with a message at info level (#57).
+     * @throws Exception The test failed.
+     */
+    @Test
+    void skipsMissingBaseDirectory() throws Exception {
+        TransformMojo mojo = (TransformMojo) newMojo("src/test/skip-missing-transform");
+        Log log = mock(Log.class);
+        mojo.setLog(log);
+
+        mojo.execute();
+
+        verify(log).info(contains("xml-not-here"));
+        verify(log, never()).warn(anyString());
+    }
+
+    /**
+     * A missing directory still fails the build unless the skip is requested (#57).
+     * @throws Exception The test failed.
+     */
+    @Test
+    void failsOnMissingBaseDirectoryByDefault() throws Exception {
+        TransformMojo mojo = (TransformMojo) newMojo("src/test/skip-missing-transform");
+        MojoExtension.setVariableValueToObject(mojo, "skipIfMissingBaseDirectory", false);
+
+        assertThrows(MojoExecutionException.class, mojo::execute);
     }
 
     /**

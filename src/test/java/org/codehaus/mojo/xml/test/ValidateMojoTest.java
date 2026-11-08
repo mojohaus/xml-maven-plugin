@@ -26,13 +26,18 @@ import java.util.List;
 import org.apache.maven.api.plugin.testing.MojoExtension;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.testing.stubs.ArtifactStub;
+import org.codehaus.mojo.xml.AbstractXmlMojo;
 import org.codehaus.mojo.xml.ValidateMojo;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Test case for the {@link ValidateMojo}.
@@ -74,6 +79,33 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
     @Test
     void it3() throws Exception {
         runTest("src/test/it3");
+    }
+
+    /**
+     * A validation set whose directory is missing is skipped on request, with a message at info level (#57).
+     * @throws Exception The test failed.
+     */
+    @Test
+    void skipsMissingBaseDirectory() throws Exception {
+        AbstractXmlMojo mojo = newMojo("src/test/skip-missing-validate");
+        Log log = mock(Log.class);
+        mojo.setLog(log);
+
+        mojo.execute();
+
+        verify(log).info(contains("xml-not-here"));
+    }
+
+    /**
+     * A missing directory still fails the build unless the skip is requested (#57).
+     * @throws Exception The test failed.
+     */
+    @Test
+    void failsOnMissingBaseDirectoryByDefault() throws Exception {
+        AbstractXmlMojo mojo = newMojo("src/test/skip-missing-validate");
+        MojoExtension.setVariableValueToObject(mojo, "skipIfMissingBaseDirectory", false);
+
+        assertThrows(MojoExecutionException.class, mojo::execute);
     }
 
     /**
