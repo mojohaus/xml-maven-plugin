@@ -262,6 +262,19 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     }
 
     /**
+     * MOJO-1438: a catalog that maps the DTD's public id, on an input with a {@code DOCTYPE}. The stylesheet does not
+     * read the input, so this checks only that the transformation runs and writes its output.
+     */
+    @Test
+    void transformWithCatalog() throws Exception {
+        String dir = "src/test/mojo-1438-transform";
+        newMojo(dir).execute();
+
+        Document doc = parse(new File(dir, "target/generated-resources/xml/xslt/doc1.xml"));
+        assertEquals("root", doc.getDocumentElement().getLocalName());
+    }
+
+    /**
      * Builds the xinclude test project, tests xinclude enabled transformation
      * @throws Exception The test failed.
      */
@@ -291,6 +304,7 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
         for (String xpath : xPathNodes) {
             assertNotNull(xPath.evaluate(xpath, doc, XPathConstants.NODE), "Missing :" + xpath);
         }
+        assertEquals("Hello World", xPath.evaluate("normalize-space(//book/chapter/section)", doc));
     }
 
     /**

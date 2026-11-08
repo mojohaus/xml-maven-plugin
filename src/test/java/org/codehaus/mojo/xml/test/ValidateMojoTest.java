@@ -190,6 +190,15 @@ class ValidateMojoTest extends AbstractXmlMojoTestCase {
     }
 
     /**
+     * The DTD is found through the catalog by its public id; without the catalog the parser would fetch it from
+     * example.com.
+     */
+    @Test
+    void dtdFromCatalog() throws Exception {
+        runTest("src/test/mojo-1438-validate");
+    }
+
+    /**
      * Builds and runs the xinclude test project
      * @throws Exception The test failed.
      */
