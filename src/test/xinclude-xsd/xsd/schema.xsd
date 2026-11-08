@@ -29,7 +29,7 @@
 
 	<xs:complexType name="book" >
 		<xs:sequence>
-				<xs:element name="chapter" minOccurs="0" maxOccurs="unbounded"
+				<xs:element name="chapter" minOccurs="1" maxOccurs="unbounded"
 					type="chapter" />
 		</xs:sequence>
 		<xs:attribute ref="xml:base" use="optional"/>
@@ -37,7 +37,7 @@
 
 	<xs:complexType name="chapter">
 		<xs:sequence>
-			<xs:element name="section" minOccurs="0" maxOccurs="unbounded"
+			<xs:element name="section" minOccurs="1" maxOccurs="unbounded"
 				type="section" />
 		</xs:sequence>
 		<xs:attribute ref="xml:base" use="optional"/>
