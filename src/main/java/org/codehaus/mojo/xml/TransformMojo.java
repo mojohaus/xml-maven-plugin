@@ -382,6 +382,9 @@ public class TransformMojo extends AbstractXmlMojo {
 
     private void transform(Resolver pResolver, TransformationSet pTransformationSet)
             throws MojoExecutionException, MojoFailureException {
+        if (isSkippedForMissingBaseDirectory(pTransformationSet.getDir())) {
+            return;
+        }
         String[] fileNames = getFileNames(
                 pTransformationSet.getDir(),
                 pTransformationSet.getIncludes(),

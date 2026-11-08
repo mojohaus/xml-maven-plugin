@@ -277,6 +277,9 @@ public class ValidateMojo extends AbstractXmlMojo {
      */
     private void validate(Resolver pResolver, ValidationSet pValidationSet, ValidationErrorHandler errorHandler)
             throws MojoExecutionException, MojoFailureException {
+        if (isSkippedForMissingBaseDirectory(pValidationSet.getDir())) {
+            return;
+        }
         final Schema schema = getSchema(pResolver, pValidationSet);
         final File[] files = getFiles(
                 pValidationSet.getDir(),

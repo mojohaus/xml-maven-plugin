@@ -147,6 +147,16 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     private boolean enableSchemaCaching;
 
     /**
+     * Whether to skip a validation set or transformation set whose {@code dir} does not exist, instead of failing the
+     * build. A message is logged at info level for each set that is skipped. This allows a parent POM to configure the
+     * goals for the children that have such a directory.
+     *
+     * @since 1.4.0
+     */
+    @Parameter(property = "xml.skipIfMissingBaseDirectory", defaultValue = "false")
+    private boolean skipIfMissingBaseDirectory;
+
+    /**
      * Plexus resource manager used to obtain XSL.
      */
     private final ResourceManager locator;
@@ -273,6 +283,26 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
                 catalogHandling,
                 getLog().isDebugEnabled(),
                 enableSchemaCaching);
+    }
+
+    /**
+     * Tells whether a validation set or transformation set is to be skipped, because its base directory does not exist
+     * and {@code skipIfMissingBaseDirectory} is set.
+     *
+     * @param pDir the {@code dir} of the set
+     * @return true if the set is to be skipped
+     */
+    protected boolean isSkippedForMissingBaseDirectory(File pDir) {
+        if (!skipIfMissingBaseDirectory || pDir == null) {
+            return false;
+        }
+        final File dir = asAbsoluteFile(pDir);
+        if (dir.isDirectory()) {
+            return false;
+        }
+        getLog().info("Skipping the ValidationSet or TransformationSet, because its base directory " + dir.getPath()
+                + " does not exist.");
+        return true;
     }
 
     /**
