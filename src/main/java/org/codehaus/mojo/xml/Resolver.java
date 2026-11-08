@@ -83,6 +83,8 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
         locator = pLocator;
         CatalogManager manager = new CatalogManager();
         manager.setIgnoreMissingProperties(true);
+        // the default static catalog would keep the catalogs of every earlier execution in this JVM
+        manager.setUseStaticCatalog(false);
         if (pLogging) {
             System.err.println("Setting resolver verbosity to maximum.");
             manager.setVerbosity(Integer.MAX_VALUE);
