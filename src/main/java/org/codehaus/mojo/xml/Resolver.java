@@ -26,6 +26,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.sax.SAXSource;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +37,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.xml.resolver.CatalogManager;
@@ -65,8 +69,14 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
 
     private final AbstractXmlMojo.CatalogHandling catalogHandling;
 
+    /** The remote URLs this resolver has resolved, by resource and base URI; null if remote resources are not cached. */
+    private final Map<String, URL> remoteUrls;
+
+    /** The content of the remote URLs this resolver has read, by URL; null if remote resources are not cached. */
+    private final Map<String, byte[]> remoteContent;
+
     /**
-     * Creates a new instance.
+     * Creates a new instance, which does not cache remote resources.
      *
      * @param pFiles A set of files with catalog definitions to load
      * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
@@ -79,6 +89,28 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
             AbstractXmlMojo.CatalogHandling catalogHandling,
             boolean pLogging)
             throws MojoExecutionException {
+        this(pBaseDir, pFiles, pUrls, pLocator, catalogHandling, pLogging, false);
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @param pFiles A set of files with catalog definitions to load
+     * @param pCacheRemoteResources Whether to keep the resources read from http, https and ftp URLs in memory, so each is
+     *                              read once in the lifetime of this resolver.
+     * @throws MojoExecutionException An error occurred while loading the resolvers catalogs.
+     */
+    Resolver(
+            File pBaseDir,
+            List<File> pFiles,
+            List<URL> pUrls,
+            ResourceManager pLocator,
+            AbstractXmlMojo.CatalogHandling catalogHandling,
+            boolean pLogging,
+            boolean pCacheRemoteResources)
+            throws MojoExecutionException {
+        remoteUrls = pCacheRemoteResources ? new ConcurrentHashMap<String, URL>() : null;
+        remoteContent = pCacheRemoteResources ? new ConcurrentHashMap<String, byte[]>() : null;
         baseDir = pBaseDir;
         locator = pLocator;
         CatalogManager manager = new CatalogManager();
@@ -127,9 +159,35 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     }
 
     private InputSource asInputSource(URL url) throws IOException {
-        InputSource isource = new InputSource(url.openStream());
+        InputSource isource = new InputSource(isCacheable(url) ? cachedContent(url) : url.openStream());
         isource.setSystemId(url.toExternalForm());
         return isource;
+    }
+
+    private boolean isCacheable(URL url) {
+        if (remoteContent == null) {
+            return false;
+        }
+        String protocol = url.getProtocol();
+        return "http".equals(protocol) || "https".equals(protocol) || "ftp".equals(protocol);
+    }
+
+    private InputStream cachedContent(URL url) throws IOException {
+        String key = url.toExternalForm();
+        byte[] content = remoteContent.get(key);
+        if (content == null) {
+            try (InputStream stream = url.openStream()) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                byte[] chunk = new byte[8192];
+                int read;
+                while ((read = stream.read(chunk)) != -1) {
+                    buffer.write(chunk, 0, read);
+                }
+                content = buffer.toByteArray();
+            }
+            remoteContent.put(key, content);
+        }
+        return new ByteArrayInputStream(content);
     }
 
     /**
@@ -345,6 +403,19 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
             return resolveAsResource(res);
         }
 
+        String key = pBaseURI + " " + pResource;
+        URL remote = remoteUrls == null ? null : remoteUrls.get(key);
+        if (remote != null) {
+            return remote;
+        }
+        URL resolved = resolveUncached(pResource, pBaseURI);
+        if (resolved != null && isCacheable(resolved)) {
+            remoteUrls.put(key, resolved);
+        }
+        return resolved;
+    }
+
+    private URL resolveUncached(String pResource, URI pBaseURI) {
         URL url = resolveAsResource(pResource);
         if (url == null) {
             url = resolveAsURL(pResource, null); // original style resolution

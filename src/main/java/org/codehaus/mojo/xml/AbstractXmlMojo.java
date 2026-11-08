@@ -137,6 +137,16 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     private Properties jaxpConfig;
 
     /**
+     * Whether to keep the DTDs, schemas and other resources read from http, https and ftp URLs in memory, so each is
+     * downloaded once per execution and not once for every file that refers to it. The cache lives as long as the
+     * execution; resources that are not remote are never cached.
+     *
+     * @since 1.4.0
+     */
+    @Parameter(property = "xml.enableSchemaCaching", defaultValue = "false")
+    private boolean enableSchemaCaching;
+
+    /**
      * Plexus resource manager used to obtain XSL.
      */
     private final ResourceManager locator;
@@ -256,7 +266,13 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
         setCatalogs(catalogFiles, catalogUrls);
 
         return new Resolver(
-                getBasedir(), catalogFiles, catalogUrls, getLocator(), catalogHandling, getLog().isDebugEnabled());
+                getBasedir(),
+                catalogFiles,
+                catalogUrls,
+                getLocator(),
+                catalogHandling,
+                getLog().isDebugEnabled(),
+                enableSchemaCaching);
     }
 
     /**
