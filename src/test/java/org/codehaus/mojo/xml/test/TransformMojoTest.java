@@ -262,10 +262,6 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
     }
 
     /**
-     * Builds the xinclude test project, tests xinclude enabled transformation
-     * @throws Exception The test failed.
-     */
-    /**
      * MOJO-1438: a catalog that maps the DTD's public id, on an input with a {@code DOCTYPE}. The stylesheet does not
      * read the input, so this checks only that the transformation runs and writes its output.
      */
@@ -278,6 +274,10 @@ class TransformMojoTest extends AbstractXmlMojoTestCase {
         assertEquals("root", doc.getDocumentElement().getLocalName());
     }
 
+    /**
+     * Builds the xinclude test project, tests xinclude enabled transformation
+     * @throws Exception The test failed.
+     */
     @Test
     void itXIncludeEnabled() throws Exception {
         String projectPath = "src/test/xinclude-xsl";
