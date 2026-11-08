@@ -1,6 +1,7 @@
 package org.codehaus.mojo.xml;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +9,7 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.xml.sax.InputSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -73,11 +75,17 @@ class ResolverTest {
 
     /**
      * Compares the tail of the system id only: on Windows the resolver may write a drive-letter path as
-     * {@code file:C:/...} instead of {@code file:/C:/...}.
+     * {@code file:C:/...} instead of {@code file:/C:/...}. Closes the stream the resolver opened, as a parser would,
+     * so that Windows can delete the temporary directory.
      */
     private static void assertResolvesTo(String expectedTail, Resolver resolver) throws Exception {
-        String systemId = resolver.resolveEntity("-//TEST//SCHEMA", null).getSystemId();
-        assertTrue(systemId.endsWith("/" + expectedTail), () -> "expected ..." + expectedTail + " but was " + systemId);
+        InputSource source = resolver.resolveEntity("-//TEST//SCHEMA", null);
+        try (InputStream stream = source.getByteStream()) {
+            String systemId = source.getSystemId();
+            assertTrue(
+                    systemId.endsWith("/" + expectedTail),
+                    () -> "expected ..." + expectedTail + " but was " + systemId);
+        }
     }
 
     private static File catalog(Path dir, String name, String schema) throws Exception {
