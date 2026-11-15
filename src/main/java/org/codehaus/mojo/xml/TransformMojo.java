@@ -55,7 +55,6 @@ import org.codehaus.mojo.xml.transformer.TransformationSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.resource.ResourceManager;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.xml.sax.InputSource;
 
 /**
@@ -402,18 +401,12 @@ public class TransformMojo extends AbstractXmlMojo {
 
         final URL stylesheetUrl = getResource(stylesheetName);
         Templates template;
-        InputStream stream = null;
-        try {
-            stream = stylesheetUrl.openStream();
+        try (InputStream stream = stylesheetUrl.openStream()) {
             InputSource isource = new InputSource(stream);
             isource.setSystemId(stylesheetUrl.toExternalForm());
             template = getTemplate(pResolver, new SAXSource(isource), pTransformationSet);
-            stream.close();
-            stream = null;
         } catch (IOException e) {
             throw new MojoExecutionException(e.getMessage(), e);
-        } finally {
-            IOUtil.close(stream);
         }
 
         int filesTransformed = 0;
