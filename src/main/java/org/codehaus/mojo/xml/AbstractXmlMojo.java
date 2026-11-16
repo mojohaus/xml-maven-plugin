@@ -129,7 +129,7 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     /**
      * Holds the value of any previous `java.xml.config.file` system property.
      */
-    private String prevJaxpConfigFile = null;
+    private String prevJaxpConfigFile;
 
     /**
      * The entries of {@link #jaxpConfigFile}, or null if no file is configured.
@@ -271,8 +271,8 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
      * Creates a new resolver.
      */
     protected Resolver getResolver() throws MojoExecutionException {
-        List<File> catalogFiles = new ArrayList<File>();
-        List<URL> catalogUrls = new ArrayList<URL>();
+        List<File> catalogFiles = new ArrayList<>();
+        List<URL> catalogUrls = new ArrayList<>();
         setCatalogs(catalogFiles, catalogUrls);
 
         return new Resolver(
@@ -402,7 +402,7 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
             return null;
         }
 
-        final List<String> properties = new ArrayList<String>();
+        final List<String> properties = new ArrayList<>();
         final String protocol = proxy.getProtocol();
         final String prefix = isEmpty(protocol) ? "" : (protocol + ".");
 
@@ -412,7 +412,7 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
         setProperty(properties, hostProperty, hostValue);
         final int port = proxy.getPort();
         final String portProperty = prefix + "proxyPort";
-        final String portValue = (port == 0 || port == -1) ? null : String.valueOf(port);
+        final String portValue = port == 0 || port == -1 ? null : String.valueOf(port);
         setProperty(properties, portProperty, portValue);
         final String username = proxy.getUsername();
         final String userProperty = prefix + "proxyUser";

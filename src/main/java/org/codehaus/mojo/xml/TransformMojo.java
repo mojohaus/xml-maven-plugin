@@ -256,7 +256,7 @@ public class TransformMojo extends AbstractXmlMojo {
      * @return the older or younger last modification timestamp of all files.
      */
     protected long findLastModified(List<?> files, boolean oldest) {
-        long timeStamp = (oldest ? Long.MIN_VALUE : Long.MAX_VALUE);
+        long timeStamp = oldest ? Long.MIN_VALUE : Long.MAX_VALUE;
         for (Iterator<?> it = files.iterator(); it.hasNext(); ) {
             Object no = it.next();
 
@@ -281,7 +281,7 @@ public class TransformMojo extends AbstractXmlMojo {
                         fileModifTime = new File(sdep).lastModified();
 
                     } catch (IOException ex) {
-                        fileModifTime = (oldest ? Long.MIN_VALUE : Long.MAX_VALUE);
+                        fileModifTime = oldest ? Long.MIN_VALUE : Long.MAX_VALUE;
                         getLog().warn("Skipping URL '" + no
                                 + "' from up-to-date check due to error while opening connection: "
                                 + getAllExMsgs(ex, true));
@@ -421,16 +421,16 @@ public class TransformMojo extends AbstractXmlMojo {
             // Perform up-to-date-check.
             boolean needsTransform = forceCreation;
             if (!needsTransform) {
-                List<File> dependsFiles = new ArrayList<File>();
-                List<File> producesFiles = new ArrayList<File>();
+                List<File> dependsFiles = new ArrayList<>();
+                List<File> producesFiles = new ArrayList<>();
 
                 // Depends from pom.xml file for when project configuration changes.
                 dependsFiles.add(getProject().getFile());
                 if ("file".equals(stylesheetUrl.getProtocol())) {
                     dependsFiles.add(new File(stylesheetUrl.getFile()));
                 }
-                List<File> catalogFiles = new ArrayList<File>();
-                List<URL> catalogUrls = new ArrayList<URL>();
+                List<File> catalogFiles = new ArrayList<>();
+                List<URL> catalogUrls = new ArrayList<>();
                 setCatalogs(catalogFiles, catalogUrls);
                 dependsFiles.addAll(catalogFiles);
                 dependsFiles.add(input);

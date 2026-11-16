@@ -28,7 +28,11 @@ import org.w3c.dom.ls.LSInput;
  * Implementation of {@link LSInput}, for use by the {@link Resolver}.
  */
 class LSInputImpl implements LSInput {
-    private String baseURI, encoding, systemId, publicId, stringData;
+    private String baseURI;
+    private String encoding;
+    private String systemId;
+    private String publicId;
+    private String stringData;
 
     private InputStream byteStream;
 

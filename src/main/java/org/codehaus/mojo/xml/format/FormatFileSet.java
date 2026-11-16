@@ -28,7 +28,7 @@ public class FormatFileSet extends FileSet {
         result.setEncoding(encoding);
         result.setIndentSize(indentSize);
 
-        List<String> includes = new ArrayList<String>(DEFAULT_INCLUDED_EXTENSIONS.size() * 2);
+        List<String> includes = new ArrayList<>(DEFAULT_INCLUDED_EXTENSIONS.size() * 2);
         for (String ext : DEFAULT_INCLUDED_EXTENSIONS) {
             includes.add("*." + ext);
             includes.add("src/**/*." + ext);

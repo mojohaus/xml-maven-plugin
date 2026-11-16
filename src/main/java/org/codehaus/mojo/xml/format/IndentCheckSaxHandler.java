@@ -100,8 +100,7 @@ public class IndentCheckSaxHandler extends DefaultHandler {
     private Locator locator;
 
     /** The element stack */
-    private Deque<IndentCheckSaxHandler.ElementEntry> stack =
-            new java.util.ArrayDeque<IndentCheckSaxHandler.ElementEntry>();
+    private Deque<IndentCheckSaxHandler.ElementEntry> stack = new java.util.ArrayDeque<>();
 
     /** The {@link XmlFormatViolationHandler} for reporting found violations */
     private final XmlFormatViolationHandler violationHandler;
