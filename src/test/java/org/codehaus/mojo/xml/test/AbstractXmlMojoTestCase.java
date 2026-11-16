@@ -97,11 +97,11 @@ abstract class AbstractXmlMojoTestCase {
             return false;
         }
         String top = relative.getName(0).toString();
-        if (top.equals("java") || top.equals("resources")) {
+        if ("java".equals(top) || "resources".equals(top)) {
             return true;
         }
         for (Path name : relative) {
-            if (name.toString().equals("target")) {
+            if ("target".equals(name.toString())) {
                 return true;
             }
         }

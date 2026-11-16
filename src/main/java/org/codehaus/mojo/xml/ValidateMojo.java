@@ -366,7 +366,7 @@ public class ValidateMojo extends AbstractXmlMojo {
         }
         messageBuffer.append("While parsing ");
         messageBuffer.append(error.getContext().getPath());
-        messageBuffer.append(("".equals(location) ? "" : ", at " + location));
+        messageBuffer.append("".equals(location) ? "" : ", at " + location);
         messageBuffer.append(": ");
         messageBuffer.append(error.getType().toString());
         messageBuffer.append(": ");

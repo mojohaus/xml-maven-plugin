@@ -56,14 +56,13 @@ import org.xml.sax.InputSource;
 public class CheckFormatMojo extends AbstractXmlMojo {
 
     private class ViolationCollector implements XmlFormatViolationHandler {
-        private final Map<String, List<XmlFormatViolation>> violations =
-                new LinkedHashMap<String, List<XmlFormatViolation>>();
+        private final Map<String, List<XmlFormatViolation>> violations = new LinkedHashMap<>();
 
         @Override
         public void handle(XmlFormatViolation violation) {
             List<XmlFormatViolation> list = violations.get(violation.getFile().getAbsolutePath());
             if (list == null) {
-                list = new ArrayList<XmlFormatViolation>();
+                list = new ArrayList<>();
                 violations.put(violation.getFile().getAbsolutePath(), list);
             }
             list.add(violation);
@@ -109,7 +108,7 @@ public class CheckFormatMojo extends AbstractXmlMojo {
      * @since 1.0.1
      */
     @Parameter
-    private List<FormatFileSet> formatFileSets = new ArrayList<FormatFileSet>();
+    private List<FormatFileSet> formatFileSets = new ArrayList<>();
 
     /**
      * The number of spaces expected for indentation. Note that {@code indentSize} can be configuread also per
@@ -226,11 +225,11 @@ public class CheckFormatMojo extends AbstractXmlMojo {
         List<String> includes = fileSet.getIncludes();
         List<String> excludes = fileSet.getExcludes();
 
-        if (includes != null && includes.size() > 0) {
+        if (includes != null && !includes.isEmpty()) {
             scanner.setIncludes(includes.toArray(new String[0]));
         }
 
-        if (excludes != null && excludes.size() > 0) {
+        if (excludes != null && !excludes.isEmpty()) {
             scanner.setExcludes(excludes.toArray(new String[0]));
         }
 

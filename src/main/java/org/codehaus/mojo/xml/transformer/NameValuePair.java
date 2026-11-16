@@ -23,7 +23,8 @@ package org.codehaus.mojo.xml.transformer;
  * An instance of this class is used to specify an output property.
  */
 public class NameValuePair {
-    private String name, value;
+    private String name;
+    private String value;
 
     /**
      * Returns the parameter name.
