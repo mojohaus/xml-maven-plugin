@@ -40,66 +40,82 @@ class LSInputImpl implements LSInput {
 
     private boolean certifiedText;
 
+    @Override
     public String getBaseURI() {
         return baseURI;
     }
 
+    @Override
     public InputStream getByteStream() {
         return byteStream;
     }
 
+    @Override
     public boolean getCertifiedText() {
         return certifiedText;
     }
 
+    @Override
     public Reader getCharacterStream() {
         return characterStream;
     }
 
+    @Override
     public String getEncoding() {
         return encoding;
     }
 
+    @Override
     public String getPublicId() {
         return publicId;
     }
 
+    @Override
     public String getStringData() {
         return stringData;
     }
 
+    @Override
     public String getSystemId() {
         return systemId;
     }
 
+    @Override
     public void setBaseURI(String pBaseURI) {
         baseURI = pBaseURI;
     }
 
+    @Override
     public void setByteStream(InputStream pByteStream) {
         byteStream = pByteStream;
     }
 
+    @Override
     public void setCertifiedText(boolean pCertifiedText) {
         certifiedText = pCertifiedText;
     }
 
+    @Override
     public void setCharacterStream(Reader pCharacterStream) {
         characterStream = pCharacterStream;
     }
 
+    @Override
     public void setEncoding(String pEncoding) {
         encoding = pEncoding;
     }
 
+    @Override
     public void setPublicId(String pPublicId) {
         publicId = pPublicId;
     }
 
+    @Override
     public void setStringData(String pStringData) {
         stringData = pStringData;
     }
 
+    @Override
     public void setSystemId(String pSystemId) {
         systemId = pSystemId;
     }

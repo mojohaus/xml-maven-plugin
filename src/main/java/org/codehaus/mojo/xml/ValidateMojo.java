@@ -371,7 +371,7 @@ public class ValidateMojo extends AbstractXmlMojo {
         messageBuffer.append(error.getType().toString());
         messageBuffer.append(": ");
         messageBuffer.append(e.getMessage());
-        String lineSep = System.getProperty("line.separator");
+        String lineSep = System.lineSeparator();
         messageBuffer.append(lineSep);
     }
 }
