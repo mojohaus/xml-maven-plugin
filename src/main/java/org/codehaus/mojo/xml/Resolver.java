@@ -145,6 +145,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     /**
      * Implementation of {@link org.xml.sax.EntityResolver#resolveEntity(String, String)}.
      */
+    @Override
     public InputSource resolveEntity(String pPublicId, String pSystemId) throws SAXException, IOException {
         final InputSource source = resolver.resolveEntity(pPublicId, pSystemId);
         if (source != null) {
@@ -193,6 +194,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     /**
      * Implementation of {@link URIResolver#resolve(String, String)}.
      */
+    @Override
     public Source resolve(String pHref, String pBase) throws TransformerException {
 
         URL url = null;
@@ -257,6 +259,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     /**
      * Implementation of {@link LSResourceResolver#resolveResource(String, String, String, String, String)}.
      */
+    @Override
     public LSInput resolveResource(
             String pType, String pNamespaceURI, String pPublicId, String pSystemId, String pBaseURI) {
         pBaseURI = escapeWindowsDriveLetter(pBaseURI);
@@ -442,6 +445,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     /**
      * Implementation of {@link EntityResolver2#getExternalSubset(String, String)}
      */
+    @Override
     public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
         return null;
     }
@@ -449,6 +453,7 @@ public class Resolver implements EntityResolver2, URIResolver, LSResourceResolve
     /**
      * Implementation of {@link EntityResolver2#resolveEntity(String, String, String, String)}
      */
+    @Override
     public InputSource resolveEntity(String pName, String pPublicId, String pBaseURI, String pSystemId)
             throws SAXException, IOException {
         final InputSource source = resolver.resolveEntity(pPublicId, pSystemId);
