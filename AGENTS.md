@@ -64,8 +64,8 @@ what the code and the POMs do not make obvious.
 
 ## Continuous integration and pull requests
 
-- `.github/workflows/maven.yml` calls the shared `maven-verify.yml@v5` workflow from
-  `apache/maven-gh-actions-shared`. Branches in this repository build under the push event, so look
+- `.github/workflows/maven.yml` calls the MojoHaus `maven-verify.yml` workflow in `mojohaus/.github`.
+  Branches in this repository build under the push event, so look
   at the push run for a pull request from a same-repository branch.
 - Pull requests are squash- or rebase-merged; merge commits are disabled. Release Drafter builds
   the release notes from the titles and labels, so the title should describe the change for a
