@@ -28,6 +28,10 @@
       <item name="Goals" href="plugin-info.html"/>
       <item name="Usage" href="usage.html"/>
       <item name="FAQ" href="faq.html"/>
+      <item name="Validation" href="validation.html"/>
+      <item name="Transformation" href="transformation.html"/>
+      <item name="Format checking" href="check-format.html"/>
+      <item name="Common goal properties" href="common-properties.html"/>
     </menu>
 
     <menu name="Examples">

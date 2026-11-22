@@ -26,6 +26,7 @@ The plugin offers the following goals:
 
 - [xml:validate](./validate-mojo.html) validates XML files against a schema. If the files aren't matching a certain schema, one may simply check, whether they are well formed.
 - [xml:transform](./transform-mojo.html) transforms XML files by applying XSLT stylesheets.
+- [xml:check-format](./check-format-mojo.html) checks the indentation of XML files. See [format checking](./check-format.html).
 
 ## Usage
 

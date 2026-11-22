@@ -122,6 +122,8 @@ public abstract class AbstractXmlMojo extends AbstractMojo {
     /**
      * Path to a JAXP Configuration (jaxp.properties) File.
      * See <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/module-summary.html#Conf_CF">Configuration File</a>.
+     *
+     * @since 1.3.0
      */
     @Parameter(property = "xml.jaxpConfigFile", required = false)
     private File jaxpConfigFile;
