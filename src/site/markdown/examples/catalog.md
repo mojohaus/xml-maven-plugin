@@ -34,7 +34,7 @@ In this example the XML parser would likely attempt to load an XML schema from `
 Another example might be the use of a DTD:
 
 ```xml
-<!DOCTYPE doc PUBLIC "-COUNTER-" "http://www.example.com/sample.dtd">
+<!DOCTYPE doc PUBLIC "--COUNTER--" "http://www.example.com/sample.dtd">
 <doc><header>A sample document.</header></doc>
 ```
 
@@ -51,9 +51,9 @@ The solution is using local copies of these external resources and a catalog fil
 </catalog>
 ```
 
-The example shows to things:
+The example shows two things:
 
-- If the XML parser is searching for a file with a **public id** of `--COUNTER--`, then the catalog advises to use the local file `./doc-schema.xsd` instead.
+- If the XML parser is searching for a file with a **public id** of `--COUNTER--`, then the catalog advises to use the local file `./sample.dtd` instead.
 - If the XML parser or stylesheet processor is searching for a file with the **system id** `http://www.w3.org/2007/schema-for-xslt20.xsd`, then the catalog requests to use the local file `./schema-for-xslt20.xsd` instead.
 
 It doesn't matter whether you use the public id or the system id. The important thing to know is what the respective public id and the system id are. In our first example, we had a public id of `http://www.w3.org/1999/XSL/Transform` (the namespace URI) and a system id of `http://www.w3.org/2007/schema-for-xslt20.xsd` (the URL from which to actually load the schema). In the second example, the public id was `--COUNTER--` and the system id `http://www.example.com/sample.dtd`.
@@ -77,7 +77,6 @@ To use a catalog file, you must specify it in your POM.
 <plugin>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>xml-maven-plugin</artifactId>
-  <version>1.0</version>
   <configuration>
     <validationSets>
       <validationSet>

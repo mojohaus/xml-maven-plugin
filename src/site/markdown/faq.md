@@ -52,7 +52,7 @@ The plugin offers the [xml:validate](validation.html) goal for [validating](vali
 
 ### How do I tell the plugin to use my proxy server?
 
-Use the standard Maven proxy settings. See the [Mini guide on proxy configuration](http://maven.apache.org/guides/mini/guide-proxies.html) for details.
+Use the standard Maven proxy settings. See the [Mini guide on proxy configuration](https://maven.apache.org/guides/mini/guide-proxies.html) for details.
 
 <a id="ClassLoader Resources"></a>
 
@@ -78,13 +78,13 @@ See [this example](examples/transform-basic.html).
 
 ### How do I transform the names of the generated files?
 
-Use a [File Mapper](http://plexus.codehaus.org/plexus-components/plexus-io/filemappers.html). See [this example](examples/transform-change-extension.html).
+Use a [File Mapper](https://codehaus-plexus.github.io/plexus-io/filemappers.html). See [this example](examples/transform-change-extension.html).
 
 <a id="other name transformation"></a>
 
 ### How do I perform other kinds of name transformations?
 
-Check the list of available file mappers at [File Mapper](http://plexus.codehaus.org/plexus-components/plexus-io/filemappers.html). Perhaps, there is one which suits your needs.
+Check the list of available file mappers at [File Mapper](https://codehaus-plexus.github.io/plexus-io/filemappers.html). Perhaps, there is one which suits your needs.
 
 If not, you need to implement your own. If you feel that it is sufficiently generic, then you might consider to submit it as a contribution to the Plexus IO component.
 
@@ -94,7 +94,7 @@ See [this example](examples/transform-change-extension.html) for how to configur
 
 ### How can I use XSLT 2.0 in my stylesheets?
 
-You need to use an XSLT 2.0 complicant stylesheet processor like Saxon. See [this example](examples/transform-saxon.html).
+You need to use an XSLT 2.0 compliant stylesheet processor like Saxon. See [this example](examples/transform-saxon.html).
 
 <a id="saxon"></a>
 

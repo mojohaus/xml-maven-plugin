@@ -18,7 +18,7 @@ limitations under the License.
 
 # Using an alternative XSLT processor
 
-An alternative XSLT processor is important, if you want to use XSLT 2.0 stylesheets or if you would like to work around a bug in your JRE's stylesheet processor. As of this writing, [Saxon](http://saxon.sourceforge.net/) is the only XSLT 2.0 compliant processor, so we take this as an example.
+An alternative XSLT processor is important, if you want to use XSLT 2.0 stylesheets or if you would like to work around a bug in your JRE's stylesheet processor. The JRE's processor supports XSLT 1.0 only, so we take [Saxon](https://www.saxonica.com/) as an example of a processor for later versions.
 
 Changing the XSLT processor is as simple as specifying it as a dependency:
 
@@ -47,8 +47,8 @@ Changing the XSLT processor is as simple as specifying it as a dependency:
       <dependencies>
         <dependency>
           <groupId>net.sf.saxon</groupId>
-          <artifactId>saxon</artifactId>
-          <version>8.7</version>
+          <artifactId>Saxon-HE</artifactId>
+          <version>12.5</version>
         </dependency>
       </dependencies>
     </plugin>

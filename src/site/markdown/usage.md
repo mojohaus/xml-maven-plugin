@@ -43,10 +43,10 @@ The plugin offers goals for validating and transforming XML files. Basically, th
 </build>
 ```
 
-In the above example, the goal would be either of `validate`, or `transform`.
+In the above example, the goal would be either of `validate`, `transform` or `check-format`.
 
-[Transformation](./transformation.html) and [Validation](./validation.html) are described on separate pages.
+[Transformation](./transformation.html), [Validation](./validation.html) and [Format checking](./check-format.html) are described on separate pages.
 
 # Using a proxy server
 
-It is not unusual, that an XML parser attempts to load documents from external servers. In a corporate environment, this will likely work only, if a proxy server is used. The plugin accepts the standard Maven proxy configuration. See the [Mini guide on proxy configuration](http://maven.apache.org/guides/mini/guide-proxies.html) for details.
+It is not unusual, that an XML parser attempts to load documents from external servers. In a corporate environment, this will likely work only, if a proxy server is used. The plugin accepts the standard Maven proxy configuration. See the [Mini guide on proxy configuration](https://maven.apache.org/guides/mini/guide-proxies.html) for details.

@@ -18,7 +18,7 @@ limitations under the License.
 
 # Check whether XML files matching a RelaxNG schema
 
-The following configuration snippet would check whether all files in the directory `src/main/relaxng` are matching the schema `src/main/schema.rng`. Note that additional libraries are required to support RelaxNG validation.
+The following configuration snippet would check whether all files in the directory `src/main/relaxng` are matching the schema `src/main/schema.rng`. Note that an additional library is required to support RelaxNG validation: this example uses Jing, and names its `SchemaFactory` explicitly. To validate against a schema in RelaxNG compact syntax, use `com.thaiopensource.relaxng.jaxp.CompactSyntaxSchemaFactory` and the schema language `http://www.iana.org/assignments/media-types/application/relax-ng-compact-syntax`.
 
 ```xml
 <build>
@@ -29,14 +29,9 @@ The following configuration snippet would check whether all files in the directo
       <artifactId>xml-maven-plugin</artifactId>
       <dependencies>
         <dependency>
-          <groupId>com.componentcorp.xml.validation</groupId>
-          <artifactId>jxvc</artifactId>
-          <version>0.9.4</version>
-        </dependency>
-        <dependency>
-          <groupId>com.componentcorp.xml.validation</groupId>
-          <artifactId>relaxng</artifactId>
-          <version>0.9.4</version>
+          <groupId>org.relaxng</groupId>
+          <artifactId>jing</artifactId>
+          <version>20241231</version>
         </dependency>
       </dependencies>
       <executions>
@@ -51,7 +46,7 @@ The following configuration snippet would check whether all files in the directo
           <validationSet>
             <dir>src/main/relaxng</dir>
             <systemId>src/main/schema.rng</systemId>
-            <validating>true</validating>
+            <schemaFactory>com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory</schemaFactory>
             <schemaLanguage>http://relaxng.org/ns/structure/1.0</schemaLanguage>
           </validationSet>
         </validationSets>
